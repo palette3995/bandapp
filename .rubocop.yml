@@ -1,0 +1,38 @@
+inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+Rails:
+  Enable: true
+
+AllCops:
+  NewCops: enable
+
+#自動生成されたファイルはチェック対象から除外
+  Exclude:
+    - "bin/**/*"
+    - "vendor/**/*"
+    - "db/schema*.rb"
+    - "node_modules/**/*"
+    - "db/migrate/**/*"
+    - "app/channels/**/*"
+    - "config/**/*"
+    - "config.ru"
+    - "public/**/*"
+    - "tmp/**/*"
+    - "log/**/*"
+    - "test/**/*"
+
+# デフォルトをダブルクォーテーションに設定
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# フローズンリテラルコメントは不要
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+#ドキュメントの無い public class を許可する
+Style/Documentation:
+  Enabled: false
