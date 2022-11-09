@@ -1,0 +1,60 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@2.0.0
+  heroku: circleci/heroku@2.0.0
+
+jobs:
+  rubocop:
+    docker:
+      - image: cimg/ruby:3.1.2
+    working_directory: ~/bandapp
+    steps:
+      - checkout
+      - ruby/install-deps
+      - ruby/rubocop-check
+
+  rspec:
+    docker:
+      - image: cimg/ruby:3.1.2
+      - image: cimg/mysql:8.0
+        environment:
+          RAILS_ENV: test
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: bandapp_test
+          MYSQL_USER: <%= ENV['DB_ USERNAME'] %>
+          MYSQL_PASSWORD: <%= ENV['DB_PASSWORD'] %>
+    working_directory: ~/bandapp
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Migration
+          command: bundle exec rails db:migrate
+      - run:
+          name: Setup Database
+          command: bundle exec rake db:schema:load
+      - ruby/rspec-test
+
+  heroku_deploy:
+    docker:
+      - image: cimg/ruby:3.1.2
+    working_directory: ~/bandapp
+    steps:
+      - checkout
+      - ruby/install-deps
+      - heroku/deploy-via-git
+      - run:
+          name: Post Deploy
+          command: heroku run rails db:migrate
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - rubocop
+      - rspec
+      - heroku_deploy:
+          requires:
+            - rubocop
+            - rspec
