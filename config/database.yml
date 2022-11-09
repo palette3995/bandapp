@@ -13,16 +13,14 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
-  host: localhost
+  username: <%= ENV['DB_ USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOSTNAME'] || db %>
+  socket: /tmp/mysql.sock
 
 development:
   <<: *default
   database: bandapp_development
-  host: db
-  username: root
-  password: password
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -30,9 +28,6 @@ development:
 test:
   <<: *default
   database: bandapp_test
-  host: db
-  username: root
-  password: password
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
