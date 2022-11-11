@@ -13,14 +13,15 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['DB_ USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  host: <%= ENV['DB_HOSTNAME'] || db %>
+  username: root
+  password: password
+  host: localhost
   socket: /tmp/mysql.sock
 
 development:
   <<: *default
   database: bandapp_development
+  host: db
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

@@ -22,8 +22,6 @@ jobs:
           RAILS_ENV: test
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: bandapp_test
-          MYSQL_USER: <%= ENV['DB_ USERNAME'] %>
-          MYSQL_PASSWORD: <%= ENV['DB_PASSWORD'] %>
     working_directory: ~/bandapp
     steps:
       - checkout
