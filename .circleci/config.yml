@@ -23,7 +23,7 @@ jobs:
           MYSQL_DATABASE: bandapp_test
     environment:
       RAILS_ENV: test
-      APP_DATABASE_HOST: localhost
+      APP_DATABASE_HOST: "127.0.0.1"
     working_directory: ~/bandapp
     steps:
       - checkout
