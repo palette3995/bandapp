@@ -28,12 +28,6 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - run:
-          name: Migration
-          command: bundle exec rails db:migrate
-      - run:
-          name: Setup Database
-          command: bundle exec rake db:schema:load
       - ruby/rspec-test
 
   heroku_deploy:
