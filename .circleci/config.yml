@@ -39,8 +39,9 @@ jobs:
       - ruby/install-deps
       - heroku/deploy-via-git:
           app-name: $HEOEKU_APP_NAME_PRD
-          post-steps:
-            - run: heroku run rails db:migrate
+      - run:
+          name: Post Deploy
+          command: heroku run rails db:migrate
 
 workflows:
   version: 2.1
