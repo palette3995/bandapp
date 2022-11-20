@@ -37,6 +37,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
+      - heroku/install
       - heroku/deploy-via-git
       - run:
           name: Post Deploy
