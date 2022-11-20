@@ -42,7 +42,7 @@ jobs:
       - heroku/create-review
       - run:
           name: Post Deploy
-          command: heroku run rails db:migrate
+          command: heroku run rails db:migrate -a $HEROKU_APP_NAME
 
 workflows:
   version: 2.1
