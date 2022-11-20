@@ -39,6 +39,7 @@ jobs:
       - ruby/install-deps
       - heroku/install
       - heroku/deploy-via-git
+      - heroku/create-review
       - run:
           name: Post Deploy
           command: heroku run rails db:migrate
