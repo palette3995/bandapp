@@ -38,3 +38,8 @@ Style/FrozenStringLiteralComment:
 #ドキュメントの無い public class を許可する
 Style/Documentation:
   Enabled: false
+
+#gemの並びは順不同を許可
+Bundler/OrderedGems:
+  Exclude:
+    - 'Gemfile'
