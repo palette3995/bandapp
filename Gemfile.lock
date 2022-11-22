@@ -95,6 +95,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-i18n (1.10.2)
+      devise (>= 4.8.0)
+    devise-i18n-views (0.3.7)
     diff-lcs (1.5.0)
     dotenv (2.8.1)
     erubi (1.11.0)
@@ -276,6 +279,8 @@ DEPENDENCIES
   capybara
   debug
   devise
+  devise-i18n
+  devise-i18n-views
   dotenv
   importmap-rails
   jbuilder
