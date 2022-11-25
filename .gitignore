@@ -31,3 +31,5 @@
 /config/master.key
 
 .env
+/test/*
+.rubocop_todo.yml
