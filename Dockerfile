@@ -5,10 +5,6 @@ WORKDIR /bandapp
 COPY Gemfile /bandapp/Gemfile
 COPY Gemfile.lock /bandapp/Gemfile.lock
 
-# Bundlerの不具合対策(1)
-RUN gem update --system
-RUN bundle update --bundler
-
 RUN bundle install
 COPY . /bandapp
 
