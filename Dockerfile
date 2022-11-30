@@ -1,5 +1,11 @@
 FROM ruby:3.1.2
 
+RUN set -x && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  echo 'deb http://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list
+
+RUN set -x && apt-get update -qq && \
+  apt-get install -yq build-essential yarn
+
 RUN mkdir /bandapp
 WORKDIR /bandapp
 COPY Gemfile /bandapp/Gemfile
