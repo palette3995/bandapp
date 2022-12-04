@@ -2,12 +2,13 @@ version: 2.1
 
 orbs:
   ruby: circleci/ruby@1.1.0
+  node: circleci/node@5.0.3
   heroku: circleci/heroku@2.0.0
 
 jobs:
   rubocop:
     docker:
-      - image: cimg/ruby:3.1.2
+      - image: cimg/ruby:3.0.5-node
     working_directory: ~/bandapp
     steps:
       - checkout
@@ -16,7 +17,7 @@ jobs:
 
   rspec:
     docker:
-      - image: cimg/ruby:3.1.2
+      - image: cimg/ruby:3.0.5-node
       - image: cimg/mysql:8.0
         environment:
           MYSQL_ROOT_PASSWORD: password
@@ -32,11 +33,13 @@ jobs:
 
   heroku_deploy:
     docker:
-      - image: cimg/ruby:3.1.2
+      - image: cimg/ruby:3.0.5-node
     working_directory: ~/bandapp
     steps:
       - checkout
       - ruby/install-deps
+      - node/install-packages:
+          pkg-manager: yarn
       - heroku/install
       - heroku/deploy-via-git
       - run:
