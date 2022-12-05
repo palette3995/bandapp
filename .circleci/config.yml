@@ -41,6 +41,9 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - heroku/install
+      - run:
+          name: Set Heroku-20 stack
+          command: heroku stack:set heroku-20
       - heroku/deploy-via-git
       - run:
           name: Post Deploy
