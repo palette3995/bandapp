@@ -10,5 +10,9 @@
   "license": "MIT",
   "devDependencies": {
     "sass": "^1.56.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "popper.js": "^1.16.1"
   }
 }
