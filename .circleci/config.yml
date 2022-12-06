@@ -5,14 +5,21 @@ orbs:
   node: circleci/node@5.0.3
   heroku: circleci/heroku@2.0.0
 
+commands:
+  setup:
+    steps:
+      - checkout
+      - ruby/install-deps
+      - node/install-packages:
+          pkg-manager: yarn
+
 jobs:
   rubocop:
     docker:
       - image: cimg/ruby:3.0.5-node
     working_directory: ~/bandapp
     steps:
-      - checkout
-      - ruby/install-deps
+      - setup
       - ruby/rubocop-check
 
   rspec:
@@ -27,8 +34,7 @@ jobs:
       APP_DATABASE_HOST: "127.0.0.1"
     working_directory: ~/bandapp
     steps:
-      - checkout
-      - ruby/install-deps
+      - setup
       - ruby/rspec-test
 
   heroku_deploy:
@@ -36,10 +42,7 @@ jobs:
       - image: cimg/ruby:3.0.5-node
     working_directory: ~/bandapp
     steps:
-      - checkout
-      - ruby/install-deps
-      - node/install-packages:
-          pkg-manager: yarn
+      - setup
       - heroku/install
       - run:
           name: Set Heroku-20 stack
