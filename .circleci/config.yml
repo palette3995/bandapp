@@ -2,21 +2,29 @@ version: 2.1
 
 orbs:
   ruby: circleci/ruby@1.1.0
+  node: circleci/node@5.0.3
   heroku: circleci/heroku@2.0.0
+
+commands:
+  setup:
+    steps:
+      - checkout
+      - ruby/install-deps
+      - node/install-packages:
+          pkg-manager: yarn
 
 jobs:
   rubocop:
     docker:
-      - image: cimg/ruby:3.1.2
+      - image: cimg/ruby:3.0.5-node
     working_directory: ~/bandapp
     steps:
-      - checkout
-      - ruby/install-deps
+      - setup
       - ruby/rubocop-check
 
   rspec:
     docker:
-      - image: cimg/ruby:3.1.2
+      - image: cimg/ruby:3.0.5-node
       - image: cimg/mysql:8.0
         environment:
           MYSQL_ROOT_PASSWORD: password
@@ -26,18 +34,19 @@ jobs:
       APP_DATABASE_HOST: "127.0.0.1"
     working_directory: ~/bandapp
     steps:
-      - checkout
-      - ruby/install-deps
+      - setup
       - ruby/rspec-test
 
   heroku_deploy:
     docker:
-      - image: cimg/ruby:3.1.2
+      - image: cimg/ruby:3.0.5-node
     working_directory: ~/bandapp
     steps:
-      - checkout
-      - ruby/install-deps
+      - setup
       - heroku/install
+      - run:
+          name: Set Heroku-20 stack
+          command: heroku stack:set heroku-20 -a $HEROKU_APP_NAME
       - heroku/deploy-via-git
       - run:
           name: Post Deploy
