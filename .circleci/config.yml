@@ -12,6 +12,9 @@ commands:
       - ruby/install-deps
       - node/install-packages:
           pkg-manager: yarn
+      - run:
+          name: Precompile assets
+          command: bundle exec rails assets:precompile
 
 jobs:
   rubocop:
