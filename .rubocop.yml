@@ -47,3 +47,7 @@ Bundler/OrderedGems:
 #クラス内のクラス定義にコンパクト記法を許可
 Style/ClassAndModuleChildren:
   Enabled: false
+
+#空のメソッドを許可
+Style/EmptyMethod:
+  Enabled: false
