@@ -1,31 +1,60 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <% if user_signed_in? %>
+      <%= link_to "BANDAPP", users_path, class: "navbar-brand" %>
+    <% else %>
+      <%= link_to "BANDAPP", "/", class: "navbar-brand" %>
+    <% end %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown link
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <% if user_signed_in? %>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              設定
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><%= link_to "マイページ", mypage_path, class: "dropdown-item" %></li>
+              <li><%= link_to "ログアウト", destroy_user_session_path, data: { "turbo-method": :delete }, class: "dropdown-item" %></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              バンド
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><%= link_to "所属バンド", "#", class: "dropdown-item" %></li>
+              <li><%= link_to "お誘い申請", "#", class: "dropdown-item" %></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              気になる
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><%= link_to "気になる人", "#", class: "dropdown-item" %></li>
+              <li><%= link_to "気になるバンド", "#", class: "dropdown-item" %></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              検索
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><%= link_to "ユーザー検索", "#", class: "dropdown-item" %></li>
+              <li><%= link_to "バンド検索", "#", class: "dropdown-item" %></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <%= link_to "メッセージ", "#", class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "通知", "#", class: "nav-link" %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
   </div>
 </nav>
