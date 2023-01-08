@@ -5,9 +5,10 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-Part.create!(name: "ボーカル")
-Part.create!(name: "ギター")
-Part.create!(name: "ベース")
-Part.create!(name: "ドラム/パーカッション")
-Part.create!(name: "キーボード/ピアノ")
-Part.create!(name: "その他")
+
+# partの初期データを追加
+# Part.create!(id: 1, name: "ボーカル")
+# Part.create!(id: 2, name: "ギター")
+# Part.create!(id: 3, name: "ベース")
+# Part.create!(id: 4, name: "ドラム/パーカッション")
+# Part.create!(id: 5, name: "キーボード/ピアノ")
