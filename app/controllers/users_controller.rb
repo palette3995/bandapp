@@ -5,10 +5,14 @@ class UsersController < ApplicationController
   def show
   end
 
-  def edit
-    @user = User.find(params[:id])
+  def mypage
+    @user = User.find(current_user.id)
   end
 
-  def mypage
+  def edit
+    @user = User.find(current_user.id)
+  end
+
+  def update
   end
 end
