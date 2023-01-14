@@ -6,4 +6,10 @@ class User < ApplicationRecord
 
   has_many :user_parts, dependent: :destroy
   has_many :parts, through: :user_parts
+
+  accepts_nested_attributes_for :user_parts, allow_destroy: true
+
+  has_one_attached :image
+  has_one_attached :movie
+  has_one_attached :sound
 end
