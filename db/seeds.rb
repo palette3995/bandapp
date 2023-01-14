@@ -12,3 +12,5 @@
 # Part.create!(id: 3, name: "ベース")
 # Part.create!(id: 4, name: "ドラム/パーカッション")
 # Part.create!(id: 5, name: "キーボード/ピアノ")
+# Part.create!(id: 6, name: "その他")
+# Part.create!(id: 7, name: "未選択")
