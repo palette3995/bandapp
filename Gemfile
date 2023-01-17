@@ -85,3 +85,4 @@ gem "devise-i18n-views"
 gem "cssbundling-rails"
 gem "aws-sdk-s3", require: false
 gem "mini_magick"
+gem "active_hash"
