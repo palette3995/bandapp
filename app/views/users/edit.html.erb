@@ -1,1 +1,91 @@
-<h1>useredit</h1>
+<div class="edit-wrapper text-center w-75 mx-auto">
+  <%= form_with model: @user, local: true do |f| %>
+  <div class="container">
+    <div class="row">
+      <div class="left-contents col-xl-6">
+        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+          <div class="card-body">
+            <% if @user.image.attached? %>
+             <%= image_tag rails_blob_path(@user.image.variant(resize: "110x110", gravity: "center")), class: "avatar rounded-circle"%>
+            <% else %>
+             <%= image_tag 'default.png', size: "110x110", class: "avatar rounded-circle"%>
+            <% end %>
+            <%= f.file_field :image, accept: "image/*"%>
+            <h5>名前</h5>
+            <p><%= f.text_field :name, class: "form-control" %></p>
+            <h5>年齢</h5>
+            <p><%= f.text_field :age, class: "form-control" %></p>
+            <h5>性別</h5>
+            <p><%= f.select :sex, [["男性","男性"],["女性","女性"],["その他","その他"]], {include_blank: "未選択"}, {class: "form-select"}%></p>
+            <h5>自己紹介</h5>
+            <p><%= f.text_area :introduction, class: "form-control" %></p>
+          </div>
+        </div>
+        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+          <div class="card-body">
+            <h5>動画</h5>
+            <% if @user.movie.attached? %>
+              <%= video_tag rails_blob_path(@user.movie), class: "video border", size: "250×250" %>
+              <%= button_tag "動画を削除", type: "button", onclick: @user.movie.purge  %>
+            <% else %>
+              <p>動画はありません</p>
+            <% end %>
+            <%= f.file_field :movie, accept: "video/*" %>
+            <h5>音源</h5>
+            <% if @user.sound.attached? %>
+              <%= audio_tag rails_blob_path(@user.sound), class: "audio" %>
+            <% else %>
+              <p>音源はありません</p>
+            <% end %>
+            <%= f.file_field :sound, accept: "audio/*" %>
+          </div>
+        </div>
+      </div>
+      <div class="right-contents col">
+        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+          <div class="card-body">
+            <h5>地域</h5>
+            <p><%= f.collection_select(:prefecture_id, Prefecture.all, :id, :name, {include_blank: "未選択"}, {class: "form-select"} ) %></p>
+            <%= f.fields_for :user_parts, @user.user_parts do |user_part| %>
+              <div class="part-<% user_part.index + 1 %>">
+                <h5><%= "パート#{user_part.index + 1}" %></h5>
+                <%= user_part.select :part_id, @parts.map {|part| [part.name, part.id]}, {}, {class: "form-select"}%>
+                <%= user_part.select :level, @levels.map {|level| [level, level]} , {include_blank: "レベル"}, {class: "form-select"}%>
+                <%= user_part.hidden_field :user_id %>
+              </div>
+            <% end %>
+            <h5>好きなアーティスト</h5>
+            <%= f.text_field :favorite, class: "form-control" %>
+            <h5>ジャンル</h5>
+            <%= f.text_field :genre, class: "form-control" %>
+            <h5>活動方針</h5>
+            <%= f.select :motivation, [["趣味で楽しく","趣味で楽しく"],["プロを目指す","プロを目指す"],["決めていない","決めていない"]], {include_blank: "未選択"}, {class: "form-select"}%>
+            <h5>楽曲の方針</h5>
+            <%= f.select :original, [["既存曲のコピー","既存曲のコピー"],["オリジナル曲","オリジナル曲"],["決めていない","決めていない"]], {include_blank: "未選択"}, {class: "form-select"}%>
+            <h5>コピーしたい楽曲</h5>
+            <%= f.text_field :want_to_copy, class: "form-control" %>
+            <h5>活動頻度</h5>
+            <%= f.select :frequency, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: "未選択"}, {class: "form-select"}%>
+            <h5>活動できる日</h5>
+            <% @week_days.each do |week_day| %>
+              <%= f.check_box :available_day, {}, week_day %>
+              <%= f.label :available_day, week_day %>
+            <% end %>
+            <h5>活動できる時間</h5>
+            <% @activity_times.each do |activity_time| %>
+              <%= f.check_box :activity_time, {}, activity_time %>
+              <%= f.label :activity_time, activity_time %>
+            <% end %>
+            <h5>曲作り</h5>
+            <p><%= f.select :compose, [['できない',0],['できる',1]], { include_blank: false, selected: 0 }, {class: "form-select"} %></p>
+          </div>
+        </div>
+        <div class="my-3">
+          <%= f.submit "登録完了", class: "btn btn-secondary" %>
+          <%= link_to "マイページに戻る", mypage_path, class: "text-decoration-none text-dark"%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
