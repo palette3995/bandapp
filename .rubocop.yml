@@ -51,3 +51,7 @@ Style/ClassAndModuleChildren:
 #空のメソッドを許可
 Style/EmptyMethod:
   Enabled: false
+
+#メソッドの最大行数を20に設定
+MethodLength:
+  Max: 20
