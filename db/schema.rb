@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_11_104232) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_22_080043) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -65,7 +65,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_11_104232) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name", null: false
-    t.string "region"
     t.integer "age"
     t.string "sex"
     t.string "genre"
@@ -82,6 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_11_104232) do
     t.string "activity_time"
     t.string "available_day"
     t.boolean "compose", default: false
+    t.integer "prefecture_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

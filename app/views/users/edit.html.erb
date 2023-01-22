@@ -45,7 +45,7 @@
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
           <div class="card-body">
             <h5>地域</h5>
-            <p><%= f.collection_select(:prefecture_id, Prefecture.all, :id, :name, {include_blank: "未選択"}, {class: "form-select"} ) %></p>
+            <p><%= f.collection_select :prefecture_id, Prefecture.all, :id, :name, {include_blank: "未選択"}, {class: "form-select"} %></p>
             <%= f.fields_for :user_parts, @user.user_parts do |user_part| %>
               <div class="part-<% user_part.index + 1 %>">
                 <h5><%= "パート#{user_part.index + 1}" %></h5>
@@ -68,12 +68,12 @@
             <%= f.select :frequency, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5>活動できる日</h5>
             <% @week_days.each do |week_day| %>
-              <%= f.check_box :available_day, {}, week_day %>
+              <%= f.check_box :available_day, {}, checked_value= week_day, unchecked_value="" %>
               <%= f.label :available_day, week_day %>
             <% end %>
             <h5>活動できる時間</h5>
             <% @activity_times.each do |activity_time| %>
-              <%= f.check_box :activity_time, {}, activity_time %>
+              <%= f.check_box :activity_time, {}, checked_value= activity_time, unchecked_value="" %>
               <%= f.label :activity_time, activity_time %>
             <% end %>
             <h5>曲作り</h5>
