@@ -6,6 +6,5 @@ class UserPart < ApplicationRecord
     3.times do |n|
       user.user_parts.create(user_id: user.id, part_id: 7, priority: n + 1)
     end
-
   end
 end
