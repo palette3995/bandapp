@@ -25,6 +25,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @parts = Part.all
     @user_parts = @user.parts
+    params[:user][:available_day] ? @user.available_day = params[:user][:available_day].join(",") : false
+    params[:user][:activity_time] ? @user.activity_time = params[:user][:activity_time].join(",") : false
     @user.update(user_params)
     redirect_to mypage_path
   end
@@ -49,7 +51,7 @@ class UsersController < ApplicationController
       :other_part,
       :frequency,
       :activity_time,
-      :vailable_day,
+      :available_day,
       :compose,
       user_parts_attributes: %i[id part_id user_id level _destroy]
     )

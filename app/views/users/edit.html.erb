@@ -6,7 +6,7 @@
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
           <div class="card-body">
             <% if @user.image.attached? %>
-             <%= image_tag rails_blob_path(@user.image.variant(resize: "110x110", gravity: "center")), class: "avatar rounded-circle"%>
+             <%= image_tag @user.image.variant(resize: "110x110", gravity: "center"), class: "avatar rounded-circle"%>
             <% else %>
              <%= image_tag 'default.png', size: "110x110", class: "avatar rounded-circle"%>
             <% end %>
@@ -67,17 +67,21 @@
             <h5>活動頻度</h5>
             <%= f.select :frequency, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5>活動できる日</h5>
-            <% @week_days.each do |week_day| %>
-              <%= f.check_box :available_day, {}, checked_value= week_day, unchecked_value="" %>
-              <%= f.label :available_day, week_day %>
-            <% end %>
+              <% @week_days.each do |day| %>
+                <%= f.check_box :available_day, {multiple: true, checked: @user.available_day.present? ? @user.available_day.include?(day) : false }, day, nil %>
+                <%= f.label :available_day, day %>
+              <% end %>
             <h5>活動できる時間</h5>
-            <% @activity_times.each do |activity_time| %>
-              <%= f.check_box :activity_time, {}, checked_value= activity_time, unchecked_value="" %>
-              <%= f.label :activity_time, activity_time %>
+            <% @activity_times.each do |time| %>
+              <%= f.check_box :activity_time, {multiple: true, checked: @user.activity_time.present? ? @user.activity_time.include?(time) : false }, time, nil %>
+              <%= f.label :activity_time, time %>
             <% end %>
+
             <h5>曲作り</h5>
-            <p><%= f.select :compose, [['できない',0],['できる',1]], { include_blank: false, selected: 0 }, {class: "form-select"} %></p>
+            <%= f.radio_button :compose, true %>
+            <%= f.label :compose, "できる" %>
+            <%= f.radio_button :compose, false %>
+            <%= f.label :compose, "できない" %>
           </div>
         </div>
         <div class="my-3">
