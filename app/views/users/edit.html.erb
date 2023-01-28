@@ -7,6 +7,7 @@
           <div class="card-body">
             <% if @user.image.attached? %>
              <%= image_tag @user.image.variant(resize: "110x110", gravity: "center"), class: "avatar rounded-circle"%>
+             <%= f.submit "アイコンを削除", name: "delete_image", confirm: "画像を削除しますか？", class: "btn btn-secondary" %>
             <% else %>
              <%= image_tag 'default.png', size: "110x110", class: "avatar rounded-circle"%>
             <% end %>
@@ -25,15 +26,16 @@
           <div class="card-body">
             <h5>動画</h5>
             <% if @user.movie.attached? %>
-              <%= video_tag rails_blob_path(@user.movie), class: "video border", size: "250×250" %>
-              <%= button_tag "動画を削除", type: "button", onclick: @user.movie.purge  %>
+              <%= video_tag rails_blob_path(@user.movie), class: "video border", size: "250×250", controls: true %>
+              <%= f.submit "動画を削除", name: "delete_movie", confirm: "動画を削除しますか？", class: "btn btn-secondary" %>
             <% else %>
               <p>動画はありません</p>
             <% end %>
             <%= f.file_field :movie, accept: "video/*" %>
             <h5>音源</h5>
             <% if @user.sound.attached? %>
-              <%= audio_tag rails_blob_path(@user.sound), class: "audio" %>
+              <%= audio_tag rails_blob_path(@user.sound), class: "audio", controls: true %>
+              <%= f.submit "音源を削除", name: "delete_sound", confirm: "音源を削除しますか？", class: "btn btn-secondary" %>
             <% else %>
               <p>音源はありません</p>
             <% end %>

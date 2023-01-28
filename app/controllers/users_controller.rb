@@ -25,10 +25,18 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @parts = Part.all
     @user_parts = @user.parts
-    params[:user][:available_day] ? @user.available_day = params[:user][:available_day].join(",") : false
-    params[:user][:activity_time] ? @user.activity_time = params[:user][:activity_time].join(",") : false
-    @user.update(user_params)
-    redirect_to mypage_path
+    if params[:delete_image]
+      delete_media(@user.image)
+    elsif params[:delete_movie]
+      delete_media(@user.movie)
+    elsif params[:delete_sound]
+      delete_media(@user.sound)
+    else
+      params[:user][:available_day] ? @user.available_day = params[:user][:available_day].join(",") : false
+      params[:user][:activity_time] ? @user.activity_time = params[:user][:activity_time].join(",") : false
+      @user.update(user_params)
+      redirect_to mypage_path
+    end
   end
 
   private
@@ -63,6 +71,6 @@ class UsersController < ApplicationController
 
   def delete_media(media)
     media.purge
+    render action: "edit"
   end
-
 end
