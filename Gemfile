@@ -86,3 +86,5 @@ gem "cssbundling-rails"
 gem "aws-sdk-s3", require: false
 gem "mini_magick"
 gem "active_hash"
+gem "rails-erd"
+gem "ruby-graphviz"
