@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :get_week_day
-  before_action :get_activity_time
-  before_action :get_level
+  before_action :week_days
+  before_action :activity_times
+  before_action :levels
   def index
     @user = User.find(current_user.id)
     UserPart.setup(@user) if @user.user_parts.blank?
@@ -66,7 +66,7 @@ class UsersController < ApplicationController
     )
   end
 
-  def get_level
+  def levels
     @levels = %W[未経験 初心者 中級者 上級者]
   end
 

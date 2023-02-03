@@ -12,11 +12,11 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name])
   end
 
-  def get_week_day
-    @week_days = %w[日 月 火 水 木 金 土]
+  def week_days
+    @week_days = %W[日 月 火 水 木 金 土]
   end
 
-  def get_activity_time
-    @activity_times = %w[朝 昼 夜]
+  def activity_times
+    @activity_times = %W[朝 昼 夜]
   end
 end
