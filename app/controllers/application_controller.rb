@@ -13,10 +13,10 @@ class ApplicationController < ActionController::Base
   end
 
   def get_week_day
-    @week_days = ["日","月","火","水","木","金","土"]
+    @week_days = %w[日 月 火 水 木 金 土]
   end
 
   def get_activity_time
-    @activity_times = ["朝","昼","夜"]
+    @activity_times = %w[朝 昼 夜]
   end
 end
