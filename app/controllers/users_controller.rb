@@ -48,7 +48,6 @@ class UsersController < ApplicationController
       :prefecture_id,
       :age,
       :sex,
-      :genre,
       :favorite,
       :introduction,
       :image,
@@ -61,7 +60,8 @@ class UsersController < ApplicationController
       :activity_time,
       :available_day,
       :compose,
-      user_parts_attributes: %i[id part_id user_id level other_part _destroy]
+      user_parts_attributes: %i[id part_id user_id level other_part _destroy],
+      user_genres_attributes: %i[id genre_id user_id other_genre _destroy]
     )
   end
 
