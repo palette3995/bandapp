@@ -1,0 +1,2 @@
+class UserGenre < ApplicationRecord
+end
