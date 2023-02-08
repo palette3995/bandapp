@@ -8,8 +8,11 @@ class User < ApplicationRecord
 
   has_many :user_parts, dependent: :destroy
   has_many :parts, through: :user_parts
+  has_many :user_genres, dependent: :destroy
+  has_many :genres, through: :user_genres
 
   accepts_nested_attributes_for :user_parts, allow_destroy: true
+  accepts_nested_attributes_for :user_genres, allow_destroy: true
 
   has_one_attached :image
   has_one_attached :movie
