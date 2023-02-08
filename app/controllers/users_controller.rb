@@ -57,12 +57,11 @@ class UsersController < ApplicationController
       :original,
       :want_to_copy,
       :motivation,
-      :other_part,
       :frequency,
       :activity_time,
       :available_day,
       :compose,
-      user_parts_attributes: %i[id part_id user_id level _destroy]
+      user_parts_attributes: %i[id part_id user_id level other_part _destroy]
     )
   end
 

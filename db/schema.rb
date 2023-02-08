@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_22_080043) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_05_084155) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_080043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "level"
+    t.string "other_part"
     t.index ["part_id"], name: "index_user_parts_on_part_id"
     t.index ["user_id"], name: "index_user_parts_on_user_id"
   end
@@ -76,12 +77,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_080043) do
     t.string "original"
     t.string "want_to_copy"
     t.string "motivation"
-    t.string "other_part"
     t.string "frequency"
-    t.string "activity_time"
-    t.string "available_day"
     t.boolean "compose", default: false
     t.integer "prefecture_id"
+    t.string "activity_time"
+    t.string "available_day"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
