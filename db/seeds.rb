@@ -31,3 +31,4 @@
 # Genre.create!(id: 13, name: "ジャズ")
 # Genre.create!(id: 14, name: "クラシック")
 # Genre.create!(id: 15, name: "その他")
+# Genre.create!(id: 16, name: "未選択")
