@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   before_action :levels
   def index
     @user = User.find(current_user.id)
-    UserPart.setup(@user) if @user.user_parts.blank?
   end
 
   def show
@@ -18,11 +17,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @parts = Part.all
     @user_parts = @user.parts
+    @genres = Genre.all
   end
 
   def update
     @user = User.find(params[:id])
     @parts = Part.all
+    @genres = Genre.all
     @user_parts = @user.parts
     # メディア削除ボタンが押された際の処理
     if params[:delete_image]
