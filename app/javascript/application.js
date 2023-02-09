@@ -5,15 +5,15 @@ import * as bootstrap from "bootstrap"
 import jquery from "jquery"
 window.$ = jquery
 
-//マイページ編集画面のパート選択部分
-
+//プロフィール編集画面
+//パート入力フォーム
 $(function(){
   const activate_form = function(num) {
-    $('.parts').eq(num).find('select,input').prop('disabled', false);
+    $('.parts').eq(num).show();
   }
 
   const deactivate_form = function(num) {
-    $('.parts').eq(num).find('select,input').prop('disabled', true);
+    $('.parts').eq(num).hide();
   }
 
   const hide_other_part_and_level = function(num) {
@@ -93,6 +93,72 @@ $(function(){
       show_other_part_and_level(2);
     } else {
       hide_other_part_and_show_level(2);
+    }
+  });
+});
+
+//ジャンル入力フォーム
+$(function(){
+
+  const reset_params = function(num) {
+    $('.other-genre').eq(num).val("").hide();
+    $('.genre-name').eq(num).val(16);
+  }
+
+  if ($('.genre-name').first().val() == 16) {
+    $('.genres').eq(1).hide();
+    $('.genres').eq(2).hide();
+  } else if ($('.genre-name').first().val() != 16 && $('.genre-name').eq(1).val() == 16) {
+    $('.genres').eq(2).hide();
+  }
+
+  $('.genres').each(function(){
+    var genre_name = $(this).find('.genre-name').val()
+    if (genre_name == 15) {
+      $(this).find('.other-genre').show();
+    }
+  });
+
+  $('.genre-name').first().change(function(){
+    if ($(this).val() == 16) {
+      $('.other-genre').eq(0).val("").hide();
+      reset_params(1);
+      reset_params(2);
+      $('.genres').eq(1).hide();
+      $('.genres').eq(2).hide();
+    } else if ($(this).val() == 15) {
+      $('.other-genre').eq(0).show();
+      $('.genres').eq(1).show();
+    } else {
+      $('.other-genre').eq(0).val("").hide();
+      $('.genres').eq(1).show();
+      if ($('.genre-name').eq(1).val() != 16) {
+        $('.genres').eq(2).show();
+      }
+    }
+  });
+
+  $('.genre-name').eq(1).change(function(){
+    if ($(this).val() == 16) {
+      $('.other-genre').eq(1).val("").hide();
+      reset_params(2);
+      $('.genres').eq(2).hide();
+    } else if ($(this).val() == 15) {
+      $('.other-genre').eq(1).show();
+      $('.genres').eq(2).show();
+    } else {
+      $('.other-genre').eq(0).val("").hide();
+      $('.genres').eq(2).show();
+    }
+  });
+
+  $('.genre-name').eq(2).change(function(){
+    if ($(this).val() == 16) {
+      $('.other-genre').eq(2).val("").hide();
+    } else if ($(this).val() == 15) {
+      $('.other-genre').eq(2).show();
+    } else {
+      $('.other-genre').eq(2).val("").hide();
     }
   });
 });
