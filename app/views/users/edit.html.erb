@@ -6,13 +6,13 @@
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
           <div class="card-body">
             <% if @user.image.attached? %>
-             <%= image_tag @user.image.variant(resize: "110x110", gravity: "center"), class: "avatar rounded-circle"%>
-             <%= f.submit "アイコンを削除", name: "delete_image", confirm: "画像を削除しますか？", class: "btn btn-secondary d-block mx-auto" %>
+             <%= image_tag @user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
+             <%= f.submit "アイコンを削除", name: "delete_image", class: "btn btn-secondary d-block mx-auto" %>
             <% else %>
-             <%= image_tag 'default.png', size: "110x110", class: "avatar rounded-circle"%>
+             <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
             <% end %>
             <%= f.file_field :image, accept: "image/*", class: "d-block mx-auto" %>
-            <h5>名前</h5>
+            <h5 class= "mt-2">名前</h5>
             <p><%= f.text_field :name, class: "form-control" %></p>
             <h5>年齢</h5>
             <p><%= f.text_field :age, class: "form-control" %></p>
@@ -26,20 +26,20 @@
           <div class="card-body">
             <h5>動画</h5>
             <% if @user.movie.attached? %>
-              <%= video_tag rails_blob_path(@user.movie), class: "video border", size: "250×250", controls: true %>
-              <%= f.submit "動画を削除", name: "delete_movie", confirm: "動画を削除しますか？", class: "btn btn-secondary d-block mx-auto" %>
+              <%= video_tag rails_blob_path(@user.movie), class: "movie border", size: "250×250", controls: true %>
+              <%= f.submit "動画を削除", name: "delete_movie", class: "delete-movie btn btn-secondary d-block mx-auto　mb-2" %>
             <% else %>
-              <p>動画はありません</p>
+              <p class= "mb-2">動画はありません</p>
             <% end %>
             <%= f.file_field :movie, accept: "video/*" %>
-            <h5>音源</h5>
+            <h5 class= "mt-3">音源</h5>
             <% if @user.sound.attached? %>
-              <%= audio_tag rails_blob_path(@user.sound), class: "audio", controls: true %>
-              <%= f.submit "音源を削除", name: "delete_sound", confirm: "音源を削除しますか？", class: "btn btn-secondary d-block mx-auto" %>
+              <%= audio_tag rails_blob_path(@user.sound), class: "sound", controls: true %>
+              <%= f.submit "音源を削除", name: "delete_sound", class: "delete-sound btn btn-secondary d-block mx-auto my-2" %>
             <% else %>
               <p>音源はありません</p>
             <% end %>
-              <%= f.file_field :sound, accept: "audio/*" %>
+              <%= f.file_field :sound, accept: "audio/*", class: "mt-2" %>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
             <p><%= f.collection_select :prefecture_id, Prefecture.all, :id, :name, {include_blank: "未選択"}, {class: "form-select"} %></p>
             <div class="part-forms">
               <%= f.fields_for :user_parts, @user.user_parts do |user_part| %>
-                <div class="parts">
+                <div class="parts my-2">
                   <h5><%= "パート#{user_part.index + 1}" %></h5>
                   <%= user_part.select :part_id, @parts.map {|part| [part.name, part.id]}, {}, {class: "form-select part-name"}%>
                   <%= user_part.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part" %>
@@ -62,7 +62,7 @@
             <h5>好きなアーティスト</h5>
             <%= f.text_field :favorite, class: "form-control" %>
             <%= f.fields_for :user_genres, @user.user_genres do |user_genre| %>
-              <div class="genres">
+              <div class="genres my-2">
                 <h5><%= "ジャンル#{user_genre.index + 1}" %></h5>
                 <%= user_genre.select :genre_id, @genres.map {|genre| [genre.name, genre.id]}, {}, {class: "form-select genre-name"}%>
                 <%= user_genre.text_field :other_genre, placeholder: "ジャンル名を入力してください", class: "form-control other-genre" %>
@@ -71,24 +71,24 @@
             <% end %>
             <h5>活動方針</h5>
             <%= f.select :motivation, [["趣味で楽しく","趣味で楽しく"],["プロを目指す","プロを目指す"],["決めていない","決めていない"]], {include_blank: "未選択"}, {class: "form-select"}%>
-            <h5>楽曲の方針</h5>
+            <h5 class="mt-2">楽曲の方針</h5>
             <%= f.select :original, [["既存曲のコピー","既存曲のコピー"],["オリジナル曲","オリジナル曲"],["決めていない","決めていない"]], {include_blank: "未選択"}, {class: "form-select"}%>
-            <h5>コピーしたい楽曲</h5>
+            <h5 class="mt-2">コピーしたい楽曲</h5>
             <%= f.text_field :want_to_copy, class: "form-control" %>
-            <h5>活動頻度</h5>
+            <h5 class="mt-2">活動頻度</h5>
             <%= f.select :frequency, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: "未選択"}, {class: "form-select"}%>
-            <h5>活動できる日</h5>
+            <h5 class="mt-2">活動できる日</h5>
               <% @week_days.each do |day| %>
                 <%= f.check_box :available_day, {multiple: true, checked: @user.available_day.present? ? @user.available_day.include?(day) : false }, day, nil %>
                 <%= f.label :available_day, day %>
               <% end %>
-            <h5>活動できる時間</h5>
+            <h5 class="mt-2">活動できる時間</h5>
             <% @activity_times.each do |time| %>
               <%= f.check_box :activity_time, {multiple: true, checked: @user.activity_time.present? ? @user.activity_time.include?(time) : false }, time, nil %>
               <%= f.label :activity_time, time %>
             <% end %>
 
-            <h5>曲作り</h5>
+            <h5 class="mt-2">曲作り</h5>
             <%= f.radio_button :compose, true %>
             <%= f.label :compose, "できる" %>
             <%= f.radio_button :compose, false %>
