@@ -20,5 +20,7 @@ module Bandapp
     # タイムゾーンの変更
     config.time_zone = "Asia/Tokyo"
     # config.eager_load_paths << Rails.root.join("extras")
+    # mini_magickを指定
+    config.active_storage.variant_processor = :mini_magick
   end
 end
