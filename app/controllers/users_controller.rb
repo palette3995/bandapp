@@ -7,10 +7,7 @@ class UsersController < ApplicationController
   end
 
   def show
-  end
-
-  def mypage
-    @user = User.find(current_user.id)
+    @user = User.find(params[:id])
   end
 
   def edit
@@ -37,7 +34,7 @@ class UsersController < ApplicationController
       params[:user][:available_day] ? @user.available_day = params[:user][:available_day].join(",") : false
       params[:user][:activity_time] ? @user.activity_time = params[:user][:activity_time].join(",") : false
       @user.update(user_params)
-      redirect_to mypage_path
+      redirect_to user_path
     end
   end
 
