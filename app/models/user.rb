@@ -20,8 +20,8 @@ class User < ApplicationRecord
 
   after_create do
     3.times do |n|
-      self.user_parts.create(user_id: self.id, part_id: 7, priority: n + 1)
-      self.user_genres.create(user_id: self.id, genre_id: 16, priority: n + 1)
+      user_parts.create(user_id: id, part_id: 7, priority: n + 1)
+      user_genres.create(user_id: id, genre_id: 16, priority: n + 1)
     end
   end
 end
