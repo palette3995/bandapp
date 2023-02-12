@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :parts, through: :user_parts
   has_many :user_genres, dependent: :destroy
   has_many :genres, through: :user_genres
+  has_many :band_members, dependent: :destroy
+  has_many :bands, through: :band_members
 
   accepts_nested_attributes_for :user_parts, allow_destroy: true
   accepts_nested_attributes_for :user_genres, allow_destroy: true
