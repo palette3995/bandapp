@@ -1,2 +1,93 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<div class="edit-wrapper text-center w-75 mx-auto">
+  <div class="container">
+    <div class="row">
+      <div class="left-contents col-xl-6">
+        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+          <div class="card-body">
+            <% if @user.image.attached? %>
+             <%= image_tag @user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
+            <% else %>
+             <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
+            <% end %>
+            <h5 class= "mt-2">名前</h5>
+            <p><%= @user.name %></p>
+            <h5>年齢</h5>
+            <p><%= @user.age %></p>
+            <h5>性別</h5>
+            <p><%= @user.sex %></p>
+            <h5>自己紹介</h5>
+            <p><%= @user.introduction %></p>
+          </div>
+        </div>
+        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+          <div class="card-body">
+            <h5>動画</h5>
+            <% if @user.movie.attached? %>
+              <%= video_tag rails_blob_path(@user.movie), class: "movie border", size: "250×250", controls: true %>
+            <% else %>
+              <p class= "mb-2">動画はありません</p>
+            <% end %>
+            <h5 class= "mt-3">音源</h5>
+            <% if @user.sound.attached? %>
+              <%= audio_tag rails_blob_path(@user.sound), class: "sound", controls: true %>
+            <% else %>
+              <p>音源はありません</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="right-contents col">
+        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+          <div class="card-body">
+            <h5>地域</h5>
+            <p><%= Prefecture.find(@user.prefecture_id).name %></p>
+            <h5>パート</h5>
+            <% @user.user_parts.each do |part| %>
+              <%= "パート#{part.priority}" %>
+              <% if part.part_id == 6 %>
+                <%= part.other_part %>
+              <% else %>
+                <%= Part.find(part.part_id).name %>
+              <% end %>
+              <%= part.level %>
+            <% end %>
+            <h5>好きなアーティスト</h5>
+            <%= @user.favorite %>
+            <h5>ジャンル</h5>
+            <% @user.user_genres.each do |genre| %>
+              <%= "ジャンル#{genre.priority}" %>
+              <% if genre.genre_id == 15 %>
+                <%= genre.other_genre %>
+              <% else %>
+                <%= Genre.find(genre.genre_id).name %>
+              <% end %>
+            <% end %>
+            <h5>活動方針</h5>
+            <%= @user.motivation %>
+            <h5 class="mt-2">楽曲の方針</h5>
+            <%= @user.original %>
+            <h5 class="mt-2">コピーしたい楽曲</h5>
+            <%= @user.want_to_copy %>
+            <h5 class="mt-2">活動頻度</h5>
+            <%= @user.frequency %>
+            <h5 class="mt-2">活動できる日</h5>
+            <%= @user.available_day %>
+            <h5 class="mt-2">活動できる時間</h5>
+            <%= @user.activity_time %>
+            <h5 class="mt-2">曲作り</h5>
+            <%  if @user.compose == true %>
+              <p>できる</p>
+            <% else %>
+              <p>できない</p>
+            <% end %>
+          </div>
+        </div>
+        <% if @user.id == current_user.id %>
+          <div class="my-3">
+            <%= link_to "マイページを編集", edit_user_path(@user.id), data: { turbo: false }, class: "btn btn-secondary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
