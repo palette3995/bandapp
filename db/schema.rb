@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_08_070433) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_12_091041) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,42 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_070433) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "band_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "band_id"
+    t.bigint "genre_id"
+    t.string "priority"
+    t.string "other_genre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_band_genres_on_band_id"
+    t.index ["genre_id"], name: "index_band_genres_on_genre_id"
+  end
+
+  create_table "band_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "band_id"
+    t.string "part"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_band_members_on_band_id"
+    t.index ["user_id"], name: "index_band_members_on_user_id"
+  end
+
+  create_table "bands", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "introduction"
+    t.integer "prefecture_id"
+    t.string "original"
+    t.string "motivation"
+    t.string "image"
+    t.string "want_to_copy"
+    t.string "activity_time"
+    t.string "avairable_day"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -49,6 +85,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_070433) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "recruit_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "band_id"
+    t.bigint "part_id"
+    t.string "level"
+    t.string "other_part"
+    t.integer "priority"
+    t.string "age"
+    t.string "sex"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_recruit_members_on_band_id"
+    t.index ["part_id"], name: "index_recruit_members_on_part_id"
   end
 
   create_table "user_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -104,6 +154,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_070433) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "band_genres", "bands"
+  add_foreign_key "band_genres", "genres"
+  add_foreign_key "band_members", "bands"
+  add_foreign_key "band_members", "users"
+  add_foreign_key "recruit_members", "bands"
+  add_foreign_key "recruit_members", "parts"
   add_foreign_key "user_genres", "genres"
   add_foreign_key "user_genres", "users"
 end

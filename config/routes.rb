@@ -6,4 +6,6 @@ Rails.application.routes.draw do
     delete 'signout', to: 'devise/sessions#destroy', as: :destroy_user_session
   end
   resources :users, only: [:index, :show, :edit, :update]
+  resources :bands
+
 end
