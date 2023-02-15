@@ -2,8 +2,11 @@ class UsersController < ApplicationController
   before_action :week_days
   before_action :activity_times
   before_action :levels
+
   def index
     @user = User.find(current_user.id)
+    @recomend_users = User.joins(:user_parts, :user_genres)
+    @q = User.ransack(params[:q])
   end
 
   def show
@@ -36,6 +39,11 @@ class UsersController < ApplicationController
       @user.update(user_params)
       redirect_to user_path
     end
+  end
+
+  def search
+    @q = User.ransack(params[:q])
+    @users = @q.result
   end
 
   private

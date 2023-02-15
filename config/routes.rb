@@ -5,7 +5,11 @@ Rails.application.routes.draw do
     post 'signin', to: 'devise/sessions#create', as: :user_session
     delete 'signout', to: 'devise/sessions#destroy', as: :destroy_user_session
   end
-  resources :users, only: [:index, :show, :edit, :update]
+  resources :users, only: [:index, :show, :edit, :update] do
+    collection do
+      get 'search'
+    end
+  end
   resources :bands
 
 end

@@ -26,4 +26,8 @@ class User < ApplicationRecord
       user_genres.create(user_id: id, genre_id: 16, priority: n + 1)
     end
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["activity_time", "age", "available_day", "compose", "created_at","favorite", "frequency", "id", "image", "introduction", "motivation", "movie", "name", "original", "prefecture_id", "remember_created_at","sex", "sound", "updated_at", "want_to_copy"]
+  end
 end
