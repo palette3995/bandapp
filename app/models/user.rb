@@ -27,11 +27,12 @@ class User < ApplicationRecord
     end
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    ["activity_time", "age", "available_day", "compose", "created_at","favorite", "frequency", "id", "image", "introduction", "motivation", "movie", "name", "original", "prefecture_id", "remember_created_at","sex", "sound", "updated_at", "want_to_copy"]
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[activity_time age available_day compose created_at favorite frequency id image
+       introduction motivation movie name original prefecture_id remember_created_at sex sound updated_at want_to_copy]
   end
 
-  def self.ransackable_associations(auth_object = nil)
-    ["band_members", "bands", "genres", "parts", "prefecture", "user_genres", "user_parts"]
+  def self.ransackable_associations(_auth_object = nil)
+    %w[band_members bands genres parts prefecture user_genres user_parts]
   end
 end
