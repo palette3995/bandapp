@@ -54,13 +54,11 @@
                   <h5><%= "パート#{user_part.index + 1}" %></h5>
                   <%= user_part.select :part_id, @parts.map {|part| [part.name, part.id]}, {}, {class: "form-select part-name"}%>
                   <%= user_part.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part" %>
-                  <%= user_part.select :level, @levels.map {|level| [level, level]} , {include_blank: "レベル"}, {class: "form-select level"}%>
+                  <%= user_part.select :level, @levels.map{|level| [level,level]} , {include_blank: "レベル"}, {class: "form-select level"}%>
                   <%= user_part.hidden_field :user_id %>
                 </div>
               <% end %>
             </div>
-            <h5>好きなアーティスト</h5>
-            <%= f.text_field :favorite, class: "form-control" %>
             <%= f.fields_for :user_genres, @user.user_genres do |user_genre| %>
               <div class="genres my-2">
                 <h5><%= "ジャンル#{user_genre.index + 1}" %></h5>
@@ -73,6 +71,8 @@
             <%= f.select :motivation, [["趣味で楽しく","趣味で楽しく"],["プロを目指す","プロを目指す"],["決めていない","決めていない"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5 class="mt-2">楽曲の方針</h5>
             <%= f.select :original, [["既存曲のコピー","既存曲のコピー"],["オリジナル曲","オリジナル曲"],["決めていない","決めていない"]], {include_blank: "未選択"}, {class: "form-select"}%>
+            <h5>好きなアーティスト</h5>
+            <%= f.text_field :favorite, class: "form-control" %>
             <h5 class="mt-2">コピーしたい楽曲</h5>
             <%= f.text_field :want_to_copy, class: "form-control" %>
             <h5 class="mt-2">活動頻度</h5>
