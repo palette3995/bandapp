@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   def index
     @user = User.find(current_user.id)
     @recomend_users = User.joins(:user_parts, :user_genres)
+    @parts = Part.all
+    @genres = Genre.all
     @q = User.ransack(params[:q])
   end
 

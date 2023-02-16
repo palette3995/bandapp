@@ -1,2 +1,54 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <h5>詳細検索</h5>
+      <%= search_form_for @q, url: search_users_path do |f| %>
+        <%= f.label :name, 'ユーザー名' %>
+        <%= f.text_field :name_cont %> <br>
+        <%= f.label :name, '都道府県' %>
+        <%= f.collection_select :prefecture_id_eq, Prefecture.all, :id, :name, {include_blank: ""}, {} %> <br>
+        <%= f.label :age, '年齢' %>
+        <%= f.number_field :age_gteq %> ~
+        <%= f.number_field :age_lteq %>歳 <br>
+        <%= f.label :sex, '性別' %>
+        <%= f.select :sex_eq, [["男性","男性"],["女性","女性"],["その他","その他"]], {include_blank: ""}, {} %><br>
+        <%= f.label :part, 'パート' %>
+
+        <%= f.select :user_parts_part_id_eq, @parts.map {|part| [part.name, part.id]}, {include_blank: ""}, {} %><br>
+        <%= f.label :level, 'レベル' %>
+        <%= f.select :user_parts_level_eq, @levels.map.with_index {|level,index| [level, index]}, {include_blank: ""}, {} %>
+        <%= f.label :priority, 'サブパートを含む' %>
+        <%=  f.check_box :user_parts_priority_lteq, {}, 3, 1%>
+        <br>
+        <%= f.label :genre, 'ジャンル' %>
+        <%= f.select :user_genres_genre_id_eq, @genres.map {|genre| [genre.name, genre.id]}, {include_blank: ""}, {}%>
+        <%= f.label :priority, 'サブパートを含む' %>
+        <%=  f.check_box :user_genres_priority_lteq, {}, 3, 1%><br>
+        <%= f.label :motivation, '活動方針' %>
+        <%= f.select :motivation_eq, [["趣味で楽しく","趣味で楽しく"],["プロを目指す","プロを目指す"],["決めていない","決めていない"]], {include_blank: ""}, {}%><br>
+        <%= f.label :original, '楽曲の方針' %>
+        <%= f.select :original_eq, [["既存曲のコピー","既存曲のコピー"],["オリジナル曲","オリジナル曲"],["決めていない","決めていない"]], {include_blank: ""}, {}%><br>
+        <%= f.label :favorite, '好きなアーティスト' %>
+        <%= f.text_field :favorite_cont %> <br>
+        <%= f.label :want_to_copy, 'コピーしたい楽曲' %>
+        <%= f.text_field :want_to_copy_cont %><br>
+        <%= f.label :frequency, '活動頻度' %>
+        <%= f.select :frequency_eq, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: ""}, {}%><br>
+        <%= f.label :available_day, '活動できる日' %>
+        <%= f.select :available_day_cont, @week_days.map{|day| [day, day]}, {include_blank: ""}, {} %><br>
+        <%= f.label :activity_time, '活動できる時間帯' %>
+        <%= f.select :activity_time_cont, @activity_times.map{|time| [time, time]}, {include_blank: ""}, {} %><br>
+        <h5 class="mt-2">曲作り</h5>
+        <%= f.radio_button :compose_eq, true %>
+        <%= f.label :compose, "できる" %>
+        <%= f.radio_button :compose_eq, false %>
+        <%= f.label :compose, "できない" %> <br>
+        <%= f.submit '検索' %>
+      <% end %>
+    </div>
+    <div class="col">
+      Column
+    </div>
+  </div>
+</div>
