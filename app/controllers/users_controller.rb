@@ -1,32 +1,30 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :updated]
+  before_action :set_current_user, only: [:index, :match_ages, :match_levels]
+  before_action :set_recomend_users, only: [:index, :match_ages, :match_levels]
+  before_action :set_user_part, only: [:index, :match_levels]
+  before_action :set_parts, except: [:show, :search]
+  before_action :set_user_parts, only: [:edit, :updated]
+  before_action :set_genres, except: [:show, :search]
+  before_action :set_q, only: [:index, :search]
   before_action :week_days
   before_action :activity_times
-  before_action :levels
+  before_action :set_levels
 
   def index
-    @user = User.find(current_user.id)
-    @recomend_users = User.joins(:user_parts, :user_genres)
-    @parts = Part.all
-    @genres = Genre.all
-    @q = User.ransack(params[:q])
+
+    @recomend_users = User.joins(:user_parts, :genres).near(current_user)
+    @match_ages = @recomend_users.where(age: @current_user.age-5..@current_user.age+5).limit(4)
+    @match_levels = @recomend_users.where(user_parts: {level: @user_part.level} ).limit(4)
   end
 
   def show
-    @user = User.find(params[:id])
   end
 
   def edit
-    @user = User.find(params[:id])
-    @parts = Part.all
-    @user_parts = @user.parts
-    @genres = Genre.all
   end
 
   def update
-    @user = User.find(params[:id])
-    @parts = Part.all
-    @genres = Genre.all
-    @user_parts = @user.parts
     # メディア削除ボタンが押された際の処理
     if params[:delete_image]
       delete_media(@user.image)
@@ -44,8 +42,15 @@ class UsersController < ApplicationController
   end
 
   def search
-    @q = User.ransack(params[:q])
     @users = @q.result
+  end
+
+  def match_ages
+    @users = @recomend_users.where(age: @current_user.age-5..@current_user.age+5)
+  end
+
+  def match_levels
+    @users = @recomend_users.where(user_parts: {level: @user_part.level} )
   end
 
   private
@@ -73,8 +78,40 @@ class UsersController < ApplicationController
     )
   end
 
-  def levels
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def set_current_user
+    @current_user = current_user
+  end
+
+  def set_parts
+    @parts = Part.all
+  end
+
+  def set_user_part
+    @user_part = current_user.user_parts.first
+  end
+
+  def set_user_parts
+    @user_parts = @user.parts
+  end
+
+  def set_genres
+    @genres = Genre.all
+  end
+
+  def set_levels
     @levels = %W[未経験 初心者 中級者 上級者]
+  end
+
+  def set_q
+    @q = User.ransack(params[:q])
+  end
+
+  def set_recomend_users
+    @recomend_users = User.joins(:user_parts, :genres).near(current_user)
   end
 
   def delete_media(media)
