@@ -1,7 +1,7 @@
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-lg-3">
+    <div class="col-xxl-2 mt-4">
       <h5>詳細検索</h5>
       <%= search_form_for @q, url: search_users_path do |f| %>
         <%= f.label :name, 'ユーザー名' %>
@@ -47,6 +47,60 @@
         <%= f.submit '検索' %>
       <% end %>
     </div>
+  <div class="col-lg-8">
+    <div class="container text-center mt-4">
+      <h5>歳の近いユーザー</h5>
+      <div class="row">
+        <% @match_ages.each do |user| %>
+          <div class="col-md-3 my-3">
+            <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
+              <div class="card">
+                <% if user.image.attached? %>
+                  <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                <% else %>
+                  <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                <% end %>
+                <div class="card-body profile">
+                  <p class="card-text"><%= user.name %></p>
+                  <span class="card-text"><%= Prefecture.find(user.prefecture_id).name %></span>
+                  <span class="card-text"><%= "#{user.age}歳"%></span>
+                  <p class="card-text my-1"><%= user.parts[0].name %></p>
+                  <span class="card-text"><%= user.user_parts[0].level %></span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+      <%= link_to "全てを表示", match_ages_users_path, class: "text-decoration-none text-dark link" %>
+    <div class="container text-center mt-5">
+      <h5>レベルの近いユーザー</h5>
+      <div class="row">
+        <% @match_levels.each do |user| %>
+          <div class="col-md-3 my-3">
+            <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
+              <div class="card ">
+                <% if user.image.attached? %>
+                 <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                <% else %>
+                 <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                <% end %>
+                <div class="card-body profile">
+                  <p class="card-text"><%= user.name %></p>
+                  <span class="card-text"><%= Prefecture.find(user.prefecture_id).name %></span>
+                  <span class="card-text"><%= "#{user.age}歳"%></span>
+                  <p class="card-text my-1"><%= user.parts[0].name %></p>
+                  <span class="card-text"><%= user.user_parts[0].level %></span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <%= link_to "全てを表示", match_levels_users_path, class: "text-decoration-none text-dark link" %>
+  </div>
     <div class="col">
       Column
     </div>

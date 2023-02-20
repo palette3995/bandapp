@@ -9,6 +9,10 @@ body {
   text-align: center;
 }
 
+.dropdown-menu {
+  text-align: center;
+}
+
 .footer {
   bottom: 0;
   width: 100%;
@@ -29,7 +33,11 @@ body {
   display: none;
 }
 
+//トップページ
 
+.link {
+  float: right;
+}
 
 .profile {
   font-size: 16px;
