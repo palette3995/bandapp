@@ -1,25 +1,2 @@
 <h3 class= "text-center mt-3">検索結果</h3>
-<div class="container">
-  <div class="row">
-    <% @users.each do |user| %>
-      <div class="col-xl-3 text-center my-5">
-        <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
-          <div class="card" style="width: 18rem;">
-            <% if user.image.attached? %>
-             <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-            <% else %>
-             <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-            <% end %>
-            <div class="card-body">
-              <p class="card-text"><%= user.name %></p>
-              <span class="card-text"><%= Prefecture.find(user.prefecture_id).name %></span>
-              <span class="card-text"><%= "#{user.age}歳"%></span>
-              <span class="card-text"><%= user.parts[0].name %></span>
-              <span class="card-text"><%= user.user_parts[0].level %></span>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</div>
+<%= render 'shared/search_result', users: @users %>

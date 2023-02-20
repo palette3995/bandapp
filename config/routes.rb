@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :edit, :update] do
     collection do
       get 'search'
+      get 'match_ages'
+      get 'match_levels'
     end
   end
   resources :bands
