@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  scope :near, ->(user) { where(prefecture_id: user.prefecture_id).order(current_sign_in_at: :desc) }
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to_active_hash :prefecture
   # Include default devise modules. Others available are:
