@@ -40,15 +40,12 @@
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
           <div class="card-body">
             <h5>地域</h5>
-            <p><%= Prefecture.find(@user.prefecture_id).name %></p>
+            <p><%= Prefecture.find(@user.prefecture_id).name if @user.prefecture_id.present? %></p>
             <% @user.user_parts.each do |part| %>
               <div class="user-parts mb-3">
                 <h5><%= "パート#{part.priority}" %></h5>
-                <% if part.part_id == 6 %>
-                  <p class="d-inline"><%= part.other_part %></p>
-                <% else %>
                   <p class="d-inline"><%= Part.find(part.part_id).name %></p>
-                <% end %>
+                  <p class="d-inline"><% part.other_part if part.part_id == 6 %></p>
                 <p class="d-inline"><%= part.level %></p>
               </div>
             <% end %>
