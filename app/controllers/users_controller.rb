@@ -1,21 +1,20 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :updated]
-  before_action :set_current_user, only: [:index, :match_ages, :match_levels]
-  before_action :set_recomend_users, only: [:index, :match_ages, :match_levels]
-  before_action :set_user_part, only: [:index, :match_levels]
-  before_action :set_parts, except: [:show, :search]
-  before_action :set_user_parts, only: [:edit, :updated]
-  before_action :set_genres, except: [:show, :search]
-  before_action :set_q, only: [:index, :search]
+  before_action :set_user, only: %i[show edit update]
+  before_action :set_current_user, only: %i[index match_ages match_levels]
+  before_action :set_recomend_users, only: %i[index match_ages match_levels]
+  before_action :set_user_part, only: %i[index match_levels]
+  before_action :set_parts, except: %i[show search]
+  before_action :set_user_parts, only: %i[edit update]
+  before_action :set_genres, except: %i[show search]
+  before_action :set_q, only: %i[index search]
   before_action :week_days
   before_action :activity_times
   before_action :set_levels
 
   def index
-
     @recomend_users = User.joins(:user_parts, :genres).near(current_user)
-    @match_ages = @recomend_users.where(age: @current_user.age-5..@current_user.age+5).limit(4)
-    @match_levels = @recomend_users.where(user_parts: {level: @user_part.level} ).limit(4)
+    @match_ages = @recomend_users.where(age: @current_user.age - 5..@current_user.age + 5).limit(4)
+    @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
   end
 
   def show
@@ -46,11 +45,11 @@ class UsersController < ApplicationController
   end
 
   def match_ages
-    @users = @recomend_users.where(age: @current_user.age-5..@current_user.age+5)
+    @users = @recomend_users.where(age: @current_user.age - 5..@current_user.age + 5)
   end
 
   def match_levels
-    @users = @recomend_users.where(user_parts: {level: @user_part.level} )
+    @users = @recomend_users.where(user_parts: { level: @user_part.level })
   end
 
   private
