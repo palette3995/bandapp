@@ -1,11 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update]
-  before_action :set_current_user, only: %i[index match_ages match_levels]
-  before_action :set_recomend_users, only: %i[index match_ages match_levels]
+  before_action :set_current_user, :set_recomend_users, only: %i[index match_ages match_levels]
   before_action :set_user_part, only: %i[index match_levels]
-  before_action :set_parts, except: %i[show search]
+  before_action :set_parts, :set_genres, except: %i[show search]
   before_action :set_user_parts, only: %i[edit update]
-  before_action :set_genres, except: %i[show search]
   before_action :set_q, only: %i[index search]
   before_action :week_days
   before_action :activity_times
