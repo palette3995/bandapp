@@ -49,25 +49,43 @@ class User < ApplicationRecord
   end
 
   # いいね機能関連のメソッド
-  def favorite_user(receiver)
-    favorites.find_or_create_by(favorited_user_id: receiver.id) unless self == receiver
+  def favorite_user(receiver, band)
+    if band?
+      favorite = Favorite.find_by(favorited_user_id: receiver.id, band_id: band.id)
+      favorites.create(favorited_user_id: receiver.id, band_id: band.id) unless favorite
+    else
+      favorites.find_or_create_by(favorited_user_id: receiver.id) unless self == receiver
+    end
   end
 
-  def favorite_band(receiver)
-    favorites.find_or_create_by(favorited_band_id: receiver.id) unless bands.pluck(:id).include?(receiver.id)
+  def favorite_band(receiver, band)
+    if band?
+      favorite = Favorite.find_by(favorited_band_id: receiver.id, band_id: band.id)
+      favorites.create(favorited_band_id: receiver.id, band_id: band.id) unless favorite
+    else
+      favorites.find_or_create_by(favorited_band_id: receiver.id) unless bands.pluck(:id).include?(receiver.id)
+    end
   end
 
   def favorite_recruit(receiver)
     favorites.find_or_create_by(recruit_member_id: receiver.id) unless bands.pluck(:id).include?(receiver.band_id)
   end
 
-  def cancel_favorite_user(receiver)
-    favorite = favorites.find_by(favorited_user_id: receiver.id)
+  def cancel_favorite_user(receiver, _band)
+    favorite = if band?
+                 favorites.find_by(favorited_user_id: receiver.id, band_id: :band.id)
+               else
+                 favorites.find_by(favorited_user_id: receiver.id)
+               end
     favorite&.destroy
   end
 
-  def cancel_favorite_band(receiver)
-    favorite = favorites.find_by(favorited_band_id: receiver.id)
+  def cancel_favorite_band(receiver, _band)
+    favorite = if band?
+                 favorites.find_by(favorited_band_id: receiver.id, band_id: :band.id)
+               else
+                 favorites.find_by(favorited_band_id: receiver.id)
+               end
     favorite&.destroy
   end
 
