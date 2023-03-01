@@ -5,10 +5,10 @@ class ScoutsController < ApplicationController
     @scout = Scout.new
     @scouted_user = User.find(params[:id])
     @parts = Part.where(id: 1..6)
-    bands = @user.bands.joins(:scouts, :band_members).where(band_members: { role: "リーダー" }) #自分がバンドリーダーでない場合はスカウトを送れない
-    @bands = bands.where.not(scouts: {scouted_user_id: @scouted_user.id}). #同バンドからすでにスカウト送ってる場合を除く
-             or(bands.where.not(band_members: {user_id: @scouted_user.id})). #同バンドに相手がすでに所属している場合を除く
-             or(bands.where.not(scouts: {user_id: @scouted_user.id})) #同バンドに相手から既にスカウトが来ている場合を
+    bands = @user.bands.joins(:scouts, :band_members).where(band_members: { role: "リーダー" }) # 自分がバンドリーダーでない場合はスカウトを送れない
+    @bands = bands.where.not(scouts: { scouted_user_id: @scouted_user.id }) # 同バンドからすでにスカウト送ってる場合を除く
+                  .or(bands.where.not(band_members: { user_id: @scouted_user.id })) # 同バンドに相手がすでに所属している場合を除く
+                  .or(bands.where.not(scouts: { user_id: @scouted_user.id })) # 同バンドに相手から既にスカウトが来ている場合を
   end
 
   def new_band
@@ -16,7 +16,11 @@ class ScoutsController < ApplicationController
     @parts = Part.where(id: 1..6)
     @scout = Scout.new(user_id: @user.id, scouted_band_id: @scouted_band.id)
     scouts = Scout.where(scouted_user_id: @scouted_band.id)
-    @bands = @user.bands.where.not(id: scouts.pluck(:band_id) << @scouted_band.id )
+    @bands = @user.bands.where.not(id: scouts.pluck(:band_id) << @scouted_band.id)
+  end
+
+  def index
+    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil, scouted_band_id: nil)
   end
 
   def create
@@ -29,12 +33,8 @@ class ScoutsController < ApplicationController
     end
   end
 
-  def index
-    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil, scouted_band_id: nil, )
-  end
-
   def received_offer
-    @scouts = Scout.where(scouted_user_id: @user.id, scouted_band_id: nil, ).where.not(band_id: nil)
+    @scouts = Scout.where(scouted_user_id: @user.id, scouted_band_id: nil).where.not(band_id: nil)
   end
 
   def received_join
@@ -63,9 +63,11 @@ class ScoutsController < ApplicationController
 
   def approve_new
     @scout = Scout.find(params[:id])
-    @band = Band.create( name: "新規バンド")
-    BandMember.create(band_id: @band.id, user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "リーダー")
-    BandMember.create(band_id: @band.id, user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
+    @band = Band.create(name: "新規バンド")
+    BandMember.create(band_id: @band.id, user_id: @scout.user_id, part_id: @scout.part_id,
+                      other_part: @scout.other_part, role: "リーダー")
+    BandMember.create(band_id: @band.id, user_id: @user.id, part_id: @scout.scouted_part_id,
+                      other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
     redirect_to bands_path
   end
@@ -73,7 +75,8 @@ class ScoutsController < ApplicationController
   def approve_offer
     @scout = Scout.find(params[:id])
     @band = Band.find(@scout.band_id)
-    BandMember.create(band_id: @band.id, user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part ,role: "メンバー")
+    BandMember.create(band_id: @band.id, user_id: @user.id, part_id: @scout.scouted_part_id,
+                      other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
     redirect_to bands_path
   end
@@ -81,7 +84,8 @@ class ScoutsController < ApplicationController
   def approve_join
     @scout = Scout.find(params[:id])
     @band = Band.find(@scout.scouted_band_id)
-    BandMember.create(band_id: @band.id, user_id: @scout.user_id, part: @scout.part_id, other_part: @scout.other_part ,role: "メンバー")
+    BandMember.create(band_id: @band.id, user_id: @scout.user_id, part: @scout.part_id, other_part: @scout.other_part,
+                      role: "メンバー")
     @scout.destroy
     redirect_to bands_path
   end
@@ -90,7 +94,7 @@ class ScoutsController < ApplicationController
     @scout = Scout.find(params[:id])
     offering = Band.find(@scout.band_id)
     offered = Band.find(@scout.scouted_band_id)
-    @band = Band.create(name:"新規バンド")
+    @band = Band.create(name: "新規バンド")
     offering.band_members.each do |member|
       member.band_id = @band.id
       member.save
@@ -115,11 +119,11 @@ class ScoutsController < ApplicationController
   private
 
   def scout_params
-    params.require(:scout).permit(:user_id, :scouted_user_id, :band_id, :scouted_band_id, :part_id, :scouted_part_id, :other_part, :scouted_other_part)
+    params.require(:scout).permit(:user_id, :scouted_user_id, :band_id, :scouted_band_id, :part_id, :scouted_part_id,
+                                  :other_part, :scouted_other_part)
   end
 
   def set_user
     @user = current_user
   end
-
 end
