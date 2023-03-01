@@ -24,6 +24,14 @@ class User < ApplicationRecord
   has_many :band_favorited_mes, through: :reverse_of_favorites, source: :band
   has_many :recruit_members, through: :favorites
 
+  # Scoutモデルとのアソシエーション
+  has_many :scouts, dependent: :destroy
+  has_many :reverse_of_scouts, class_name: "Scout", dependent: :destroy
+  has_many :scouting_users, through: :scouts, source: :scouted_user
+  has_many :scouting_bands, through: :scouts, source: :scouted_band
+  has_many :user_scouted_mes, through: :reverse_of_scouts, source: :user
+  has_many :band_scouted_mes, through: :reverse_of_scouts, source: :band
+
   accepts_nested_attributes_for :user_parts, allow_destroy: true
   accepts_nested_attributes_for :user_genres, allow_destroy: true
 
