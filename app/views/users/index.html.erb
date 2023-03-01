@@ -86,12 +86,21 @@
                 <% else %>
                  <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
                 <% end %>
-                <div class="card-body profile">
-                  <p class="card-text"><%= user.name %></p>
-                  <span class="card-text"><%= Prefecture.find(user.prefecture_id).name %></span>
-                  <span class="card-text"><%= "#{user.age}歳"%></span>
-                  <p class="card-text my-1"><%= user.parts[0].name %></p>
-                  <span class="card-text"><%= user.user_parts[0].level %></span>
+                <div class="card-body">
+                  <div class="profile">
+                    <p class="card-text"><%= user.name %></p>
+                    <span class="card-text"><%= Prefecture.find(user.prefecture_id).name %></span>
+                    <span class="card-text"><%= "#{user.age}歳"%></span>
+                    <p class="card-text my-1"><%= user.parts[0].name %></p>
+                    <span class="card-text"><%= user.user_parts[0].level %></span>
+                  </div>
+                  <div class="scout_links my-3">
+                    <% unless user.bands.count == 5 %>
+                      <%= link_to "スカウト", new_user_scout_path(user.id), data: { turbo: false }, class: "btn btn-secondary" %>
+                    <% else %>
+                      相手のバンド数が上限に達している為<br>スカウトできません
+                    <% end %>
+                  </div>
                 </div>
               </div>
             <% end %>
