@@ -1,4 +1,5 @@
 class Scout < ApplicationRecord
+  validates :message, length: { maximum: 30 }
   belongs_to :user
   belongs_to :scouted_user, class_name: "User", optional: true
   belongs_to :band, optional: true

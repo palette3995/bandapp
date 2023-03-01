@@ -120,7 +120,7 @@ class ScoutsController < ApplicationController
 
   def scout_params
     params.require(:scout).permit(:user_id, :scouted_user_id, :band_id, :scouted_band_id, :part_id, :scouted_part_id,
-                                  :other_part, :scouted_other_part)
+                                  :other_part, :scouted_other_part, :message)
   end
 
   def set_user

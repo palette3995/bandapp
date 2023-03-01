@@ -53,6 +53,9 @@
               <div class="form-group my-3">
                 <%= f.text_field :scouted_other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0" %>
               </div>
+              <div class="form-group my-3">
+                <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-0" %>
+              </div>
               <%= f.hidden_field :user_id, value: @user.id %>
               <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
               <div class="row">
@@ -82,6 +85,9 @@
             </div>
             <div class="form-group my-3">
               <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-1", disabled: true %>
+            </div>
+            <div class="form-group my-3">
+              <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-1" %>
             </div>
             <%= f.hidden_field :user_id, value: @user.id %>
             <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
