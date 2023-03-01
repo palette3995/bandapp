@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_20_114659) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_01_023710) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -53,11 +53,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_114659) do
   create_table "band_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "band_id"
-    t.string "part"
     t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "part_id"
     t.index ["band_id"], name: "index_band_members_on_band_id"
+    t.index ["part_id"], name: "index_band_members_on_part_id"
     t.index ["user_id"], name: "index_band_members_on_user_id"
   end
 
@@ -114,6 +115,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_114659) do
     t.datetime "updated_at", null: false
     t.index ["band_id"], name: "index_recruit_members_on_band_id"
     t.index ["part_id"], name: "index_recruit_members_on_part_id"
+  end
+
+  create_table "scouts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "scouted_user_id"
+    t.bigint "band_id"
+    t.bigint "scouted_band_id"
+    t.bigint "part_id"
+    t.bigint "scouted_part_id"
+    t.string "other_part"
+    t.string "scouted_other_part"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_scouts_on_band_id"
+    t.index ["part_id"], name: "index_scouts_on_part_id"
+    t.index ["scouted_band_id"], name: "index_scouts_on_scouted_band_id"
+    t.index ["scouted_part_id"], name: "index_scouts_on_scouted_part_id"
+    t.index ["scouted_user_id"], name: "index_scouts_on_scouted_user_id"
+    t.index ["user_id"], name: "index_scouts_on_user_id"
   end
 
   create_table "user_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -177,6 +197,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_114659) do
   add_foreign_key "band_genres", "bands"
   add_foreign_key "band_genres", "genres"
   add_foreign_key "band_members", "bands"
+  add_foreign_key "band_members", "parts"
   add_foreign_key "band_members", "users"
   add_foreign_key "favorites", "bands"
   add_foreign_key "favorites", "bands", column: "favorited_band_id"
@@ -185,6 +206,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_114659) do
   add_foreign_key "favorites", "users", column: "favorited_user_id"
   add_foreign_key "recruit_members", "bands"
   add_foreign_key "recruit_members", "parts"
+  add_foreign_key "scouts", "bands"
+  add_foreign_key "scouts", "bands", column: "scouted_band_id"
+  add_foreign_key "scouts", "parts"
+  add_foreign_key "scouts", "parts", column: "scouted_part_id"
+  add_foreign_key "scouts", "users"
+  add_foreign_key "scouts", "users", column: "scouted_user_id"
   add_foreign_key "user_genres", "genres"
   add_foreign_key "user_genres", "users"
 end
