@@ -13,5 +13,24 @@ Rails.application.routes.draw do
     end
   end
   resources :bands
-
+  resources :scouts, except: [:new] do
+    collection do
+      get 'received_offer'
+      get 'received_join'
+      get 'received_marge'
+      get 'send_new'
+      get 'send_offer'
+      get 'send_join'
+      get 'send_marge'
+    end
+    member do
+      get 'new_user'
+      get 'new_band'
+      get 'approve_new'
+      get 'approve_offer'
+      get 'approve_join'
+      get 'approve_marge'
+      get 'refuse'
+    end
+  end
 end
