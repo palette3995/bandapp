@@ -195,7 +195,7 @@ $(function(){
 $(function(){
   $('.form-scout-0').change(function(){
     $('.btn-scout').eq(0).prop('disabled', true);
-    if ($(this).val() != "") {
+    if ($('.form-scout-0').val() != "") {
       $('.btn-scout').eq(0).prop('disabled', false);
     }
   });
