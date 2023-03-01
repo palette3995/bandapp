@@ -4,6 +4,10 @@
 body {
 }
 
+li {
+  list-style: none;
+}
+
 .navbar,.footer {
   background-color: #EEEEEE;
   text-align: center;
@@ -40,5 +44,36 @@ body {
 }
 
 .profile {
-  font-size: 16px;
+  font-size: 14px;
+}
+
+// タブ
+.tab1 {
+  background-color: #fff !important;
+}
+.tab1__item {
+
+}
+.tab1__link {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  background-color: #65c6ba;
+  cursor: pointer;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}
+.tab1__link.on {
+  background-color: #b1e2dc;
+}
+.tab1-body__item {
+  margin: 30px 15px;
+  display: none;
+}
+.tab1-body__item.on {
+  display: block;
+}
+
+.side-memu-links {
+  text-decoration: none;
 }
