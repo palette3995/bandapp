@@ -1,0 +1,101 @@
+<div class="container text-center">
+  <%= flash[:scout] %>
+  <div class="row">
+    <div class="top-text col mx-auto">
+      <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+        <div class="card-body">
+          <% if @scouted_user.image.attached? %>
+           <%= image_tag @scouted_user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
+          <% else %>
+           <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
+          <% end %>
+          <h5 class= "mt-2">名前</h5>
+          <p><%= @scouted_user.name %></p>
+          <h5>年齢</h5>
+          <p><%= @scouted_user.age %></p>
+          <h5>性別</h5>
+          <p><%= @scouted_user.sex %></p>
+          <h5>自己紹介</h5>
+          <p><%= @scouted_user.introduction %></p>
+        </div>
+      </div>
+    </div>
+    <div class="login-form col-xl-7">
+      <div class="tab1 mt-5">
+        <div class="row">
+          <div class="col tab1__item"><span class="tab1__link on" data-tab-body="0">新たにバンドを結成</span></div>
+          <div class="col tab1__item"><span class="tab1__link" data-tab-body="1">所属中のバンドに誘う</span></div>
+        </div>
+      </div>
+      <div class="tab1-body border">
+        <div class="tab1-body__item on">
+          <div class="my-3">
+            <h2><%= @scouted_user.name %></h2>
+            <h2>さんをスカウト</h2>
+          </div>
+          <% if @user.scouting_users.where(id: @scouted_user.id ).present? %>
+            既にスカウトを送っています。
+          <% elsif @user.user_scouted_mes.where(id:@scouted_user.id).present? %>
+            既に相手からスカウトを受けています。
+          <% else %>
+            <%= form_with model: @scout, url: scouts_path, method: :post do |f| %>
+              <div class="form-group my-3">
+                <h5><%= f.label :part, "あなたのパートを選んでください" %></h5>
+                <%= f.select :part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-0"}%>
+              </div>
+              <div class="form-group my-3">
+                <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0" %>
+              </div>
+              <div class="form-group my-3">
+                <h5><%= f.label :scouted_part, "相手のパートを選んでください" %></h5>
+                <%= f.select :scouted_part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-0"}%>
+              </div>
+              <div class="form-group my-3">
+                <%= f.text_field :scouted_other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0" %>
+              </div>
+              <%= f.hidden_field :user_id, value: @user.id %>
+              <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
+              <div class="row">
+                <div class="action my-3 col">
+                  <%= link_to "戻る", :back, class: "btn btn-outline-secondary btn-lg w-100" %>
+                </div>
+                <div class="action my-3 col">
+                  <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg btn-scout w-100", disabled: true %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="tab1-body__item">
+          <div class="my-3">
+            <h2><%= @scouted_user.name %></h2>
+            <h2>さんをスカウト</h2>
+          </div>
+          <%= form_with model: @scout, url: scouts_path do |f| %>
+            <div class="form-group my-3">
+              <h5><%= f.label :band, "どのバンドにスカウトしますか？" %></h5>
+              <%= f.select :band_id, @bands.map {|band| [band.name, band.id]}, {prompt: "選択してください", disabled: true}, {class: "form-select form-scout form-scout-1", disabled: true}%>
+            </div>
+            <div class="form-group my-3">
+              <h5><%= f.label :part, "相手のパートを選んでください" %></h5>
+              <%= f.select :part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-1", disabled: true}%>
+            </div>
+            <div class="form-group my-3">
+              <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-1", disabled: true %>
+            </div>
+            <%= f.hidden_field :user_id, value: @user.id %>
+            <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
+            <div class="row">
+              <div class="action my-3 col">
+                <%= link_to "戻る", :back, class: "btn btn-outline-secondary btn-lg w-100" %>
+              </div>
+              <div class="action my-3 col">
+                <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg  btn-scout w-100", disabled: true %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
