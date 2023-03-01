@@ -10,7 +10,6 @@ class UsersController < ApplicationController
   before_action :set_levels
 
   def index
-    @recomend_users = User.joins(:user_parts, :genres).near(current_user)
     @match_ages = @recomend_users.where(age: @current_user.age - 5..@current_user.age + 5).limit(4)
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
   end
@@ -108,7 +107,7 @@ class UsersController < ApplicationController
   end
 
   def set_recomend_users
-    @recomend_users = User.joins(:user_parts, :genres).near(current_user)
+    @recomend_users = User.joins(:user_parts, :genres).near(current_user).distinct
   end
 
   def delete_media(media)
