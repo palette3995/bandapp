@@ -5,7 +5,6 @@ import * as bootstrap from "bootstrap"
 import jquery from "jquery"
 window.$ = jquery
 
-//プロフィール編集画面
 //パート入力フォーム
 $(function(){
   const activate_form = function(num) {
@@ -175,5 +174,36 @@ $(function(){
 
   $('.delete-sound').click(function() {
     $('.sound').html('<p>音源がありません</p>');
+  });
+});
+
+//タブの切り替え
+$(function(){
+  $('.tab1__link').click(function(){
+    var num = $(this).data('tab-body')
+    //フォームの活性非活性
+    $('.form-scout').prop('disabled', true);
+    $('.form-scout-' + num).prop('disabled', false);
+    //タブ、フォームの表示非表示
+    $('.tab1__link').removeClass('on');
+    $(this).addClass('on');
+    $('.tab1-body__item').removeClass('on');
+    $('.tab1-body__item').eq(num).addClass('on');
+  });
+});
+
+$(function(){
+  $('.form-scout-0').change(function(){
+    $('.btn-scout').eq(0).prop('disabled', true);
+    if ($(this).val() != "") {
+      $('.btn-scout').eq(0).prop('disabled', false);
+    }
+  });
+
+  $('.form-scout-1').change(function(){
+    $('.btn-scout').eq(1).prop('disabled', true);
+    if ($('.form-scout-1').val() != "") {
+      $('.btn-scout').eq(1).prop('disabled', false);
+    }
   });
 });
