@@ -1,5 +1,7 @@
 class BandsController < ApplicationController
   def index
+    @user = current_user
+    @bands = @user.bands
   end
 
   def show
