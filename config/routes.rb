@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       get 'match_levels'
     end
   end
-  resources :bands
+  resources :bands, except: [:new]
   resources :scouts, except: [:new] do
     collection do
       get 'received_offer'

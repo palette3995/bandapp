@@ -5,12 +5,11 @@ class BandsController < ApplicationController
   end
 
   def show
-  end
-
-  def new
+    @band = Band.find(params[:id])
   end
 
   def edit
+    @band = Band.find(params[:id])
   end
 
   def create
