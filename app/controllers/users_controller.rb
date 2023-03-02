@@ -5,8 +5,6 @@ class UsersController < ApplicationController
   before_action :set_parts, :set_genres, except: %i[show search]
   before_action :set_user_parts, only: %i[edit update]
   before_action :set_q, only: %i[index search]
-  before_action :week_days
-  before_action :activity_times
   before_action :set_levels
 
   def index
@@ -30,8 +28,6 @@ class UsersController < ApplicationController
       delete_media(@user.sound)
     else
       # 登録完了後の処理
-      params[:user][:available_day] ? @user.available_day = params[:user][:available_day].join(",") : false
-      params[:user][:activity_time] ? @user.activity_time = params[:user][:activity_time].join(",") : false
       @user.update(user_params)
       redirect_to user_path
     end

@@ -1,6 +1,6 @@
-<div class="edit-wrapper text-center w-75 mx-auto">
+<div class="wrapper text-center w-75 mx-auto">
   <%= form_with model: @user, local: true do |f| %>
-  <div class="container">
+  <div class="edit-wrapper container my-4 mx-4">
     <div class="row">
       <div class="left-contents col-xl-6">
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
@@ -78,16 +78,9 @@
             <h5 class="mt-2">活動頻度</h5>
             <%= f.select :frequency, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5 class="mt-2">活動できる日</h5>
-              <% @week_days.each do |day| %>
-                <%= f.check_box :available_day, {multiple: true, checked: @user.available_day.present? ? @user.available_day.include?(day) : false }, day, nil %>
-                <%= f.label :available_day, day %>
-              <% end %>
+            <%= f.select :available_day, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5 class="mt-2">活動できる時間</h5>
-            <% @activity_times.each do |time| %>
-              <%= f.check_box :activity_time, {multiple: true, checked: @user.activity_time.present? ? @user.activity_time.include?(time) : false }, time, nil %>
-              <%= f.label :activity_time, time %>
-            <% end %>
-
+            <%= f.select :activity_time, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5 class="mt-2">曲作り</h5>
             <%= f.radio_button :compose, true %>
             <%= f.label :compose, "できる" %>
