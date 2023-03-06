@@ -1,0 +1,63 @@
+<%= flash[:scout] %>
+<div class="container-fluid text-center">
+  <h4 class= "my-5">届いたスカウト一覧</h4>
+  <div class="row">
+    <div class="side-menu col-lg-3">
+      <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+              届いたスカウト
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+            <div class="accordion-body">
+              <div class="scout-links"><%= link_to "新規バンド結成", scouts_path, class: "side-memu-links" %></div>
+              <div class="scout-links"><%= link_to "バンドからのお誘い", received_offer_scouts_path, class: "side-memu-links active" %></div>
+              <div class="scout-links"><%= link_to "あなたのバンドへの加入申請", received_join_scouts_path, class: "side-memu-links" %></div>
+              <div class="scout-links"><%= link_to "バンド合併申請", received_marge_scouts_path, class: "side-memu-links" %></div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+            <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+              送ったスカウト
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+            <div class="accordion-body">
+              <div class="scout-links"><%= link_to "新規バンド結成", send_new_scouts_path, class: "side-memu-links" %></div>
+              <div class="scout-links"><%= link_to "あなたのバンドにお誘い", send_offer_scouts_path, class: "side-memu-links" %></div>
+              <div class="scout-links"><%= link_to "相手バンドへの加入申請", send_join_scouts_path, class: "side-memu-links" %></div>
+              <div class="scout-links"><%= link_to "バンド合併申請", send_marge_scouts_path, class: "side-memu-links" %></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container col">
+      <div class="row">
+        <% @scouts.each do |scout| %>
+          <div class="col-xl-3">
+            <div class="card" style="width: 18rem;">
+              <% if scout.scouted_user.image.attached? %>
+               <%= image_tag scout.scouted_user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+              <% else %>
+               <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+              <% end %>
+              <div class="card-body profile">
+                <p class="card-text"><%= scout.user.name %><br>さん(<%= scout.band.name %>)からのスカウト</p>
+                <p class="card-text">あなたのパート:<%= scout.scouted_part.name %></p>
+                <p class="card-text">ひとこと:<%= scout.message %></p>
+                <p class="card-text my-1">日時:<%= l scout.created_at %></p>
+                <%= link_to "承諾", received_offer_scout_path(scout.id),class: "btn btn-success" %>
+                <%= link_to "拒否", refuse_scout_path(scout.id),class: "btn btn-secondary" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -48,8 +48,8 @@
               <% end %>
               <div class="card-body profile">
                 <p class="card-text"><%= scout.user.name %><br>さんからのスカウト</p>
-                <p class="card-text">あなたのパート:<%= Part.find(scout.scouted_part_id).name %></p>
-                <span class="card-text">相手のパート:<%= Part.find(scout.part_id).name %></span>
+                <p class="card-text">あなたのパート:<%= scout.scouted_part.name %></p>
+                <span class="card-text">相手のパート:<%= scout.part.name %></span>
                 <p class="card-text">ひとこと:<%= scout.message %></p>
                 <p class="card-text my-1">日時:<%= l scout.created_at %></p>
                 <%= link_to "承諾", approve_new_scout_path(scout.id),class: "btn btn-success" %>
