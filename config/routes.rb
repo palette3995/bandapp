@@ -13,6 +13,9 @@ Rails.application.routes.draw do
     end
   end
   resources :bands, except: [:new]
+  resources :band_members, except: [:new]
+  resources :recruit_members, except: [:new]
+  get '/recruit_members/new/:id', to: 'recruit_members#new', as: 'new_recruit_member'
   resources :scouts, except: [:new] do
     collection do
       get 'received_offer'
