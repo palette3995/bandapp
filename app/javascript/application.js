@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
 import jquery from "jquery"
+import "@fortawesome/fontawesome-free"
 window.$ = jquery
 
 //パート入力フォーム
