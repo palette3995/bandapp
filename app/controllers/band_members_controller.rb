@@ -9,8 +9,8 @@ class BandMembersController < ApplicationController
     @member = BandMember.find(params[:id])
     @band = @member.band
     if params[:band_member][:role] == "リーダー"
-        reader = @band.band_members.find_by(role: "リーダー")
-        reader.update(role: "メンバー")
+      reader = @band.band_members.find_by(role: "リーダー")
+      reader.update(role: "メンバー")
     end
     @member.update(member_params)
     redirect_to band_path(@band.id)
@@ -22,6 +22,6 @@ class BandMembersController < ApplicationController
   private
 
   def member_params
-    params.require(:band_member).permit(:band_id, :part_id, :other_part, :role )
+    params.require(:band_member).permit(:band_id, :part_id, :other_part, :role)
   end
 end

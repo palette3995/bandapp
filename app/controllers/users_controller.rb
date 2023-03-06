@@ -34,7 +34,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    @users = @q.result.where.not(id:current_user.id)
+    @users = @q.result.where.not(id: current_user.id)
   end
 
   def match_ages
@@ -103,7 +103,7 @@ class UsersController < ApplicationController
   end
 
   def set_recomend_users
-    @recomend_users = User.joins(:user_parts, :genres).near(current_user).where.not(id:current_user.id).distinct
+    @recomend_users = User.joins(:user_parts, :genres).near(current_user).where.not(id: current_user.id).distinct
   end
 
   def delete_media(media)
