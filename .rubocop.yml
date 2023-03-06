@@ -63,3 +63,7 @@ Metrics/AbcSize:
 #配列で%Wの記法を許可
 Style/RedundantCapitalW:
   Enabled: false
+
+#クラスの最大行数を120に設定
+Metrics/ClassLength:
+  Max: 120
