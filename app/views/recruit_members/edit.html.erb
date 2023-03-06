@@ -1,0 +1,25 @@
+
+<div class="form-wrapper text-center container mt-5 p-5 w-75">
+  <div class="card mx-auto">
+    <div class="card-body">
+      <h5 class="card-title my-4"><%= @band.name %>のメンバー募集</h5>
+      <%= form_with model: @member, local: true do |f| %>
+        <div class="w-75 mx-auto">
+          <h5>パート</h5>
+          <%= f.select :part_id, @parts.map {|part| [part.name, part.id]}, {}, {class: "form-select part-name"}%>
+          <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part" %>
+          <%= f.select :level, @levels.map{|level| [level,level]} , {include_blank: "レベル"}, {class: "form-select level"}%>
+          <h5 class="mt-3">年代</h5>
+          <p><%= f.select :age, [["20代まで","20代まで"],["30代","30代"],["40代","40代"],["50代","50代"],["60歳以上","60歳以上"],["気にしない","気にしない"]], {include_blank: "未選択"}, {class: "form-select"}%></p>
+          <h5 class="mt-3">性別</h5>
+          <p><%= f.select :sex, [["男性","男性"],["女性","女性"],["その他","その他"],["気にしない","気にしない"]], {include_blank: "未選択"}, {class: "form-select"}%></p>
+          <%= f.hidden_field :band_id, value: @band.id %>
+          <div class="my-5">
+            <%= f.submit "編集完了", class: "btn btn-secondary" %>
+            <%= link_to "バンド詳細に戻る", band_path(@band.id), class: "btn btn-outline-secondary"%>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
