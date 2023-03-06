@@ -83,3 +83,21 @@
 #     available_day: "日,土"
 #   )
 # end
+
+# readers = User.first(40)
+# members = User.last(40)
+# 40.times do |n|
+#   band = Band.create(
+#   name: "テストバンド#{n}",
+#   introduction: "メンバー募集中！",
+#   prefecture_id: 27,
+#   frequency: "月２〜３日",
+#   activity_time: "午後",
+#   available_day: "土日",
+#   motivation: "趣味で楽しく",
+#  original: "オリジナル曲"
+#   )
+#   band.band_genres.create(genre_id: rand(1..15))
+#   band.band_members.create(user_id: readers[n].id, part_id: rand(1..6), role: "リーダー")
+#   band.band_members.create(user_id: members[n].id, part_id: rand(1..6), role: "メンバー")
+# end
