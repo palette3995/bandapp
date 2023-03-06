@@ -42,7 +42,7 @@ class ScoutsController < ApplicationController
   end
 
   def received_marge
-    @scouts = Scout.where(scouted_user_id: @user.id).where.not(band_id: nil, scouted_band_id: nil)
+    @scouts = Scout.where(scouted_user_id: @user.id).where.not(band_id: nil).where.not(scouted_band_id: nil)
   end
 
   def send_new
@@ -58,7 +58,7 @@ class ScoutsController < ApplicationController
   end
 
   def send_marge
-    @scouts = @user.scouts.where.not(band_id: nil, scouted_band_id: nil)
+    @scouts = @user.scouts.where.not(band_id: nil).where.not(scouted_band_id: nil)
   end
 
   def approve_new
