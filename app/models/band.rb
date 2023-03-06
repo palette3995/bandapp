@@ -28,4 +28,10 @@ class Band < ApplicationRecord
   accepts_nested_attributes_for :band_genres, allow_destroy: true
 
   has_one_attached :image
+
+  after_create do
+    3.times do |n|
+      band_genres.create(band_id: id, genre_id: 16, priority: n + 1)
+    end
+  end
 end
