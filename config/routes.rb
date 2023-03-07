@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   resources :bands, except: [:new] do
     collection do
       get 'search'
+      get 'match_ages'
+      get 'match_genres'
     end
   end
   get '/bands/user_bands/:id', to: 'bands#user_bands', as: 'user_bands'

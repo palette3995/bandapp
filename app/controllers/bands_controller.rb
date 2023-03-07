@@ -1,9 +1,13 @@
 class BandsController < ApplicationController
   before_action :set_q, only: %i[index search]
+  before_action :set_levels, only: %i[index]
+  before_action :set_recomend_bands, only: %i[index match_ages match_genres]
+
   def index
-    @user = current_user
     @parts = Part.all
     @genres = Genre.all
+    @match_ages = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5).limit(4)
+    @match_genres = @recomend_bands.where(band_genres: { genre_id: current_user.genres.ids }).limit(4)
   end
 
   def show
@@ -35,12 +39,19 @@ class BandsController < ApplicationController
   end
 
   def user_bands
-    @user = current_user
-    @bands = @user.bands
+    @bands = current_user.bands
   end
 
   def search
-    @bands = @q.result.where.not(id: current_user.bands.ids)
+    @bands = @q.result.where.not(id: current_user.bands.ids).distinct
+  end
+
+  def match_ages
+    @bands = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5)
+  end
+
+  def match_genres
+    @bands = @recomend_bands.where(band_genres: { genre_id: current_user.genres.ids })
   end
 
   private
@@ -63,6 +74,14 @@ class BandsController < ApplicationController
 
   def set_q
     @q = Band.ransack(params[:q])
+  end
+
+  def set_levels
+    @levels = %W[未経験 初心者 中級者 上級者]
+  end
+
+  def set_recomend_bands
+    @recomend_bands = Band.joins(:band_genres).where(prefecture_id: current_user.prefecture_id).where.not(id: current_user.bands.ids).distinct
   end
 
   def delete_media(media)
