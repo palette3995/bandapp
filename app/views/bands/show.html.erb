@@ -15,7 +15,7 @@
             <p><%= Prefecture.find(@band.prefecture_id).name if @band.prefecture_id.present? %></p>
             <h5>自己紹介</h5>
             <p><%= @band.introduction %></p>
-            <%= link_to "編集", edit_band_path(@band.id), data: { turbo: false }, class: "btn btn-secondary" %>
+            <%= link_to "編集", edit_band_path(@band.id), data: { turbo: false }, class: "btn btn-secondary" if @user %>
           </div>
         </div>
       </div>
@@ -66,9 +66,7 @@
               <p><%= member.other_part%></p>
             </div>
             <div class="col-lg-2 py-2">
-              <% if current_user == @reader %>
-              <%= link_to "編集", edit_band_member_path(member.id), class: "btn btn-secondary" %>
-              <% end %>
+              <%= link_to "編集", edit_band_member_path(member.id), class: "btn btn-secondary" if current_user == @reader %>
             </div>
           </div>
         <% end %>
@@ -103,6 +101,6 @@
     </div>
   </div>
   <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
-    <%= link_to "脱退する", band_member_path(@delete_id), data: { turbo_method: :delete }, class: "btn btn-danger" %>
+    <%= link_to "脱退する", band_member_path(@user.id), data: { turbo_method: :delete }, class: "btn btn-danger" %>
   <% end %>
 </div>
