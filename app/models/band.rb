@@ -37,7 +37,7 @@ class Band < ApplicationRecord
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[activity_time available_day created_at frequency id image introduction motivation name
-       original prefecture_id updated_at want_to_copy]
+       original prefecture_id updated_at want_to_copy number_of_member maximum_age minimum_age average_age men women other_gender]
   end
 
   def self.ransackable_associations(_auth_object = nil)
