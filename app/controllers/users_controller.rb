@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   def index
     @match_ages = @recomend_users.where(age: @current_user.age - 5..@current_user.age + 5).limit(4)
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
+    @match_genres = @recomend_users.where(user_genres: { genre_id: @current_user.genres.ids }).limit(4)
   end
 
   def show
@@ -43,6 +44,10 @@ class UsersController < ApplicationController
 
   def match_levels
     @users = @recomend_users.where(user_parts: { level: @user_part.level })
+  end
+
+  def match_genres
+    @users = @recomend_users.where(user_genres: { genre_id: @current_user.genres.ids })
   end
 
   private
