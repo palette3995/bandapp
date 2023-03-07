@@ -34,4 +34,14 @@ class Band < ApplicationRecord
       band_genres.create(band_id: id, genre_id: 16, priority: n + 1)
     end
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[activity_time available_day created_at frequency id image introduction motivation name
+       original prefecture_id updated_at want_to_copy]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[band_favorited_mes band_genres band_members band_scouted_mes favorites favoriting_bands
+       favoriting_users genres image_attachment image_blob parts prefecture recruit_members reverse_of_favorites reverse_of_scouts scouting_bands scouting_users scouts user_favorited_mes user_scouted_mes users]
+  end
 end
