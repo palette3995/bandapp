@@ -67,3 +67,6 @@ Style/RedundantCapitalW:
 #クラスの最大行数を120に設定
 Metrics/ClassLength:
   Max: 120
+
+Layout/LineLength:
+  Enabled: false
