@@ -1,7 +1,9 @@
 class BandsController < ApplicationController
+  before_action :set_q, only: %i[index search]
   def index
     @user = current_user
-    @bands = @user.bands
+    @parts = Part.all
+    @genres = Genre.all
   end
 
   def show
@@ -9,7 +11,7 @@ class BandsController < ApplicationController
     @members = @band.band_members
     @recruits = @band.recruit_members
     @reader = @members.find_by(role: "リーダー").user
-    @delete_id = @members.find_by(user_id: current_user.id).id
+    @user = @members.find_by(user_id: current_user.id)
   end
 
   def edit
@@ -32,6 +34,15 @@ class BandsController < ApplicationController
   def destroy
   end
 
+  def user_bands
+    @user = current_user
+    @bands = @user.bands
+  end
+
+  def search
+    @bands = @q.result.where.not(id: current_user.bands.ids)
+  end
+
   private
 
   def band_params
@@ -48,6 +59,10 @@ class BandsController < ApplicationController
       :available_day,
       band_genres_attributes: %i[id genre_id user_id other_genre _destroy]
     )
+  end
+
+  def set_q
+    @q = Band.ransack(params[:q])
   end
 
   def delete_media(media)
