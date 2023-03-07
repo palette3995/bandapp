@@ -2,7 +2,7 @@
 <div class="container-fluid text-center">
   <h4 class= "my-5">届いたスカウト一覧</h4>
   <div class="row">
-    <div class="side-menu col-lg-3">
+    <div class="side-menu col-xl-3 mb-5">
       <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -36,26 +36,30 @@
         </div>
       </div>
     </div>
-    <div class="container col">
+    <div class="container col-xl-8 search-wrapper p-4">
       <div class="row">
-        <% @scouts.each do |scout| %>
-          <div class="col-xl-3">
-            <div class="card" style="width: 18rem;">
-              <% if scout.scouted_user.image.attached? %>
-               <%= image_tag scout.scouted_user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-              <% else %>
-               <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-              <% end %>
-              <div class="card-body profile">
-                <p class="card-text"><%= scout.user.name %><br>さん(<%= scout.part.name %>)からのスカウト</p>
-                <p class="card-text">加入希望バンド:<%= scout.scouted_band.name %></p>
-                <p class="card-text">ひとこと:<%= scout.message %></p>
-                <p class="card-text my-1">日時:<%= l scout.created_at %></p>
-                <%= link_to "承諾", received_join_scout_path(scout.id),class: "btn btn-success" %>
-                <%= link_to "拒否", refuse_scout_path(scout.id),class: "btn btn-secondary" %>
+        <% if @scouts.present? %>
+          <% @scouts.each do |scout| %>
+            <div class="col-xl-3">
+              <div class="card" style="width: 18rem;">
+                <% if scout.scouted_user.image.attached? %>
+                 <%= image_tag scout.scouted_user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                <% else %>
+                 <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                <% end %>
+                <div class="card-body profile">
+                  <p class="card-text"><%= scout.user.name %><br>さん(<%= scout.part.name %>)からのスカウト</p>
+                  <p class="card-text">加入希望バンド:<%= scout.scouted_band.name %></p>
+                  <p class="card-text">ひとこと:<%= scout.message %></p>
+                  <p class="card-text my-1">日時:<%= l scout.created_at %></p>
+                  <%= link_to "承諾", received_join_scout_path(scout.id),class: "btn btn-success" %>
+                  <%= link_to "拒否", refuse_scout_path(scout.id),class: "btn btn-secondary" %>
+                </div>
               </div>
             </div>
-          </div>
+          <% end %>
+        <% else %>
+          <p class="my-5">スカウトはありません</p>
         <% end %>
       </div>
     </div>
