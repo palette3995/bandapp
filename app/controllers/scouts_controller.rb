@@ -5,18 +5,24 @@ class ScoutsController < ApplicationController
     @scout = Scout.new
     @scouted_user = User.find(params[:id])
     @parts = Part.where(id: 1..6)
-    bands = @user.bands.joins(:scouts, :band_members).where(band_members: { role: "リーダー" }) # 自分がバンドリーダーでない場合はスカウトを送れない
+    bands = @user.bands.joins(:scouts, :band_members, :user_scouted_mes).where(band_members: { role: "リーダー" }) # 自分がバンドリーダーでない場合はスカウトを送れない
     @bands = bands.where.not(scouts: { scouted_user_id: @scouted_user.id }) # 同バンドからすでにスカウト送ってる場合を除く
                   .or(bands.where.not(band_members: { user_id: @scouted_user.id })) # 同バンドに相手がすでに所属している場合を除く
-                  .or(bands.where.not(scouts: { user_id: @scouted_user.id })) # 同バンドに相手から既にスカウトが来ている場合を
+                  .or(bands.where.not(user_scouted_mes: { id: @scouted_user.id })) # 同バンドに相手から既にスカウトを受けている場合を除く
   end
 
   def new_band
+    @scout = Scout.new
     @scouted_band = Band.find(params[:id])
+    scouted_band_members = @scouted_band.band_members
     @parts = Part.where(id: 1..6)
-    @scout = Scout.new(user_id: @user.id, scouted_band_id: @scouted_band.id)
-    scouts = Scout.where(scouted_user_id: @scouted_band.id)
-    @bands = @user.bands.where.not(id: scouts.pluck(:band_id) << @scouted_band.id)
+    bands = @user.bands.joins(:scouts, :band_members, :user_scouted_mes, :band_scouted_mes).where(band_members: { role: "リーダー" }) # 自分がバンドリーダーでない場合はスカウトを送れない
+    @bands = bands.where(scouts: {scouted_band_id: @scouted_band.id}) # 同バンドから申請先のバンドに既にスカウトを送った場合を除く
+                  .or(bands.where(scouts: {scouted_user_id: scouted_band_members.ids})) # 同バンドから相手バンド所属のメンバー個人にスカウト場合を除く
+                  .or(bands.where(band_scouted_mes: {id: @scouted_band.id} )) # 同バンドに相手バンドから既にスカウトを受けている場合を除く
+                  .or(bands.where(user_scouted_mes: {id: scouted_band_members.ids})) # 相手バンド所属のメンバー個人から加入申請が届いている場合を除く
+                  .or(bands.where(band_members: { user_id: scouted_band_members.pluck(:user_id) })) # 申請先バンドに自身のバンドメンバーの誰かが所属している場合を除く
+
   end
 
   def index
