@@ -1,117 +1,161 @@
-
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xxl-2 mt-4">
+    <div class="col-xxl-3 search-form-0 text-center form-wrapper mx-3 mt-5 p-3 ">
       <h5>詳細検索</h5>
       <%= search_form_for @q, url: search_users_path do |f| %>
-        <%= f.label :name, 'ユーザー名' %>
-        <%= f.text_field :name_cont %> <br>
-        <%= f.label :name, '都道府県' %>
-        <%= f.collection_select :prefecture_id_eq, Prefecture.all, :id, :name, {include_blank: ""}, {} %> <br>
-        <%= f.label :age, '年齢' %>
-        <%= f.number_field :age_gteq %> ~
-        <%= f.number_field :age_lteq %>歳 <br>
-        <%= f.label :sex, '性別' %>
-        <%= f.select :sex_eq, [["男性","男性"],["女性","女性"],["その他","その他"]], {include_blank: ""}, {} %><br>
-        <%= f.label :part, 'パート' %>
-
-        <%= f.select :user_parts_part_id_eq, @parts.map {|part| [part.name, part.id]}, {include_blank: ""}, {} %><br>
-        <%= f.label :level, 'レベル' %>
-        <%= f.select :user_parts_level_eq, @levels.map.with_index {|level,index| [level, index]}, {include_blank: ""}, {} %>
+        <p class="mb-2 mt-4"><%= f.label :name, 'ユーザー名'%></p>
+        <%= f.text_field :name_cont, class: "form-control w-50 mx-auto"  %>
+        <p class="my-2"><%= f.label :name, '都道府県' %></p>
+        <%= f.collection_select :prefecture_id_eq, Prefecture.all, :id, :name, {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
+        <p class="my-2"><%= f.label :age, '年齢' %></p>
+        <%= f.number_field :age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
+        <%= f.number_field :age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
+        <p class="my-2"><%= f.label :sex, '性別' %></p>
+        <%= f.select :sex_eq, [["男性","男性"],["女性","女性"],["その他","その他"]], {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
+        <p class="my-2"><%= f.label :part, 'パート' %></p>
+        <%= f.select :user_parts_part_id_eq, @parts.map {|part| [part.name, part.id]}, {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
         <%= f.label :priority, 'サブパートを含む' %>
-        <%=  f.check_box :user_parts_priority_lteq, {}, 3, 1%>
-        <br>
-        <%= f.label :genre, 'ジャンル' %>
-        <%= f.select :user_genres_genre_id_eq, @genres.map {|genre| [genre.name, genre.id]}, {include_blank: ""}, {}%>
-        <%= f.label :priority, 'サブパートを含む' %>
+        <%=  f.check_box :user_parts_priority_lteq, {}, 3, 1%><br>
+        <p class="my-2"><%= f.label :level, 'レベル' %></p>
+        <%= f.select :user_parts_level_eq, @levels.map.with_index {|level,index| [level, index]}, {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
+        <p class="my-2"><%= f.label :genre, 'ジャンル' %></p>
+        <%= f.select :user_genres_genre_id_eq, @genres.map {|genre| [genre.name, genre.id]}, {include_blank: ""}, {class: "form-select w-75 mx-auto"}%>
+        <%= f.label :priority, 'サブジャンルを含む' %>
         <%=  f.check_box :user_genres_priority_lteq, {}, 3, 1%><br>
-        <%= f.label :motivation, '活動方針' %>
-        <%= f.select :motivation_eq, [["趣味で楽しく","趣味で楽しく"],["プロを目指す","プロを目指す"],["決めていない","決めていない"]], {include_blank: ""}, {}%><br>
-        <%= f.label :original, '楽曲の方針' %>
-        <%= f.select :original_eq, [["既存曲のコピー","既存曲のコピー"],["オリジナル曲","オリジナル曲"],["決めていない","決めていない"]], {include_blank: ""}, {}%><br>
-        <%= f.label :favorite, '好きなアーティスト' %>
-        <%= f.text_field :favorite_cont %> <br>
-        <%= f.label :want_to_copy, 'コピーしたい楽曲' %>
-        <%= f.text_field :want_to_copy_cont %><br>
-        <%= f.label :frequency, '活動頻度' %>
-        <%= f.select :frequency_eq, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: ""}, {}%><br>
-        <%= f.label :available_day, '活動できる日' %>
-        <%= f.select :available_day_cont, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {} %><br>
-        <%= f.label :activity_time, '活動できる時間帯' %>
-        <%= f.select :activity_time_cont, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {} %><br>
-        <h5 class="mt-2">曲作り</h5>
+        <p class="my-2"><%= f.label :motivation, '活動方針' %></p>
+        <%= f.select :motivation_eq, [["趣味で楽しく","趣味で楽しく"],["プロを目指す","プロを目指す"],["決めていない","決めていない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
+        <p class="my-2"><%= f.label :original, '楽曲の方針' %></p>
+        <%= f.select :original_eq, [["既存曲のコピー","既存曲のコピー"],["オリジナル曲","オリジナル曲"],["決めていない","決めていない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
+        <p class="my-2"><%= f.label :favorite, '好きなアーティスト' %></p>
+        <%= f.text_field :favorite_cont, class: "form-control w-50 mx-auto" %>
+        <p class="my-2"><%= f.label :want_to_copy, 'コピーしたい楽曲' %></p>
+        <%= f.text_field :want_to_copy_cont, class: "form-control w-50 mx-auto" %>
+        <p class="my-2"><%= f.label :frequency, '活動頻度' %></p>
+        <%= f.select :frequency_eq, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
+        <p class="my-2"><%= f.label :available_day, '活動できる日' %></p>
+        <%= f.select :available_day_cont, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <p class="my-2"><%= f.label :activity_time, '活動できる時間帯' %></p>
+        <%= f.select :activity_time_cont, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <p class="my-2"><%= f.label :compose, "曲作り" %></p>
         <%= f.radio_button :compose_eq, true %>
         <%= f.label :compose, "できる" %>
         <%= f.radio_button :compose_eq, false %>
         <%= f.label :compose, "できない" %> <br>
-        <%= f.submit '検索' %>
+        <%= f.submit '検索', class: "mt-4 btn btn-success"%>
       <% end %>
     </div>
-  <div class="col-lg-8">
-    <div class="container text-center mt-4">
-      <h5>歳の近いユーザー</h5>
-      <div class="row">
-        <% @match_ages.each do |user| %>
-          <div class="col-md-3 my-3">
-            <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
-              <div class="card">
-                <% if user.image.attached? %>
-                  <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                <% else %>
-                  <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                <% end %>
-                <div class="card-body profile">
-                  <p class="card-text"><%= user.name %></p>
-                  <span class="card-text"><%= Prefecture.find(user.prefecture_id).name %></span>
-                  <span class="card-text"><%= "#{user.age}歳"%></span>
-                  <p class="card-text my-1"><%= user.parts[0].name %></p>
-                  <span class="card-text"><%= user.user_parts[0].level %></span>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
+  <div class="col-lg-8 text-center">
+      <div class="tab1 mt-5">
+        <div class="row">
+          <div class="col tab1__item"><%= link_to "おすすめユーザー", users_path, class: "tab1__link on" %></div>
+          <div class="col tab1__item"><%= link_to "おすすめバンド", bands_path, class: "tab1__link" %></div>
+        </div>
       </div>
-    </div>
-      <%= link_to "全てを表示", match_ages_users_path, class: "text-decoration-none text-dark link" %>
-    <div class="container text-center mt-5">
-      <h5>レベルの近いユーザー</h5>
-      <div class="row">
-        <% @match_levels.each do |user| %>
-          <div class="col-md-3 my-3">
-            <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
-              <div class="card ">
-                <% if user.image.attached? %>
-                 <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                <% else %>
-                 <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                <% end %>
-                <div class="card-body">
-                  <div class="profile">
-                    <p class="card-text"><%= user.name %></p>
-                    <span class="card-text"><%= Prefecture.find(user.prefecture_id).name %></span>
-                    <span class="card-text"><%= "#{user.age}歳"%></span>
-                    <p class="card-text my-1"><%= user.parts[0].name %></p>
-                    <span class="card-text"><%= user.user_parts[0].level %></span>
-                  </div>
-                  <div class="scout_links my-3">
-                    <% unless user.bands.count == 5 %>
-                      <%= link_to "スカウト", new_user_scout_path(user.id), data: { turbo: false }, class: "btn btn-secondary" %>
-                    <% else %>
-                      相手のバンド数が上限に達している為<br>スカウトできません
-                    <% end %>
-                  </div>
+      <div class="users-wrapper border">
+          <div class="container text-center mt-4">
+            <h5>歳の近いユーザー</h5>
+            <div class="row">
+              <% @match_ages.each do |user| %>
+                <div class="col-md-3 my-3">
+                  <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
+                    <div class="card">
+                      <% if user.image.attached? %>
+                        <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                      <% else %>
+                        <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                      <% end %>
+                      <div class="card-body profile">
+                        <p class="card-text"><%= user.name %></p>
+                        <span class="card-text"><%= user.prefecture.name %></span>
+                        <span class="card-text"><%= "#{user.age}歳"%></span>
+                        <p class="card-text my-1"><%= user.parts[0].name %></p>
+                        <span class="card-text"><%= user.user_parts[0].level %></span>
+                      </div>
+                      <div class="scout_links my-3">
+                        <% unless user.bands.count == 10 %>
+                          <%= link_to "スカウト", new_user_scout_path(user.id), data: { turbo: false }, class: "btn btn-secondary" %>
+                        <% else %>
+                          相手のバンド数が上限に達している為<br>スカウトできません
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           </div>
-        <% end %>
+            <%= link_to "全てを表示", match_ages_users_path, class: "text-decoration-none text-dark link" %>
+          <div class="container text-center mt-5">
+            <h5>レベルの近いユーザー</h5>
+            <div class="row">
+              <% @match_levels.each do |user| %>
+                <div class="col-md-3 my-3">
+                  <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
+                    <div class="card ">
+                      <% if user.image.attached? %>
+                       <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                      <% else %>
+                       <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                      <% end %>
+                      <div class="card-body">
+                        <div class="profile">
+                          <p class="card-text"><%= user.name %></p>
+                          <span class="card-text"><%= user.prefecture.name %></span>
+                          <span class="card-text"><%= "#{user.age}歳"%></span>
+                          <p class="card-text my-1"><%= user.parts[0].name %></p>
+                          <span class="card-text"><%= user.user_parts[0].level %></span>
+                        </div>
+                        <div class="scout_links my-3">
+                          <% unless user.bands.count == 10 %>
+                            <%= link_to "スカウト", new_user_scout_path(user.id), data: { turbo: false }, class: "btn btn-secondary" %>
+                          <% else %>
+                            相手のバンド数が上限に達している為<br>スカウトできません
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <%= link_to "全てを表示", match_levels_users_path, class: "text-decoration-none text-dark link" %>
+          <div class="container text-center mt-5">
+            <h5>ジャンルが同じなユーザー</h5>
+            <div class="row">
+              <% @match_genres.each do |user| %>
+                <div class="col-md-3 my-3">
+                  <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
+                    <div class="card ">
+                      <% if user.image.attached? %>
+                       <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                      <% else %>
+                       <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                      <% end %>
+                      <div class="card-body">
+                        <div class="profile">
+                          <p class="card-text"><%= user.name %></p>
+                          <span class="card-text"><%= user.prefecture.name %></span>
+                          <span class="card-text"><%= "#{user.age}歳"%></span>
+                          <p class="card-text my-1"><%= user.parts[0].name %></p>
+                          <span class="card-text"><%= user.user_parts[0].level %></span>
+                        </div>
+                        <div class="scout_links my-3">
+                          <% unless user.bands.count == 10 %>
+                            <%= link_to "スカウト", new_user_scout_path(user.id), data: { turbo: false }, class: "btn btn-secondary" %>
+                          <% else %>
+                            相手のバンド数が上限に達している為<br>スカウトできません
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <%= link_to "全てを表示", match_genres_users_path, class: "text-decoration-none text-dark link" %>
       </div>
-    </div>
-    <%= link_to "全てを表示", match_levels_users_path, class: "text-decoration-none text-dark link" %>
-  </div>
-    <div class="col">
-      Column
     </div>
   </div>
 </div>
