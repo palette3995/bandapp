@@ -10,9 +10,15 @@ Rails.application.routes.draw do
       get 'search'
       get 'match_ages'
       get 'match_levels'
+      get 'match_genres'
     end
   end
-  resources :bands, except: [:new]
+  resources :bands, except: [:new] do
+    collection do
+      get 'search'
+    end
+  end
+  get '/bands/user_bands/:id', to: 'bands#user_bands', as: 'user_bands'
   resources :band_members, except: [:new]
   resources :recruit_members, except: [:new]
   get '/recruit_members/new/:id', to: 'recruit_members#new', as: 'new_recruit_member'
