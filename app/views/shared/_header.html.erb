@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
     <% if user_signed_in? %>
-      <%= link_to "BANDAPP", users_path, class: "navbar-brand" %>
+      <%= link_to "BANDAPP", users_path, data: { turbo: false }, class: "navbar-brand" %>
     <% else %>
       <%= link_to "BANDAPP", "/", class: "navbar-brand" %>
     <% end %>
@@ -25,7 +25,7 @@
               バンド
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><%= link_to "所属バンド一覧", bands_path, class: "dropdown-item" %></li>
+              <li><%= link_to "所属バンド一覧", user_bands_path(current_user.id), class: "dropdown-item" %></li>
               <li><%= link_to "スカウト一覧", scouts_path, class: "dropdown-item" %></li>
             </ul>
           </li>
