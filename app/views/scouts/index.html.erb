@@ -36,27 +36,29 @@
         </div>
       </div>
     </div>
-    <div class="container col-xl-8 search-wrapper p-4">
-      <div class="row">
+    <div class="container col-xl-8">
+      <div class="row search-wrapper p-4">
         <% if @scouts.present? %>
           <% @scouts.each do |scout| %>
-            <div class="col-xl-3">
-              <div class="card" style="width: 18rem;">
-                <% if scout.scouted_user.image.attached? %>
-                 <%= image_tag scout.scouted_user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                <% else %>
-                 <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                <% end %>
-                <div class="card-body profile">
-                  <p class="card-text"><%= scout.user.name %><br>さんからのスカウト</p>
-                  <p class="card-text">あなたのパート:<%= scout.scouted_part.name %></p>
-                  <span class="card-text">相手のパート:<%= scout.part.name %></span>
-                  <p class="card-text">ひとこと:<%= scout.message %></p>
-                  <p class="card-text my-1">日時:<%= l scout.created_at %></p>
-                  <%= link_to "承諾", approve_new_scout_path(scout.id),class: "btn btn-success" %>
-                  <%= link_to "拒否", refuse_scout_path(scout.id),class: "btn btn-secondary" %>
+            <div class="col-xl-3 mb-3">
+              <%= link_to user_path(scout.user.id), class: "text-decoration-none text-dark" do %>
+                <div class="card">
+                  <% if scout.user.image.attached? %>
+                   <%= image_tag scout.user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                  <% else %>
+                   <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                  <% end %>
+                  <div class="card-body profile">
+                    <p class="card-text"><%= scout.user.name %><br>さんからのスカウト</p>
+                    <p class="card-text">あなたのパート:<%= scout.scouted_part.name %></p>
+                    <span class="card-text">相手のパート:<%= scout.part.name %></span>
+                    <p class="card-text">ひとこと:<%= scout.message %></p>
+                    <p class="card-text my-1">日時:<%= l scout.created_at %></p>
+                    <%= link_to "承諾", approve_new_scout_path(scout.id),class: "btn btn-success" %>
+                    <%= link_to "拒否", refuse_scout_path(scout.id),class: "btn btn-secondary" %>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             </div>
           <% end %>
         <% else %>

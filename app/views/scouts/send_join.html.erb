@@ -36,12 +36,13 @@
         </div>
       </div>
     </div>
-    <div class="container col-xl-8 search-wrapper p-4">
-      <div class="row">
+    <div class="container col-xl-8">
+      <div class="row search-wrapper p-4">
         <% if @scouts.present? %>
           <% @scouts.each do |scout| %>
-            <div class="col-xl-3">
-                <div class="card" style="width: 18rem;">
+            <div class="col-xl-3 mb-3">
+              <%= link_to band_path(scout.scouted_band.id), class: "text-decoration-none text-dark" do %>
+                <div class="card">
                   <% if scout.scouted_band.image.attached? %>
                    <%= image_tag scout.scouted_band.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
                   <% else %>
@@ -54,6 +55,7 @@
                     <p class="card-text my-1">日時:<%= l scout.created_at %></p>
                   </div>
                 </div>
+              <% end %>
             </div>
           <% end %>
         <% else %>
