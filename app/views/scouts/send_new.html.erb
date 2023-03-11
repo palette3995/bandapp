@@ -40,7 +40,7 @@
       <div class="row search-wrapper p-4">
         <% if @scouts.present? %>
           <% @scouts.each do |scout| %>
-          <div class="col-xl-3 mb-3">
+          <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
             <%= link_to user_path(scout.scouted_user.id), class: "text-decoration-none text-dark" do %>
               <div class="card" >
                 <% if scout.scouted_user.image.attached? %>
