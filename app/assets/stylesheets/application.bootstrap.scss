@@ -108,3 +108,15 @@ li {
   background-color: white;
   border-radius: $border-radius;
 }
+
+.flash {
+  text-align: center;
+  border-radius: $border-radius;
+  margin-top: 20px;
+  &.notice {
+    background-color: #f0fff0;
+  }
+  &.alert {
+    background-color: #ffe4e1;
+  }
+}
