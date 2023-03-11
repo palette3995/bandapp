@@ -30,7 +30,8 @@ class BandsController < ApplicationController
       delete_media(@band.image)
     else
       # 登録完了後の処理
-      @band.update(user_params)
+      @band.update(band_params)
+      flash[:notice] = "編集完了しました！"
       redirect_to band_path
     end
   end
