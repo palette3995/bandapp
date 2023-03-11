@@ -7,7 +7,7 @@
           <div class="card-body">
             <% if @band.image.attached? %>
              <%= image_tag @band.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
-             <%= f.submit "アイコンを削除", name: "delete_image", class: "btn btn-secondary d-block mx-auto" %>
+             <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block mx-auto" %>
             <% else %>
              <%= image_tag 'default_band.png', size: "150x150", class: "avatar rounded-circle my-3"%>
             <% end %>
@@ -16,7 +16,7 @@
             <p><%= f.text_field :name, class: "form-control" %></p>
             <h5>地域</h5>
             <p><%= f.collection_select :prefecture_id, Prefecture.all, :id, :name, {include_blank: "未選択"}, {class: "form-select"} %></p>
-            <h5>紹介</h5>
+            <h5>バンド紹介</h5>
             <p><%= f.text_area :introduction, class: "form-control" %></p>
           </div>
         </div>
