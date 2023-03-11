@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       get 'send_offer'
       get 'send_join'
       get 'send_marge'
+      post 'create_band'
     end
     member do
       get 'new_user'
