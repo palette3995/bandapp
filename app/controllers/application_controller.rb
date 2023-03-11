@@ -12,11 +12,16 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name])
   end
 
-  def week_days
-    @week_days = %W[日 月 火 水 木 金 土]
-  end
-
-  def activity_times
-    @activity_times = %W[朝 昼 夜]
+  def update_band_colums(id)
+    band = Band.find(id)
+    band.update!(
+      number_of_member: band.band_members.count,
+      maximum_age: band.band_members.joins(:user).maximum(:age),
+      minimum_age: band.band_members.joins(:user).minimum(:age),
+      average_age: band.band_members.joins(:user).average(:age),
+      men: band.band_members.joins(:user).where(user: { sex: "男性" }).count,
+      women: band.band_members.joins(:user).where(user: { sex: "女性" }).count,
+      other_gender: band.band_members.joins(:user).where(user: { sex: "その他" }).count
+    )
   end
 end

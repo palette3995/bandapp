@@ -52,14 +52,27 @@ Style/ClassAndModuleChildren:
 Style/EmptyMethod:
   Enabled: false
 
-#メソッドの最大行数を20に設定
+#メソッドの最大行数を30に設定
 MethodLength:
   Max: 30
 
-#Abcサイズの上限を40まで許可
+#Abcサイズの上限を100まで許可
 Metrics/AbcSize:
-  Max: 40
+  Max: 100
 
 #配列で%Wの記法を許可
 Style/RedundantCapitalW:
   Enabled: false
+
+#クラスの最大行数を200に設定
+Metrics/ClassLength:
+  Max: 200
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10

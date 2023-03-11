@@ -25,8 +25,8 @@
               バンド
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><%= link_to "所属バンド", "#", class: "dropdown-item" %></li>
-              <li><%= link_to "お誘い申請", "#", class: "dropdown-item" %></li>
+              <li><%= link_to "所属バンド一覧", user_bands_path(current_user.id), class: "dropdown-item" %></li>
+              <li><%= link_to "スカウト一覧", scouts_path, class: "dropdown-item" %></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

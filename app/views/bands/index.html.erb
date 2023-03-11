@@ -1,0 +1,135 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xxl-3 search-form-0 text-center form-wrapper mx-3 mt-5 p-3 ">
+      <h5>バンド詳細検索</h5>
+      <%= search_form_for @q, url: search_bands_path do |f| %>
+        <p class="mb-2 mt-4"><%= f.label :name, 'バンド名'%></p>
+        <%= f.text_field :name_cont, class: "form-control w-50 mx-auto"  %>
+        <p class="my-2"><%= f.label :name, '都道府県' %></p>
+        <%= f.collection_select :prefecture_id_eq, Prefecture.all, :id, :name, {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
+        <p class="my-2"><%= f.label :age, 'メンバーの人数' %></p>
+        <%= f.number_field :number_of_member_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
+        <%= f.number_field :number_of_member_lteq, class: "form-control w-25 mx-auto d-inline-block" %>人
+        <p class="my-2"><%= f.label :age, 'メンバーの平均年齢' %></p>
+        <%= f.number_field :average_age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
+        <%= f.number_field :average_age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
+        <p class="my-2"><%= f.label :age, 'メンバーの最大年齢' %></p>
+        <%= f.number_field :maximum_age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
+        <%= f.number_field :maximum_age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
+        <p class="my-2"><%= f.label :age, 'メンバーの最小年齢' %></p>
+        <%= f.number_field :minimum_age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
+        <%= f.number_field :minimum_age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
+        <p class="my-2"><%= f.label :part, '募集しているパート' %></p>
+        <%= f.select :recruit_members_part_id_eq, @parts.map {|part| [part.name, part.id]}, {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
+        <p class="my-2"><%= f.label :level, '募集しているレベル' %></p>
+        <%= f.select :recruit_members_level_eq, @levels.map {|level| [level, level]}, {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
+        <p class="my-2"><%= f.label :age, '募集している年齢' %></p>
+        <%= f.select :recruit_members_age_eq, [["20代まで","20代まで"],["30代","30代"],["40代","40代"],["50代","50代"],["60歳以上","60歳以上"],["気にしない","気にしない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
+        <p class="my-2"><%= f.label :sex, '募集している性別' %></p>
+        <%= f.select :recruit_members_sex_eq, [["男性","男性"],["女性","女性"],["その他","その他"],["気にしない","気にしない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
+        <p class="my-2"><%= f.label :genre, 'ジャンル' %></p>
+        <%= f.select :band_genres_genre_id_eq, @genres.map {|genre| [genre.name, genre.id]}, {include_blank: ""}, {class: "form-select w-75 mx-auto"}%>
+        <%= f.label :priority, 'サブジャンルを含む' %>
+        <%=  f.check_box :band_genres_priority_lteq, {}, 3, 1%><br>
+        <p class="my-2"><%= f.label :motivation, '活動方針' %></p>
+        <%= f.select :motivation_eq, [["趣味で楽しく","趣味で楽しく"],["プロを目指す","プロを目指す"],["決めていない","決めていない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
+        <p class="my-2"><%= f.label :original, '楽曲の方針' %></p>
+        <%= f.select :original_eq, [["既存曲のコピー","既存曲のコピー"],["オリジナル曲","オリジナル曲"],["決めていない","決めていない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
+        <p class="my-2"><%= f.label :want_to_copy, 'コピーしたい楽曲' %></p>
+        <%= f.text_field :want_to_copy_cont, class: "form-control w-50 mx-auto" %>
+        <p class="my-2"><%= f.label :frequency, '活動頻度' %></p>
+        <%= f.select :frequency_eq, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
+        <p class="my-2"><%= f.label :available_day, '活動できる日' %></p>
+        <%= f.select :available_day_cont, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <p class="my-2"><%= f.label :activity_time, '活動できる時間帯' %></p>
+        <%= f.select :activity_time_cont, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <%= f.submit '検索', class: "mt-4 btn btn-success"%>
+      <% end %>
+    </div>
+  <div class="col-xxl-8 text-center">
+    <div class="tab1 mt-5">
+      <div class="row">
+        <div class="col tab1__item"><%= link_to "おすすめユーザー", users_path, class: "tab1__link" %></div>
+        <div class="col tab1__item"><%= link_to "おすすめバンド", bands_path, class: "tab1__link on" %></div>
+      </div>
+    </div>
+    <div class="bands-wrapper border p-5">
+      <div class="container text-center mt-4">
+        <h5>平均年齢が近いバンド</h5>
+        <div class="row">
+        <% if @match_ages.present? %>
+          <% @match_ages.each do |band| %>
+            <div class="col-md-3 my-3">
+              <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
+                <div class="card">
+                  <% if band.image.attached? %>
+                    <%= image_tag band.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                  <% else %>
+                    <%= image_tag 'default_band.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                  <% end %>
+                  <div class="card-body profile">
+                    <p class="card-text"><%= band.name %></p>
+                    <span class="card-text"><%= band.prefecture.name %></span>
+                    <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
+                    <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
+                    <span class="card-text">曲：<%= band.original %></span>
+                  </div>
+                  <div class="scout_links my-3">
+                    <% unless band.band_members.count == 10 %>
+                      <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary" %>
+                    <% else %>
+                      メンバー数が上限に達している為<br>スカウトできません
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="my-5">おすすめバンドがいません</p>
+        <% end %>
+        </div>
+      </div>
+        <%= link_to "全てを表示", match_ages_bands_path, class: "text-decoration-none text-dark link" if @match_ages.present? %>
+      <div class="container text-center mt-5">
+        <h5>ジャンルが同じなバンド</h5>
+        <div class="row">
+          <% if @match_genres.present? %>
+            <% @match_genres.each do |band| %>
+              <div class="col-md-3 my-3">
+                <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
+                  <div class="card ">
+                    <% if band.image.attached? %>
+                     <%= image_tag band.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                    <% else %>
+                     <%= image_tag 'default_band.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                    <% end %>
+                    <div class="card-body">
+                      <div class="profile">
+                        <p class="card-text"><%= band.name %></p>
+                        <span class="card-text"><%= band.prefecture.name %></span>
+                        <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
+                        <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
+                        <span class="card-text">曲：<%= band.original %></span>
+                      </div>
+                      <div class="scout_links my-3">
+                        <% unless band.band_members.count == 10 %>
+                          <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary" %>
+                        <% else %>
+                          メンバー数が上限に達している為<br>スカウトできません
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="my-5">おすすめバンドがいません</p>
+          <% end %>
+        </div>
+      </div>
+      <%= link_to "全てを表示", match_genres_bands_path, class: "text-decoration-none text-dark link"  if @match_genres.present? %>
+    </div>
+  </div>
+</div>

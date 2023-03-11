@@ -1,0 +1,2 @@
+module RecruitMembersHelper
+end

@@ -1,13 +1,13 @@
-<div class="edit-wrapper text-center w-75 mx-auto">
+<div class="wrapper text-center w-75 mx-auto">
   <%= form_with model: @user, local: true do |f| %>
-  <div class="container">
+  <div class="form-wrapper container my-4 mx-auto">
     <div class="row">
       <div class="left-contents col-xl-6">
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
           <div class="card-body">
             <% if @user.image.attached? %>
              <%= image_tag @user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
-             <%= f.submit "アイコンを削除", name: "delete_image", class: "btn btn-secondary d-block mx-auto" %>
+             <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block mx-auto" %>
             <% else %>
              <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
             <% end %>
@@ -27,7 +27,7 @@
             <h5>動画</h5>
             <% if @user.movie.attached? %>
               <%= video_tag rails_blob_path(@user.movie), class: "movie border", size: "250×250", controls: true %>
-              <%= f.submit "動画を削除", name: "delete_movie", class: "delete-movie btn btn-secondary d-block mx-auto　mb-2" %>
+              <%= f.submit "動画を削除", name: "delete_movie", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "delete-movie btn btn-secondary d-block mx-auto　mb-2" %>
             <% else %>
               <p class= "mb-2">動画はありません</p>
             <% end %>
@@ -35,7 +35,7 @@
             <h5 class= "mt-3">音源</h5>
             <% if @user.sound.attached? %>
               <%= audio_tag rails_blob_path(@user.sound), class: "sound", controls: true %>
-              <%= f.submit "音源を削除", name: "delete_sound", class: "delete-sound btn btn-secondary d-block mx-auto my-2" %>
+              <%= f.submit "音源を削除", name: "delete_sound", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "delete-sound btn btn-secondary d-block mx-auto my-2" %>
             <% else %>
               <p>音源はありません</p>
             <% end %>
@@ -78,16 +78,9 @@
             <h5 class="mt-2">活動頻度</h5>
             <%= f.select :frequency, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5 class="mt-2">活動できる日</h5>
-              <% @week_days.each do |day| %>
-                <%= f.check_box :available_day, {multiple: true, checked: @user.available_day.present? ? @user.available_day.include?(day) : false }, day, nil %>
-                <%= f.label :available_day, day %>
-              <% end %>
+            <%= f.select :available_day, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5 class="mt-2">活動できる時間</h5>
-            <% @activity_times.each do |time| %>
-              <%= f.check_box :activity_time, {multiple: true, checked: @user.activity_time.present? ? @user.activity_time.include?(time) : false }, time, nil %>
-              <%= f.label :activity_time, time %>
-            <% end %>
-
+            <%= f.select :activity_time, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: "未選択"}, {class: "form-select"}%>
             <h5 class="mt-2">曲作り</h5>
             <%= f.radio_button :compose, true %>
             <%= f.label :compose, "できる" %>

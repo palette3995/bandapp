@@ -1,0 +1,26 @@
+<div class="container text-center">
+  <div class="row search-wrapper mx-auto p-4">
+    <p class="my-4"><%= "検索結果：#{bands.count}件" %></p>
+    <% bands.each do |band| %>
+      <div class="col-xxl-3 col-lg-4 col-md-6 my-3">
+        <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
+          <div class="card">
+            <% if band.image.attached? %>
+             <%= image_tag band.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+            <% else %>
+             <%= image_tag 'default_band.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+            <% end %>
+            <div class="card-body profile">
+              <p class="card-text"><%= band.name %></p>
+              <span class="card-text"><%= band.prefecture.name if band.prefecture %></span>
+              <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
+              <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
+              <span class="card-text">曲：<%= band.original %></span>
+            </div>
+            <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary w-50 my-3 mx-auto" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

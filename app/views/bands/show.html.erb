@@ -1,0 +1,111 @@
+<div class="wrapper text-center w-75 mx-auto">
+  <div class="show-wrapper container my-4 mx-auto pb-3">
+    <div class="row">
+      <div class="left-contents col-xl-6">
+        <div class="card mt-5 mx-auto w-75">
+          <div class="card-body">
+            <% if @band.image.attached? %>
+             <%= image_tag @band.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
+            <% else %>
+             <%= image_tag 'default_band.png', size: "150x150", class: "avatar rounded-circle my-3"%>
+            <% end %>
+            <h5 class= "mt-2">バンド名</h5>
+            <p><%= @band.name %></p>
+            <h5>地域</h5>
+            <p><%= Prefecture.find(@band.prefecture_id).name if @band.prefecture_id.present? %></p>
+            <h5>平均年齢</h5>
+            <p><%= @band.average_age %>歳</p>
+            <h5>バンド紹介</h5>
+            <p><%= @band.introduction %></p>
+            <%= link_to "編集", edit_band_path(@band.id), class: "btn btn-secondary" if @user %>
+          </div>
+        </div>
+      </div>
+      <div class="right-contents col">
+        <div class="card mt-5 mx-auto w-75">
+          <div class="card-body">
+            <% @band.band_genres.each do |genre| %>
+              <h5><%= "ジャンル#{genre.priority}" %></h5>
+              <% if genre.genre_id == 15 %>
+                <p><%= genre.other_genre %></p>
+              <% else %>
+                <p><%= Genre.find(genre.genre_id).name %></p>
+              <% end %>
+            <% end %>
+            <h5>活動方針</h5>
+            <p><%= @band.motivation %></p>
+            <h5 class="mt-2">楽曲の方針</h5>
+            <p><%= @band.original %></p>
+            <h5 class="mt-2">コピーしたい楽曲</h5>
+            <p><%= @band.want_to_copy %>
+            <h5 class="mt-2">活動頻度</h5>
+            <p><%= @band.frequency %></p>
+            <h5 class="mt-2">活動できる日</h5>
+            <p><%= @band.available_day %></p>
+            <h5 class="mt-2">活動できる時間</h5>
+            <p><%= @band.activity_time %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-5 w-75 mx-auto px-3">
+      <div class="member-list card-body">
+        <h5>バンドメンバー</h5>
+        <% @members.each do |member| %>
+          <div class="row member-list-item border mb-2">
+            <div class="col-lg-5">
+              <%= link_to user_path(member.user.id), class: "text-decoration-none text-dark" do %>
+                <% if member.role == "リーダー" %>
+                  <i class="fas fa-crown"></i>
+                <% end %>
+                <% if member.user.image.attached? %>
+                 <%= image_tag member.user.image.variant(resize: "30x30", gravity: "center"), class: "avatar rounded-circle my-3"%>
+                <% else %>
+                 <%= image_tag 'default.png', size: "30x30", class: "avatar rounded-circle my-3"%>
+                <% end %>
+                <%= member.user.name %>
+              <% end %>
+            </div>
+            <div class="col-lg-5 pt-3">
+              <p><%= member.part.name if member.part_id != 7 %></p>
+              <p><%= member.other_part%></p>
+            </div>
+            <div class="col-lg-2 py-2">
+              <%= link_to "編集", edit_band_member_path(member.id), class: "btn btn-secondary" if current_user == @reader %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="card my-5 w-75 mx-auto px-3">
+      <div class="card-body">
+        <h5>募集中のメンバー</h5>
+        <% @recruits.each do |recruit| %>
+          <div class="row member-list-item border mb-2">
+            <div class="col-lg-3 pt-3">
+              <p>パート：<%= recruit.part.name if recruit.part_id != 7 %> <%= recruit.other_part%> <%= recruit.level %></p>
+            </div>
+            <div class="col-lg-3 pt-3">
+              <p>年齢：<%= recruit.age %></p>
+            </div>
+            <div class="col-lg-3 pt-3">
+              <p>性別：<%= recruit.sex %></p>
+            </div>
+            <div class="col-lg-3 py-2">
+              <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
+                <%= link_to "編集", edit_recruit_member_path(recruit.id), class: "btn btn-secondary" %>
+                <%= link_to "削除", recruit_member_path(recruit.id), data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
+          <%= link_to "新規作成", new_recruit_member_path(@band.id), class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
+    <%= link_to "脱退する", band_member_path(@user.id), data: { turbo_confirm: "バンドから脱退します、本当によろしいですか？", turbo_method: :delete }, class: "btn btn-danger" %>
+  <% end %>
+</div>

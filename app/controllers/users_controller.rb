@@ -1,18 +1,16 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update]
-  before_action :set_current_user, :set_recomend_users, only: %i[index match_ages match_levels]
+  before_action :set_current_user, :set_recomend_users, only: %i[index match_ages match_levels match_genres]
   before_action :set_user_part, only: %i[index match_levels]
   before_action :set_parts, :set_genres, except: %i[show search]
   before_action :set_user_parts, only: %i[edit update]
   before_action :set_q, only: %i[index search]
-  before_action :week_days
-  before_action :activity_times
   before_action :set_levels
 
   def index
-    @recomend_users = User.joins(:user_parts, :genres).near(current_user)
     @match_ages = @recomend_users.where(age: @current_user.age - 5..@current_user.age + 5).limit(4)
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
+    @match_genres = @recomend_users.where(user_genres: { genre_id: @current_user.genres.ids }).limit(4)
   end
 
   def show
@@ -31,15 +29,19 @@ class UsersController < ApplicationController
       delete_media(@user.sound)
     else
       # 登録完了後の処理
-      params[:user][:available_day] ? @user.available_day = params[:user][:available_day].join(",") : false
-      params[:user][:activity_time] ? @user.activity_time = params[:user][:activity_time].join(",") : false
       @user.update(user_params)
-      redirect_to user_path
+      update_user_bands(@user)
+      redirect_to user_path, notice: t("notice.update")
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+  end
+
   def search
-    @users = @q.result
+    @users = @q.result.where.not(id: current_user.id)
   end
 
   def match_ages
@@ -48,6 +50,10 @@ class UsersController < ApplicationController
 
   def match_levels
     @users = @recomend_users.where(user_parts: { level: @user_part.level })
+  end
+
+  def match_genres
+    @users = @recomend_users.where(user_genres: { genre_id: @current_user.genres.ids })
   end
 
   private
@@ -108,11 +114,17 @@ class UsersController < ApplicationController
   end
 
   def set_recomend_users
-    @recomend_users = User.joins(:user_parts, :genres).near(current_user)
+    @recomend_users = User.joins(:user_parts, :genres).near(current_user).where.not(id: current_user.id).distinct
   end
 
   def delete_media(media)
     media.purge
     render action: "edit"
+  end
+
+  def update_user_bands(user)
+    user.bands.ids.each do |id|
+      update_band_colums(id)
+    end
   end
 end
