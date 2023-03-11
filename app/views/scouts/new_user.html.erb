@@ -41,20 +41,20 @@
             <%= form_with model: @scout, url: scouts_path, method: :post do |f| %>
               <div class="form-group my-3">
                 <h5><%= f.label :part, "あなたのパートを選んでください" %></h5>
-                <%= f.select :part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-0"}%>
+                <%= f.select :part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-0 user-scout-0"}%>
               </div>
               <div class="form-group my-3">
-                <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0" %>
+                <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0 user-scout-0" %>
               </div>
               <div class="form-group my-3">
                 <h5><%= f.label :scouted_part, "相手のパートを選んでください" %></h5>
-                <%= f.select :scouted_part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-0"}%>
+                <%= f.select :scouted_part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-0 user-scout-0"}%>
               </div>
               <div class="form-group my-3">
-                <%= f.text_field :scouted_other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0" %>
+                <%= f.text_field :scouted_other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0 user-scout-0" %>
               </div>
               <div class="form-group my-3">
-                <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-0" %>
+                <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-0 user-scout-0" %>
               </div>
               <%= f.hidden_field :user_id, value: @user.id %>
               <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
@@ -63,7 +63,7 @@
                   <%= link_to "戻る", :back, class: "btn btn-outline-secondary btn-lg w-100" %>
                 </div>
                 <div class="action my-3 col">
-                  <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg btn-scout w-100", disabled: true %>
+                  <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg btn-scout btn-scout-0 w-100", disabled: true %>
                 </div>
               </div>
             <% end %>
@@ -77,17 +77,17 @@
           <%= form_with model: @scout, url: scouts_path do |f| %>
             <div class="form-group my-3">
               <h5><%= f.label :band, "どのバンドにスカウトしますか？" %></h5>
-              <%= f.select :band_id, @bands.map {|band| [band.name, band.id]}, {prompt: "選択してください", disabled: true}, {class: "form-select form-scout form-scout-1", disabled: true}%>
+              <%= f.select :band_id, @bands.map {|band| [band.name, band.id]}, {prompt: "選択してください"}, {class: "form-select form-scout form-scout-1 user-scout-1", disabled: true}%>
             </div>
             <div class="form-group my-3">
               <h5><%= f.label :part, "相手のパートを選んでください" %></h5>
-              <%= f.select :part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-1", disabled: true}%>
+              <%= f.select :scouted_part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-1 user-scout-1", disabled: true}%>
             </div>
             <div class="form-group my-3">
-              <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-1", disabled: true %>
+              <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-1 user-scout-1", disabled: true %>
             </div>
             <div class="form-group my-3">
-              <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-1" %>
+              <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-1 user-scout-1" %>
             </div>
             <%= f.hidden_field :user_id, value: @user.id %>
             <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
@@ -96,7 +96,7 @@
                 <%= link_to "戻る", :back, class: "btn btn-outline-secondary btn-lg w-100" %>
               </div>
               <div class="action my-3 col">
-                <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg  btn-scout w-100", disabled: true %>
+                <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg  btn-scout btn-scout-1 w-100", disabled: true %>
               </div>
             </div>
           <% end %>
