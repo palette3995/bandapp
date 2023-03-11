@@ -81,7 +81,7 @@
         </div>
         <% if @user.id == current_user.id %>
           <div class="my-3">
-            <%= link_to "マイページを編集", edit_user_path(@user.id), data: { turbo: false }, class: "btn btn-secondary" %>
+            <%= link_to "マイページを編集", edit_user_path(@user.id), class: "btn btn-secondary" %>
           </div>
         <% end %>
       </div>

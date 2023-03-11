@@ -9,7 +9,7 @@
         <%= f.collection_select :prefecture_id_eq, Prefecture.all, :id, :name, {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
         <p class="my-2"><%= f.label :age, 'メンバーの人数' %></p>
         <%= f.number_field :number_of_member_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
-        <%= f.number_field :number_of_member_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
+        <%= f.number_field :number_of_member_lteq, class: "form-control w-25 mx-auto d-inline-block" %>人
         <p class="my-2"><%= f.label :age, 'メンバーの平均年齢' %></p>
         <%= f.number_field :average_age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
         <%= f.number_field :average_age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
@@ -76,7 +76,7 @@
                   </div>
                   <div class="scout_links my-3">
                     <% unless band.band_members.count == 10 %>
-                      <%= link_to "スカウト", new_band_scout_path(band.id), data: { turbo: false }, class: "btn btn-secondary" %>
+                      <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary" %>
                     <% else %>
                       メンバー数が上限に達している為<br>スカウトできません
                     <% end %>
@@ -114,7 +114,7 @@
                       </div>
                       <div class="scout_links my-3">
                         <% unless band.band_members.count == 10 %>
-                          <%= link_to "スカウト", new_band_scout_path(band.id), data: { turbo: false }, class: "btn btn-secondary" %>
+                          <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary" %>
                         <% else %>
                           メンバー数が上限に達している為<br>スカウトできません
                         <% end %>
