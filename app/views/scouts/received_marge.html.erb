@@ -40,7 +40,7 @@
       <div class="row  search-wrapper p-4">
         <% if @scouts.present? %>
           <% @scouts.each do |scout| %>
-            <div class="col-xl-3">
+            <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
               <%= link_to band_path(scout.band.id), class: "text-decoration-none text-dark" do %>
                 <div class="card">
                   <% if scout.band.image.attached? %>
@@ -53,8 +53,8 @@
                     <p class="card-text">合併希望バンド:<%= scout.scouted_band.name %></p>
                     <p class="card-text">ひとこと:<%= scout.message %></p>
                     <p class="card-text my-1">日時:<%= l scout.created_at %></p>
-                    <%= link_to "承諾", received_marge_scout_path(scout.id),class: "btn btn-success" %>
-                    <%= link_to "拒否", refuse_scout_path(scout.id),class: "btn btn-secondary" %>
+                    <%= link_to "承諾", approve_marge_scout_path(scout.id), data: { turbo_confirm: "スカウトを承認します。よろしいですか？", turbo_method: :delete }, class: "btn btn-success" %>
+                    <%= link_to "拒否", refuse_scout_path(scout.id), data: { turbo_confirm: "スカウトを断りますか？", turbo_method: :delete }, class: "btn btn-secondary" %>
                   </div>
                 </div>
               <% end %>

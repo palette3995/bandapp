@@ -1,4 +1,3 @@
-<%= flash[:scout] %>
 <div class="container-fluid text-center">
   <h4 class= "my-5">届いたスカウト一覧</h4>
   <div class="row">
@@ -40,7 +39,7 @@
       <div class="row search-wrapper p-4">
         <% if @scouts.present? %>
           <% @scouts.each do |scout| %>
-            <div class="col-xl-3 mb-3">
+            <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
               <%= link_to user_path(scout.user.id), class: "text-decoration-none text-dark" do %>
                 <div class="card">
                   <% if scout.user.image.attached? %>
@@ -54,8 +53,8 @@
                     <span class="card-text">相手のパート:<%= scout.part.name %></span>
                     <p class="card-text">ひとこと:<%= scout.message %></p>
                     <p class="card-text my-1">日時:<%= l scout.created_at %></p>
-                    <%= link_to "承諾", approve_new_scout_path(scout.id),class: "btn btn-success" %>
-                    <%= link_to "拒否", refuse_scout_path(scout.id),class: "btn btn-secondary" %>
+                    <%= link_to "承諾", approve_new_scout_path(scout.id), data: { turbo_confirm: "スカウトを承認します。よろしいですか？", turbo_method: :delete }, class: "btn btn-success" %>
+                    <%= link_to "拒否", refuse_scout_path(scout.id), data: { turbo_confirm: "スカウトを断りますか？", turbo_method: :delete }, class: "btn btn-secondary" %>
                   </div>
                 </div>
               <% end %>
