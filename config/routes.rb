@@ -45,4 +45,10 @@ Rails.application.routes.draw do
       get 'refuse'
     end
   end
+
+  resources :favorites, only: [:index] do
+    collection do
+      get 'send'
+    end
+  end
 end
