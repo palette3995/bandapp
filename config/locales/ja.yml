@@ -2,3 +2,17 @@ ja:
   time:
     formats:
       default: "%Y/%m/%d %H:%M:%S"
+  notice:
+    create: 登録が完了しました！
+    update: 編集が完了しました！
+    scout: スカウトを送りました！
+    approve: スカウトを承認しました！
+    refuse: スカウトを拒否しました。
+  alert:
+    sent: 既にスカウトを送っています。
+    sent_other: 他の所属メンバーが相手バンドへ既にスカウトを送っています。
+    received: 相手から既にスカウトが届いています。
+    received_other: 相手バンド所属のメンバーから既にスカウトが届いています。
+    registered: 既にバンドメンバーです。
+    duplicate: 共通のメンバーがいる為スカウトを送れません。
+    over: バンドメンバーが10人を超える為スカウトを送れません。

@@ -5,7 +5,7 @@ class ScoutsController < ApplicationController
     @scout = Scout.new
     @scouted_user = User.find(params[:id])
     @parts = Part.where(id: 1..6)
-    @bands =Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
+    @bands = Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
   end
 
   def new_band
@@ -14,7 +14,7 @@ class ScoutsController < ApplicationController
     scouted_band_members = @scouted_band.band_members
     @reader = scouted_band_members.find_by(role: "リーダー").user
     @parts = Part.where(id: 1..6)
-    @bands =Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
+    @bands = Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
   end
 
   def index
@@ -27,54 +27,51 @@ class ScoutsController < ApplicationController
     scouted_user = User.find(params[:scout][:scouted_user_id])
     if band.present?
       if scouted_user.band_scouted_mes.include?(band)
-        flash[:alert] = "既にスカウトを送っています。"
+        flash[:alert] = t("alert.sent")
         redirect_to new_user_scout_path(params[:scout][:scouted_user_id])
       elsif band.user_scouted_mes.include?(scouted_user)
-        flash[:alert] = "相手から既にスカウトが届いています。"
+        flash[:alert] = t("alert.received")
         redirect_to new_user_scout_path(params[:scout][:scouted_user_id])
       elsif scouted_user.bands.include?(band)
-        flash[:alert] = "既にバンドメンバーです。"
+        flash[:alert] = t("alert.registered")
         redirect_to new_user_scout_path(params[:scout][:scouted_user_id])
       else
         @scout.save
-        flash[:notice] = "スカウトを送りました！"
-        redirect_to scouts_path
+        redirect_to scouts_path, notice: t("notice.scout")
       end
     else
       @scout.save
-      flash[:notice] = "スカウトを送りました！"
-      redirect_to scouts_path
+      redirect_to scouts_path, notice: t("notice.scout")
     end
   end
 
   def create_band
     @scout = Scout.new(scout_params)
     band = Band.find(params[:scout][:band_id])
-    band_members = band.band_members.map{|member| member.user }
+    band_members = band.band_members.map(&:user)
     scouted_band = Band.find(params[:scout][:scouted_band_id])
-    scouted_band_members = scouted_band.band_members.map{|member| member.user }
+    scouted_band_members = scouted_band.band_members.map(&:user)
     if band.band_scouted_mes.include?(scouted_band)
-      flash[:alert] = "相手バンドから既にスカウトが届いています。"
+      flash[:alert] = t("alert.received")
       redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
     elsif scouted_band.band_scouted_mes.include?(band)
-      flash[:alert] ="相手バンドへ既にスカウトを送っています。"
+      flash[:alert] = t("alert.sent")
       redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
     elsif (band.user_scouted_mes & scouted_band_members).present?
-      flash[:alert] = "相手バンド所属のメンバーから既にスカウトが届いています。"
+      flash[:alert] = t("alert.received_other")
       redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
     elsif (scouted_band.user_scouted_mes & band_members).present?
-      flash[:alert] = "所属メンバーが相手バンドへ既にスカウトを送っています。"
+      flash[:alert] = t("alert.sent_other")
       redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
     elsif (band_members & scouted_band_members).present?
-      flash[:alert] = "共通のメンバーがいる為スカウトを送れません。"
+      flash[:alert] = t("alert.duplicate")
       redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
     elsif band_members.count + scouted_band_members.count > 10
-      flash[:alert] = "バンドメンバーが10人を超える為スカウトを送れません。"
+      flash[:alert] = t("alert.over")
       redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
     else
       @scout.save
-      flash[:notice] = "スカウトを送りました！"
-      redirect_to scouts_path
+      redirect_to scouts_path, notice: t("notice.scout")
     end
   end
 
@@ -113,8 +110,7 @@ class ScoutsController < ApplicationController
     @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
     update_band_colums(@band.id)
-    flash[:notice] = "スカウトを承認しました！"
-    redirect_to bands_path
+    redirect_to bands_path, notice: t("notice.approve")
   end
 
   def approve_offer
@@ -123,18 +119,16 @@ class ScoutsController < ApplicationController
     @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
     update_band_colums(@band.id)
-    flash[:notice] = "スカウトを承認しました！"
-    redirect_to bands_path
+    redirect_to bands_path, notice: t("notice.approve")
   end
 
   def approve_join
     @scout = Scout.find(params[:id])
     @band = Band.find(@scout.scouted_band_id)
-    @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part,role: "メンバー")
+    @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "メンバー")
     @scout.destroy
     update_band_colums(@band.id)
-    flash[:notice] = "スカウトを承認しました！"
-    redirect_to bands_path
+    redirect_to bands_path, notice: t("notice.approve")
   end
 
   def approve_marge
@@ -152,15 +146,13 @@ class ScoutsController < ApplicationController
     offered.destroy
     offering.destroy
     update_band_colums(@band.id)
-    flash[:notice] = "スカウトを承認しました！"
-    redirect_to bands_path
+    redirect_to bands_path, notice: t("notice.approve")
   end
 
   def refuse
     @scout = Scout.find(params[:id])
     @scout.destroy
-    flash[:notice] = "スカウトを拒否しました。"
-    redirect_to scouts_path
+    redirect_to scouts_path, notice: t("notice.refuse")
   end
 
   private

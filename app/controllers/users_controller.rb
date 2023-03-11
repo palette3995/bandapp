@@ -31,8 +31,7 @@ class UsersController < ApplicationController
       # 登録完了後の処理
       @user.update(user_params)
       update_user_bands(@user)
-      flash[:notice] = "編集が完了しました！"
-      redirect_to user_path
+      redirect_to user_path, notice: t("notice.update")
     end
   end
 

@@ -13,7 +13,7 @@ class BandMembersController < ApplicationController
       reader.update(role: "メンバー")
     end
     @member.update(member_params)
-    redirect_to band_path(@band.id)
+    redirect_to band_path(@band.id), notice: t("notice.update")
   end
 
   def destroy

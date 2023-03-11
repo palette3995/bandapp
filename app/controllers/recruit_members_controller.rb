@@ -6,12 +6,6 @@ class RecruitMembersController < ApplicationController
     @parts = Part.all
   end
 
-  def create
-    @member = RecruitMember.new(member_params)
-    flash[:notice] = "募集メンバーを登録しました！"
-    redirect_to band_path(@member.band_id) if @member.save
-  end
-
   def edit
     @member = RecruitMember.find(params[:id])
     @band = Band.find(@member.band_id)
@@ -19,11 +13,16 @@ class RecruitMembersController < ApplicationController
     @parts = Part.all
   end
 
+  def create
+    @member = RecruitMember.new(member_params)
+    flash[:notice] = t("notice.create")
+    redirect_to band_path(@member.band_id) if @member.save
+  end
+
   def update
     @member = RecruitMember.find(params[:id])
     @member.update(member_params)
-    flash[:notice] = "編集が完了しました！"
-    redirect_to band_path(@member.band_id)
+    redirect_to band_path(@member.band_id), notice: t("notice.update")
   end
 
   def destroy

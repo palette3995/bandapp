@@ -31,8 +31,7 @@ class BandsController < ApplicationController
     else
       # 登録完了後の処理
       @band.update(band_params)
-      flash[:notice] = "編集完了しました！"
-      redirect_to band_path
+      redirect_to band_path, notice: t("notice.update")
     end
   end
 
