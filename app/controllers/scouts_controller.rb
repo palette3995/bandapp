@@ -5,23 +5,16 @@ class ScoutsController < ApplicationController
     @scout = Scout.new
     @scouted_user = User.find(params[:id])
     @parts = Part.where(id: 1..6)
-    bands = @user.bands.joins(:scouts, :band_members, :user_scouted_mes).where(band_members: { role: "リーダー" }) # 自分がバンドリーダーでない場合はスカウトを送れない
-    @bands = bands.where.not(scouts: { scouted_user_id: @scouted_user.id }) # 同バンドからすでにスカウト送ってる場合を除く
-                  .or(bands.where.not(band_members: { user_id: @scouted_user.id })) # 同バンドに相手がすでに所属している場合を除く
-                  .or(bands.where.not(user_scouted_mes: { id: @scouted_user.id })) # 同バンドに相手から既にスカウトを受けている場合を除く
+    @bands =Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
   end
 
   def new_band
     @scout = Scout.new
     @scouted_band = Band.find(params[:id])
     scouted_band_members = @scouted_band.band_members
+    @reader = scouted_band_members.find_by(role: "リーダー").user
     @parts = Part.where(id: 1..6)
-    bands = @user.bands.joins(:scouts, :band_members, :user_scouted_mes, :band_scouted_mes).where(band_members: { role: "リーダー" }) # 自分がバンドリーダーでない場合はスカウトを送れない
-    @bands = bands.where(scouts: { scouted_band_id: @scouted_band.id }) # 同バンドから申請先のバンドに既にスカウトを送った場合を除く
-                  .or(bands.where(scouts: { scouted_user_id: scouted_band_members.ids })) # 同バンドから相手バンド所属のメンバー個人にスカウト場合を除く
-                  .or(bands.where(band_scouted_mes: { id: @scouted_band.id })) # 同バンドに相手バンドから既にスカウトを受けている場合を除く
-                  .or(bands.where(user_scouted_mes: { id: scouted_band_members.ids })) # 相手バンド所属のメンバー個人から加入申請が届いている場合を除く
-                  .or(bands.where(band_members: { user_id: scouted_band_members.pluck(:user_id) })) # 申請先バンドに自身のバンドメンバーの誰かが所属している場合を除く
+    @bands =Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
   end
 
   def index
@@ -30,11 +23,58 @@ class ScoutsController < ApplicationController
 
   def create
     @scout = Scout.new(scout_params)
-    if @scout.save
-      flash.now[:scout] = "スカウトを送りました。"
-      redirect_to scouts_path
+    band = Band.find(params[:scout][:band_id]) if params[:scout][:band_id].present?
+    scouted_user = User.find(params[:scout][:scouted_user_id])
+    if band.present?
+      if scouted_user.band_scouted_mes.include?(band)
+        flash[:alert] = "既にスカウトを送っています。"
+        redirect_to new_user_scout_path(params[:scout][:scouted_user_id])
+      elsif band.user_scouted_mes.include?(scouted_user)
+        flash[:alert] = "相手から既にスカウトが届いています。"
+        redirect_to new_user_scout_path(params[:scout][:scouted_user_id])
+      elsif scouted_user.bands.include?(band)
+        flash[:alert] = "既にバンドメンバーです。"
+        redirect_to new_user_scout_path(params[:scout][:scouted_user_id])
+      else
+        @scout.save
+        flash[:notice] = "スカウトを送りました！"
+        redirect_to scouts_path
+      end
     else
-      render new_user_scout_path(params[:id])
+      @scout.save
+      flash[:notice] = "スカウトを送りました！"
+      redirect_to scouts_path
+    end
+  end
+
+  def create_band
+    @scout = Scout.new(scout_params)
+    band = Band.find(params[:scout][:band_id])
+    band_members = band.band_members.map{|member| member.user }
+    scouted_band = Band.find(params[:scout][:scouted_band_id])
+    scouted_band_members = scouted_band.band_members.map{|member| member.user }
+    if band.band_scouted_mes.include?(scouted_band)
+      flash[:alert] = "相手バンドから既にスカウトが届いています。"
+      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+    elsif scouted_band.band_scouted_mes.include?(band)
+      flash[:alert] ="相手バンドへ既にスカウトを送っています。"
+      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+    elsif (band.user_scouted_mes & scouted_band_members).present?
+      flash[:alert] = "相手バンド所属のメンバーから既にスカウトが届いています。"
+      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+    elsif (scouted_band.user_scouted_mes & band_members).present?
+      flash[:alert] = "所属メンバーが相手バンドへ既にスカウトを送っています。"
+      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+    elsif (band_members & scouted_band_members).present?
+      flash[:alert] = "共通のメンバーがいる為スカウトを送れません。"
+      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+    elsif band_members.count + scouted_band_members.count > 10
+      flash[:alert] = "バンドメンバーが10人を超える為スカウトを送れません。"
+      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+    else
+      @scout.save
+      flash[:notice] = "スカウトを送りました！"
+      redirect_to scouts_path
     end
   end
 
@@ -69,29 +109,31 @@ class ScoutsController < ApplicationController
   def approve_new
     @scout = Scout.find(params[:id])
     @band = Band.create(name: "新規バンド")
-    BandMember.create(band_id: @band.id, user_id: @scout.user_id, part_id: @scout.part_id,
-                      other_part: @scout.other_part, role: "リーダー")
-    BandMember.create(band_id: @band.id, user_id: @user.id, part_id: @scout.scouted_part_id,
-                      other_part: @scout.scouted_other_part, role: "メンバー")
+    @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "リーダー")
+    @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
+    update_band_colums(@band.id)
+    flash[:notice] = "スカウトを承認しました！"
     redirect_to bands_path
   end
 
   def approve_offer
     @scout = Scout.find(params[:id])
     @band = Band.find(@scout.band_id)
-    BandMember.create(band_id: @band.id, user_id: @user.id, part_id: @scout.scouted_part_id,
-                      other_part: @scout.scouted_other_part, role: "メンバー")
+    @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
+    update_band_colums(@band.id)
+    flash[:notice] = "スカウトを承認しました！"
     redirect_to bands_path
   end
 
   def approve_join
     @scout = Scout.find(params[:id])
     @band = Band.find(@scout.scouted_band_id)
-    BandMember.create(band_id: @band.id, user_id: @scout.user_id, part: @scout.part_id, other_part: @scout.other_part,
-                      role: "メンバー")
+    @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part,role: "メンバー")
     @scout.destroy
+    update_band_colums(@band.id)
+    flash[:notice] = "スカウトを承認しました！"
     redirect_to bands_path
   end
 
@@ -101,23 +143,23 @@ class ScoutsController < ApplicationController
     offered = Band.find(@scout.scouted_band_id)
     @band = Band.create(name: "新規バンド")
     offering.band_members.each do |member|
-      member.band_id = @band.id
-      member.save
+      @band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: member.role)
     end
     offered.band_members.each do |member|
-      member.band_id = @band.id
-      member.role = "メンバー"
-      member.save
+      @band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: "メンバー")
     end
-    offering.destroy
-    offered.destroy
     @scout.destroy
+    offered.destroy
+    offering.destroy
+    update_band_colums(@band.id)
+    flash[:notice] = "スカウトを承認しました！"
     redirect_to bands_path
   end
 
   def refuse
     @scout = Scout.find(params[:id])
     @scout.destroy
+    flash[:notice] = "スカウトを拒否しました。"
     redirect_to scouts_path
   end
 
