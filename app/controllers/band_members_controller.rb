@@ -17,6 +17,14 @@ class BandMembersController < ApplicationController
   end
 
   def destroy
+    @member = BandMember.find(params[:id])
+    @band = @member.band
+    if @member.role == "リーダー"
+      other_member = @band.band_members.where.not(id: @member.id).first
+      other_member.update!(role: "リーダー")
+    end
+    @member.destroy
+    update_band_colums(@band.id)
   end
 
   private
