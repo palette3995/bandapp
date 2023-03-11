@@ -30,8 +30,15 @@ class UsersController < ApplicationController
     else
       # 登録完了後の処理
       @user.update(user_params)
+      update_user_bands(@user)
+      flash[:notice] = "編集が完了しました！"
       redirect_to user_path
     end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
   end
 
   def search
@@ -114,5 +121,11 @@ class UsersController < ApplicationController
   def delete_media(media)
     media.purge
     render action: "edit"
+  end
+
+  def update_user_bands(user)
+    user.bands.ids.each do |id|
+      update_band_colums(id)
+    end
   end
 end
