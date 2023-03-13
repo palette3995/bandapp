@@ -53,23 +53,4 @@ class User < ApplicationRecord
   def self.ransackable_associations(_auth_object = nil)
     %w[band_members bands genres parts prefecture user_genres user_parts]
   end
-
-  # いいね機能関連のメソッド
-  def favorite_user(receiver)
-    favorites.find_or_create_by(favorited_user_id: receiver.id) unless self == receiver
-  end
-
-  def favorite_band(receiver)
-    avorites.find_or_create_by(band_id: receiver.id) unless bands.pluck(:id).include?(receiver.id)
-  end
-
-  def cancel_favorite_user(receiver)
-    favorite = favorites.find_by(favorited_user_id: receiver.id)
-    favorite&.destroy
-  end
-
-  def cancel_favorite_band(receiver, _band)
-    favorite = favorites.find_by(band_id: receiver.id)
-    favorite&.destroy
-  end
 end
