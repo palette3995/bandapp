@@ -46,9 +46,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :favorites, only: [:index] do
+  resources :favorites, only: [:index, :destroy] do
     collection do
-      get 'send'
+      get 'send_band'
+      get 'received_user'
+      get 'received_band'
+      post 'create_band'
+    end
+    member do
+      post 'create_user'
+      post 'create_band'
+      delete 'destroy_band'
     end
   end
 end
