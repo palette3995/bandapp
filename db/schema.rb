@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_11_123455) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_14_095409) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -83,6 +83,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_123455) do
     t.integer "men"
     t.integer "women"
     t.integer "other_gender"
+  end
+
+  create_table "chats", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "band_id", null: false
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_chats_on_band_id"
+    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -204,6 +214,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_123455) do
   add_foreign_key "band_members", "bands"
   add_foreign_key "band_members", "parts"
   add_foreign_key "band_members", "users"
+  add_foreign_key "chats", "bands"
+  add_foreign_key "chats", "users"
   add_foreign_key "favorites", "bands"
   add_foreign_key "favorites", "users"
   add_foreign_key "favorites", "users", column: "favorited_user_id"
