@@ -31,24 +31,11 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              気になる
+              お気に入り
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><%= link_to "気になる人", "#", class: "dropdown-item" %></li>
-              <li><%= link_to "気になるバンド", "#", class: "dropdown-item" %></li>
+              <li><%= link_to "お気に入り一覧", favorites_path, class: "dropdown-item" %></li>
             </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              検索
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><%= link_to "ユーザー検索", "#", class: "dropdown-item" %></li>
-              <li><%= link_to "バンド検索", "#", class: "dropdown-item" %></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <%= link_to "メッセージ", "#", class: "nav-link" %>
           </li>
           <li class="nav-item">
             <%= link_to "通知", "#", class: "nav-link" %>
