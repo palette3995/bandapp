@@ -107,5 +107,10 @@
   </div>
   <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
     <%= link_to "脱退する", band_member_path(@user.id), data: { turbo_confirm: "バンドから脱退します、本当によろしいですか？", turbo_method: :delete }, class: "btn btn-danger" %>
+  <% else %>
+    <div class="my-3">
+      <%= render partial: 'shared/favorite_band', locals: { band: @band } %>
+      <%= render partial: 'shared/scout_band', locals: { band: @band } %>
+    </div>
   <% end %>
 </div>

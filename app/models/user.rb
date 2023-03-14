@@ -17,16 +17,14 @@ class User < ApplicationRecord
 
   # Favoriteモデルとのアソシエーション
   has_many :favorites, dependent: :destroy
-  has_many :reverse_of_favorites, class_name: "Favorite", dependent: :destroy
+  has_many :reverse_of_favorites, class_name: "Favorite", foreign_key: "favorited_user_id", dependent: :destroy, inverse_of: :user
   has_many :favoriting_users, through: :favorites, source: :favorited_user
-  has_many :favoriting_bands, through: :favorites, source: :favorited_band
+  has_many :favoriting_bands, through: :favorites, source: :band
   has_many :user_favorited_mes, through: :reverse_of_favorites, source: :user
-  has_many :band_favorited_mes, through: :reverse_of_favorites, source: :band
-  has_many :recruit_members, through: :favorites
 
   # Scoutモデルとのアソシエーション
   has_many :scouts, dependent: :destroy
-  has_many :reverse_of_scouts, class_name: "Scout", dependent: :destroy
+  has_many :reverse_of_scouts, class_name: "Scout", foreign_key: "scouted_user_id", dependent: :destroy, inverse_of: :user
   has_many :scouting_users, through: :scouts, source: :scouted_user
   has_many :scouting_bands, through: :scouts, source: :scouted_band
   has_many :user_scouted_mes, through: :reverse_of_scouts, source: :user
@@ -54,51 +52,5 @@ class User < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[band_members bands genres parts prefecture user_genres user_parts]
-  end
-
-  # いいね機能関連のメソッド
-  def favorite_user(receiver, band)
-    if band?
-      favorite = Favorite.find_by(favorited_user_id: receiver.id, band_id: band.id)
-      favorites.create(favorited_user_id: receiver.id, band_id: band.id) unless favorite
-    else
-      favorites.find_or_create_by(favorited_user_id: receiver.id) unless self == receiver
-    end
-  end
-
-  def favorite_band(receiver, band)
-    if band?
-      favorite = Favorite.find_by(favorited_band_id: receiver.id, band_id: band.id)
-      favorites.create(favorited_band_id: receiver.id, band_id: band.id) unless favorite
-    else
-      favorites.find_or_create_by(favorited_band_id: receiver.id) unless bands.pluck(:id).include?(receiver.id)
-    end
-  end
-
-  def favorite_recruit(receiver)
-    favorites.find_or_create_by(recruit_member_id: receiver.id) unless bands.pluck(:id).include?(receiver.band_id)
-  end
-
-  def cancel_favorite_user(receiver, _band)
-    favorite = if band?
-                 favorites.find_by(favorited_user_id: receiver.id, band_id: :band.id)
-               else
-                 favorites.find_by(favorited_user_id: receiver.id)
-               end
-    favorite&.destroy
-  end
-
-  def cancel_favorite_band(receiver, _band)
-    favorite = if band?
-                 favorites.find_by(favorited_band_id: receiver.id, band_id: :band.id)
-               else
-                 favorites.find_by(favorited_band_id: receiver.id)
-               end
-    favorite&.destroy
-  end
-
-  def cancel_favorite_recruit(receiver)
-    favorite = favorites.find_by(recruit_member_id: receiver.id)
-    favorite&.destroy
   end
 end

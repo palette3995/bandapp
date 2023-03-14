@@ -1,0 +1,5 @@
+<% unless band.band_members.count == 10 %>
+  <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary" %>
+<% else %>
+  メンバー数が上限に達している為<br>スカウトできません
+<% end %>

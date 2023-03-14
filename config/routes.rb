@@ -45,4 +45,17 @@ Rails.application.routes.draw do
       get 'refuse'
     end
   end
+
+  resources :favorites, only: [:index, :destroy] do
+    collection do
+      get 'send_band'
+      get 'received_user'
+      get 'received_band'
+    end
+    member do
+      post 'create_user'
+      post 'create_band'
+      delete 'destroy_band'
+    end
+  end
 end

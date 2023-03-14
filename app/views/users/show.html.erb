@@ -83,6 +83,11 @@
           <div class="my-3">
             <%= link_to "マイページを編集", edit_user_path(@user.id), class: "btn btn-secondary" %>
           </div>
+        <% else %>
+          <div class="my-3">
+            <%= render partial: 'shared/favorite_user', locals: { user: @user } %>
+            <%= render partial: 'shared/scout_user', locals: { user: @user } %>
+          </div>
         <% end %>
       </div>
     </div>

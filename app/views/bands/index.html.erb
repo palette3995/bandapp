@@ -74,13 +74,6 @@
                     <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
                     <span class="card-text">曲：<%= band.original %></span>
                   </div>
-                  <div class="scout_links my-3">
-                    <% unless band.band_members.count == 10 %>
-                      <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary" %>
-                    <% else %>
-                      メンバー数が上限に達している為<br>スカウトできません
-                    <% end %>
-                  </div>
                 </div>
               <% end %>
             </div>
@@ -111,13 +104,6 @@
                         <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
                         <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
                         <span class="card-text">曲：<%= band.original %></span>
-                      </div>
-                      <div class="scout_links my-3">
-                        <% unless band.band_members.count == 10 %>
-                          <%= link_to "スカウト", new_band_scout_path(band.id), class: "btn btn-secondary" %>
-                        <% else %>
-                          メンバー数が上限に達している為<br>スカウトできません
-                        <% end %>
                       </div>
                     </div>
                   </div>

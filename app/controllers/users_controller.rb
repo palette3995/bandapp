@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update]
-  before_action :set_current_user, :set_recomend_users, only: %i[index match_ages match_levels match_genres]
+  before_action :set_recomend_users, only: %i[index match_ages match_levels match_genres]
   before_action :set_user_part, only: %i[index match_levels]
   before_action :set_parts, :set_genres, except: %i[show search]
   before_action :set_user_parts, only: %i[edit update]
@@ -8,9 +8,9 @@ class UsersController < ApplicationController
   before_action :set_levels
 
   def index
-    @match_ages = @recomend_users.where(age: @current_user.age - 5..@current_user.age + 5).limit(4)
+    @match_ages = @recomend_users.where(age: current_user.age - 5..current_user.age + 5).limit(4)
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
-    @match_genres = @recomend_users.where(user_genres: { genre_id: @current_user.genres.ids }).limit(4)
+    @match_genres = @recomend_users.where(user_genres: { genre_id: current_user.genres.ids }).limit(4)
   end
 
   def show
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
   end
 
   def match_ages
-    @users = @recomend_users.where(age: @current_user.age - 5..@current_user.age + 5)
+    @users = @recomend_users.where(age: current_user.age - 5..current_user.age + 5)
   end
 
   def match_levels
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def match_genres
-    @users = @recomend_users.where(user_genres: { genre_id: @current_user.genres.ids })
+    @users = @recomend_users.where(user_genres: { genre_id: current_user.genres.ids })
   end
 
   private
@@ -83,10 +83,6 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
-  end
-
-  def set_current_user
-    @current_user = current_user
   end
 
   def set_parts

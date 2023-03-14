@@ -72,13 +72,6 @@
                       <p class="card-text my-1"><%= user.parts[0].name %></p>
                       <span class="card-text"><%= user.user_parts[0].level %></span>
                     </div>
-                    <div class="scout_links my-3">
-                      <% unless user.bands.count == 10 %>
-                        <%= link_to "スカウト", new_user_scout_path(user.id), class: "btn btn-secondary" %>
-                      <% else %>
-                        相手のバンド数が上限に達している為<br>スカウトできません
-                      <% end %>
-                    </div>
                   </div>
                 <% end %>
               </div>
@@ -109,13 +102,6 @@
                           <span class="card-text"><%= "#{user.age}歳"%></span>
                           <p class="card-text my-1"><%= user.parts[0].name %></p>
                           <span class="card-text"><%= user.user_parts[0].level %></span>
-                        </div>
-                        <div class="scout_links my-3">
-                          <% unless user.bands.count == 10 %>
-                            <%= link_to "スカウト", new_user_scout_path(user.id), class: "btn btn-secondary" %>
-                          <% else %>
-                            相手のバンド数が上限に達している為<br>スカウトできません
-                          <% end %>
                         </div>
                       </div>
                     </div>
@@ -148,13 +134,6 @@
                           <span class="card-text"><%= "#{user.age}歳"%></span>
                           <p class="card-text my-1"><%= user.parts[0].name %></p>
                           <span class="card-text"><%= user.user_parts[0].level %></span>
-                        </div>
-                        <div class="scout_links my-3">
-                          <% unless user.bands.count == 10 %>
-                            <%= link_to "スカウト", new_user_scout_path(user.id), class: "btn btn-secondary" %>
-                          <% else %>
-                            相手のバンド数が上限に達している為<br>スカウトできません
-                          <% end %>
                         </div>
                       </div>
                     </div>

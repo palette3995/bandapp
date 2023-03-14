@@ -11,11 +11,7 @@ class Band < ApplicationRecord
 
   # Favoriteモデルとのアソシエーション
   has_many :favorites, dependent: :destroy
-  has_many :reverse_of_favorites, class_name: "Favorite", dependent: :destroy
-  has_many :favoriting_users, through: :favorites, source: :favorited_user
-  has_many :favoriting_bands, through: :favorites, source: :favorited_band
-  has_many :user_favorited_mes, through: :reverse_of_favorites, source: :user
-  has_many :band_favorited_mes, through: :reverse_of_favorites, source: :band
+  has_many :user_favorited_mes, through: :favorites, source: :user
 
   # Scoutモデルとのアソシエーション
   has_many :scouts, dependent: :destroy
