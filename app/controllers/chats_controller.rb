@@ -7,9 +7,7 @@ class ChatsController < ApplicationController
 
   def create
     @chat = Chat.new(chat_params)
-    if @chat.save
-      redirect_to chat_path(params[:chat][:band_id])
-    end
+    redirect_to chat_path(params[:chat][:band_id]) if @chat.save
   end
 
   private
@@ -17,6 +15,4 @@ class ChatsController < ApplicationController
   def chat_params
     params.require(:chat).permit(:user_id, :band_id, :message)
   end
-
-
 end
