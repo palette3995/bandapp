@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_14_095409) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -110,6 +110,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_095409) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "subject_type"
+    t.bigint "subject_id"
+    t.integer "action_type", null: false
+    t.boolean "read", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subject_type", "subject_id"], name: "index_notifications_on_subject"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "parts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -219,6 +231,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_095409) do
   add_foreign_key "favorites", "bands"
   add_foreign_key "favorites", "users"
   add_foreign_key "favorites", "users", column: "favorited_user_id"
+  add_foreign_key "notifications", "users"
   add_foreign_key "recruit_members", "bands"
   add_foreign_key "recruit_members", "parts"
   add_foreign_key "scouts", "bands"
