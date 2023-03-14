@@ -22,9 +22,9 @@ class FavoritesController < ApplicationController
     @user.favorites.find_or_create_by(favorited_user_id: params[:id])
 
     render turbo_stream: turbo_stream.replace(
-      'favorite-user-button',
-      partial: 'shared/favorite_user',
-      locals: { user: @favorited_user },
+      "favorite-user-button",
+      partial: "shared/favorite_user",
+      locals: { user: @favorited_user }
     )
   end
 
@@ -33,33 +33,33 @@ class FavoritesController < ApplicationController
     @user.favorites.find_or_create_by(band_id: params[:id])
 
     render turbo_stream: turbo_stream.replace(
-      'favorite-band-button',
-      partial: 'shared/favorite_band',
-      locals: { band: @favorited_band },
+      "favorite-band-button",
+      partial: "shared/favorite_band",
+      locals: { band: @favorited_band }
     )
   end
 
   def destroy
     @favorited_user = User.find(params[:id])
     @favorite = @user.favorites.find_by(favorited_user_id: params[:id])
-    @favorite.destroy if @favorite
+    @favorite&.destroy
 
     render turbo_stream: turbo_stream.replace(
-      'favorite-user-button',
-      partial: 'shared/favorite_user',
-      locals: { user: @favorited_user },
+      "favorite-user-button",
+      partial: "shared/favorite_user",
+      locals: { user: @favorited_user }
     )
   end
 
   def destroy_band
     @favorited_band = Band.find(params[:id])
     @favorite = @user.favorites.find_by(band_id: params[:id])
-    @favorite.destroy if @favorite
+    @favorite&.destroy
 
     render turbo_stream: turbo_stream.replace(
-      'favorite-band-button',
-      partial: 'shared/favorite_band',
-      locals: { band: @favorited_band },
+      "favorite-band-button",
+      partial: "shared/favorite_band",
+      locals: { band: @favorited_band }
     )
   end
 
