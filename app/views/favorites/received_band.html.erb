@@ -1,35 +1,31 @@
 <div class="container-fluid text-center">
-  <h4 class= "my-5">届いたスカウト一覧</h4>
+  <h4 class= "my-5">あなたのバンドをお気に入り登録した人</h4>
   <div class="row">
     <div class="side-menu col-xl-3 mb-5">
       <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-            <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-              届いたスカウト
+            <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+              送ったお気に入り
             </button>
           </h2>
-          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
             <div class="accordion-body">
-              <div class="scout-links"><%= link_to "新規バンド結成", scouts_path, class: "side-memu-links active" %></div>
-              <div class="scout-links"><%= link_to "バンドからのお誘い", received_offer_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "あなたのバンドへの加入申請", received_join_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "バンド合併申請", received_marge_scouts_path, class: "side-memu-links" %></div>
+              <div class="user-links"><%= link_to "ユーザー", favorites_path, class: "side-memu-links" %></div>
+              <div class="user-links"><%= link_to "バンド", send_band_favorites_path, class: "side-memu-links" %></div>
             </div>
           </div>
         </div>
         <div class="accordion-item">
           <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-            <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-              送ったスカウト
+            <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
+              届いたお気に入り
             </button>
           </h2>
-          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
             <div class="accordion-body">
-              <div class="scout-links"><%= link_to "新規バンド結成", send_new_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "あなたのバンドにお誘い", send_offer_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "相手バンドへの加入申請", send_join_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "バンド合併申請", send_marge_scouts_path, class: "side-memu-links" %></div>
+              <div class="user-links"><%= link_to "あなた宛", received_user_favorites_path, class: "side-memu-links" %></div>
+              <div class="user-links"><%= link_to "あなたのバンド", received_band_favorites_path, class: "side-memu-links active" %></div>
             </div>
           </div>
         </div>
@@ -37,31 +33,31 @@
     </div>
     <div class="container col-xl-8">
       <div class="row search-wrapper p-4">
-        <% if @scouts.present? %>
-          <% @scouts.each do |scout| %>
-            <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
-              <%= link_to user_path(scout.user.id), class: "text-decoration-none text-dark" do %>
-                <div class="card">
-                  <% if scout.user.image.attached? %>
-                   <%= image_tag scout.user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                  <% else %>
-                   <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                  <% end %>
-                  <div class="card-body profile">
-                    <p class="card-text"><%= scout.user.name %><br>さんからのスカウト</p>
-                    <p class="card-text">あなたのパート:<%= scout.scouted_part.name %></p>
-                    <span class="card-text">相手のパート:<%= scout.part.name %></span>
-                    <p class="card-text">ひとこと:<%= scout.message %></p>
-                    <p class="card-text my-1">日時:<%= l scout.created_at %></p>
-                    <%= link_to "承諾", approve_new_scout_path(scout.id), data: { turbo_confirm: "スカウトを承認します。よろしいですか？", turbo_method: :delete }, class: "btn btn-success" %>
-                    <%= link_to "拒否", refuse_scout_path(scout.id), data: { turbo_confirm: "スカウトを断りますか？", turbo_method: :delete }, class: "btn btn-secondary" %>
-                  </div>
+        <% if @favorites.present? %>
+          <% @favorites.each do |favorite| %>
+          <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
+            <%= link_to user_path(favorite.user_id), class: "text-decoration-none text-dark" do %>
+              <div class="card" >
+                <% if favorite.user.image.attached? %>
+                 <%= image_tag favorite.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
+                <% else %>
+                 <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
+                <% end %>
+                <div class="card-body profile">
+                  <p class="card-text"><%= favorite.band.name %></p>
+                  <p class="card-text">をお気に入り登録</p>
+                  <p class="card-text"><%= favorite.user.name %></p>
+                  <span class="card-text"><%= favorite.user.prefecture.name %></span>
+                  <span class="card-text"><%= "#{favorite.user.age}歳"%></span>
+                  <p class="card-text my-1"><%= favorite.user.parts[0].name %></p>
+                  <span class="card-text"><%= favorite.user.user_parts[0].level %></span>
                 </div>
-              <% end %>
-            </div>
+              </div>
+            <% end %>
+          </div>
           <% end %>
         <% else %>
-          <p class="my-5">スカウトはありません</p>
+          <p class="my-5">お気に入り登録がありません</p>
         <% end %>
       </div>
     </div>
