@@ -58,4 +58,6 @@ Rails.application.routes.draw do
       delete 'destroy_band'
     end
   end
+
+  resources :chats, only: [:show, :create]
 end

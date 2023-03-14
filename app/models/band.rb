@@ -8,6 +8,7 @@ class Band < ApplicationRecord
   has_many :parts, through: :recruit_members
   has_many :band_genres, dependent: :destroy
   has_many :genres, through: :band_genres
+  has_many :chats, dependent: :destroy
 
   # Favoriteモデルとのアソシエーション
   has_many :favorites, dependent: :destroy
