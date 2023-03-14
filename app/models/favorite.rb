@@ -1,5 +1,5 @@
 class Favorite < ApplicationRecord
   belongs_to :user
-  belongs_to :favorited_user, class_name: "User"
-  belongs_to :band
+  belongs_to :favorited_user, class_name: "User", optional: true
+  belongs_to :band, optional: true
 end
