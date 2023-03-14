@@ -17,14 +17,14 @@ class User < ApplicationRecord
 
   # Favoriteモデルとのアソシエーション
   has_many :favorites, dependent: :destroy
-  has_many :reverse_of_favorites, class_name: "Favorite", foreign_key: "favorited_user_id", dependent: :destroy
+  has_many :reverse_of_favorites, class_name: "Favorite", foreign_key: "favorited_user_id", dependent: :destroy, inverse_of: :user
   has_many :favoriting_users, through: :favorites, source: :favorited_user
   has_many :favoriting_bands, through: :favorites, source: :band
   has_many :user_favorited_mes, through: :reverse_of_favorites, source: :user
 
   # Scoutモデルとのアソシエーション
   has_many :scouts, dependent: :destroy
-  has_many :reverse_of_scouts, class_name: "Scout", foreign_key: "scouted_user_id", dependent: :destroy
+  has_many :reverse_of_scouts, class_name: "Scout", foreign_key: "scouted_user_id", dependent: :destroy, inverse_of: :user
   has_many :scouting_users, through: :scouts, source: :scouted_user
   has_many :scouting_bands, through: :scouts, source: :scouted_band
   has_many :user_scouted_mes, through: :reverse_of_scouts, source: :user
