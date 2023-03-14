@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :band_members, dependent: :destroy
   has_many :bands, through: :band_members
   has_many :chats, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   # Favoriteモデルとのアソシエーション
   has_many :favorites, dependent: :destroy

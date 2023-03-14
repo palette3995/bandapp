@@ -6,4 +6,5 @@ class Scout < ApplicationRecord
   belongs_to :scouted_band, class_name: "Band", optional: true
   belongs_to :part, optional: true
   belongs_to :scouted_part, class_name: "Part", optional: true
+  has_one :notification, as: :subject, dependent: :destroy
 end
