@@ -51,7 +51,6 @@ Rails.application.routes.draw do
       get 'send_band'
       get 'received_user'
       get 'received_band'
-      post 'create_band'
     end
     member do
       post 'create_user'
