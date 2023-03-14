@@ -104,7 +104,7 @@ li {
   border-radius: $border-radius;
 }
 
-.band-list-item, .card, .member-list-item {
+.band-list-item, .card, .member-list-item, .chat-list-item {
   background-color: white;
   border-radius: $border-radius;
 }
@@ -136,4 +136,8 @@ li {
 .image-field {
   background-color: lightyellow;
   border-bottom: solid;
+}
+
+.chat-user {
+  font-size: 10px;
 }
