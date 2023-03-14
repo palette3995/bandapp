@@ -14,27 +14,53 @@ class FavoritesController < ApplicationController
   end
 
   def received_band
-    @favorites = @user.bands.joins(:favorites).where(favorites: {band_id: @user.bands.ids})
+    @favorites = Favorite.where(band_id: @user.bands.ids)
   end
 
   def create_user
     @favorited_user = User.find(params[:id])
-    @user.favorites.find_or_create_by(favorited_user_id: @favorite_user.id)
+    @user.favorites.find_or_create_by(favorited_user_id: params[:id])
+
+    render turbo_stream: turbo_stream.replace(
+      'favorite-user-button',
+      partial: 'shared/favorite_user',
+      locals: { user: @favorited_user },
+    )
   end
 
   def create_band
     @favorited_band = Band.find(params[:id])
-    @user.favorites.find_or_create_by(band_id: @favorite_band.id)
+    @user.favorites.find_or_create_by(band_id: params[:id])
+
+    render turbo_stream: turbo_stream.replace(
+      'favorite-band-button',
+      partial: 'shared/favorite_band',
+      locals: { band: @favorited_band },
+    )
   end
 
   def destroy
+    @favorited_user = User.find(params[:id])
     @favorite = @user.favorites.find_by(favorited_user_id: params[:id])
     @favorite.destroy if @favorite
+
+    render turbo_stream: turbo_stream.replace(
+      'favorite-user-button',
+      partial: 'shared/favorite_user',
+      locals: { user: @favorited_user },
+    )
   end
 
   def destroy_band
+    @favorited_band = Band.find(params[:id])
     @favorite = @user.favorites.find_by(band_id: params[:id])
     @favorite.destroy if @favorite
+
+    render turbo_stream: turbo_stream.replace(
+      'favorite-band-button',
+      partial: 'shared/favorite_band',
+      locals: { band: @favorited_band },
+    )
   end
 
   private
