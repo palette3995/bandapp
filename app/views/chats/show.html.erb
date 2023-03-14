@@ -1,14 +1,14 @@
 <div class="container text-center">
   <div class="row">
-    <div class="col-2 my-5">
+    <div class="col-xl-2 my-5">
       <h5><%= @band.name %></h5>
       <%= link_to "バンド一覧に戻る", user_bands_path(current_user.id), class: "text-dark" %>
     </div>
-    <div class="col-8 my-4">
+    <div class="col-xl-8 my-4">
       <div class="message-list show-wrapper my-3 p-3">
         <% @chats.each do |chat| %>
           <div class="row chat-list-item border my-4 mx-4">
-            <div class="col-lg-2 col-sm-12 my-2">
+            <div class="col-lg-2 col-sm-12 mt-5">
               <% if chat.user.image.attached? %>
                <%= image_tag chat.user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle"%>
               <% else %>
@@ -16,9 +16,9 @@
               <% end %>
               <p class="chat-user"><%= chat.user.name %></p>
             </div>
-            <div class="col-lg-8 col-sm-12 pt-4 my-3">
+            <div class="col-lg-8 pt-4 my-3">
               <%= chat.message %>
-              <p class="text-end"><%= l chat.created_at %></p>
+              <p class="text-end my-2"><%= l chat.created_at %></p>
             </div>
           </div>
         <% end %>
