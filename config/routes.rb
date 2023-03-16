@@ -60,4 +60,13 @@ Rails.application.routes.draw do
   end
 
   resources :chats, only: [:show, :create]
+  resources :notifications, only: [:index] do
+    collection do
+      get 'unreads'
+      patch 'read_all'
+    end
+    member do
+      patch 'read'
+    end
+  end
 end
