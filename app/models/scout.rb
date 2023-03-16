@@ -9,17 +9,33 @@ class Scout < ApplicationRecord
   belongs_to :scouted_part, class_name: "Part", optional: true
   has_one :notification, as: :subject, dependent: :destroy
 
+  def name
+    if user.name.present?
+      user.name
+    else
+      band.name
+    end
+  end
+
+  def redirect_path
+  "/scouts"
+  end
+
   private
 
   def create_notifications
     if band_id.nil? && scouted_band_id.nil?
-      Notification.create!(subject: self, user_id: favorited_user_id, action_type: Notification.notification_types[:new_band_scout])
+      Notification.create!(subject: self, user_id: favorited_user_id, notification_type: Notification.notification_types[:new_band_scout])
     elsif band_id.present? && scouted_band_id.nil?
-      Notification.create!(subject: self, user_id: favorited_user_id, action_type: Notification.notification_types[:band_scout_you])
+      Notification.create!(subject: self, user_id: favorited_user_id, notification_type: Notification.notification_types[:band_scout_you])
     elsif band_id.nil? && scouted_band_id.present?
-      Notification.create!(subject: self, user_id: favorited_user_id, action_type: Notification.notification_types[:want_to_join_your_band])
+      scouted_band.band_members.each do |member|
+        Notification.create!(subject: self, user_id: member.user_id, notification_type: Notification.notification_types[:want_to_join_your_band])
+      end
     elsif band_id.present? && scouted_band_id.present?
-      Notification.create!(subject: self, user_id: favorited_user_id, action_type: Notification.notification_types[:marge_band_request])
+      scouted_band.band_members.each do |member|
+        Notification.create!(subject: self, user_id: member.user_id, notification_type: Notification.notification_types[:marge_band_request])
+      end
     end
   end
 end
