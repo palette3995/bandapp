@@ -16,3 +16,12 @@ ja:
     registered: 既にバンドメンバーです。
     duplicate: 共通のメンバーがいる為スカウトを送れません。
     over: バンドメンバーが10人を超える為スカウトを送れません。
+  enums:
+    notification:
+      notification_type:
+        favorite_you: お気に入りされました
+        favorite_your_band: あなたのバンドがお気に入りされました
+        new_band_scout: バンド結成のお誘いが届きました
+        band_scouts_you: メンバー加入のスカウトが届きました
+        want_to_join_your_band: あなたのバンドへ加入申請が届きました
+        marge_band_request: バンドの合併申請が届きました

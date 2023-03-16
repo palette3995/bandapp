@@ -38,7 +38,12 @@
             </ul>
           </li>
           <li class="nav-item">
-            <%= link_to "通知", "#", class: "nav-link" %>
+            <%= link_to notifications_path, class: "nav-link notification d-inline-block" do %>
+            通知
+            <% if current_user.notifications.where(read: false).present? %>
+              <i class="fas fa-circle fa-xs text-success"></i>
+            <% end %>
+            <% end %>
           </li>
         </ul>
       </div>

@@ -99,12 +99,12 @@ li {
     }
 }
 
-.band-list, .show-wrapper, .form-wrapper, .search-wrapper {
+.band-list, .show-wrapper, .form-wrapper, .search-wrapper, .notification-list {
   background-color: #EEEEEE;
   border-radius: $border-radius;
 }
 
-.band-list-item, .card, .member-list-item, .chat-list-item {
+.band-list-item, .card, .member-list-item, .chat-list-item, .notification-list-item {
   background-color: white;
   border-radius: $border-radius;
 }

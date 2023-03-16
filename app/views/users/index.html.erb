@@ -56,26 +56,7 @@
           <h5>歳の近いユーザー</h5>
           <div class="row">
           <% if @match_ages.present? %>
-            <% @match_ages.each do |user| %>
-              <div class="col-md-3 my-3">
-                <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
-                  <div class="card">
-                    <% if user.image.attached? %>
-                      <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                    <% else %>
-                      <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                    <% end %>
-                    <div class="card-body profile">
-                      <p class="card-text"><%= user.name %></p>
-                      <span class="card-text"><%= user.prefecture.name %></span>
-                      <span class="card-text"><%= "#{user.age}歳"%></span>
-                      <p class="card-text my-1"><%= user.parts[0].name %></p>
-                      <span class="card-text"><%= user.user_parts[0].level %></span>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
+            <%= render partial: 'users/profile', locals: { users: @match_ages } %>
           <% else %>
             <p class="my-5">おすすめユーザーがいません</p>
           <% end %>
@@ -86,28 +67,7 @@
           <h5>レベルの近いユーザー</h5>
           <div class="row">
             <% if @match_levels.present? %>
-              <% @match_levels.each do |user| %>
-                <div class="col-md-3 my-3">
-                  <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
-                    <div class="card ">
-                      <% if user.image.attached? %>
-                       <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                      <% else %>
-                       <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                      <% end %>
-                      <div class="card-body">
-                        <div class="profile">
-                          <p class="card-text"><%= user.name %></p>
-                          <span class="card-text"><%= user.prefecture.name %></span>
-                          <span class="card-text"><%= "#{user.age}歳"%></span>
-                          <p class="card-text my-1"><%= user.parts[0].name %></p>
-                          <span class="card-text"><%= user.user_parts[0].level %></span>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
+              <%= render partial: 'users/profile', locals: { users: @match_levels } %>
             <% else %>
               <p class="my-5">おすすめユーザーがいません</p>
             <% end %>
@@ -118,28 +78,7 @@
           <h5>ジャンルが同じなユーザー</h5>
           <div class="row">
             <% if @match_genres.present? %>
-              <% @match_genres.each do |user| %>
-                <div class="col-md-3 my-3">
-                  <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
-                    <div class="card ">
-                      <% if user.image.attached? %>
-                       <%= image_tag user.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                      <% else %>
-                       <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                      <% end %>
-                      <div class="card-body">
-                        <div class="profile">
-                          <p class="card-text"><%= user.name %></p>
-                          <span class="card-text"><%= user.prefecture.name %></span>
-                          <span class="card-text"><%= "#{user.age}歳"%></span>
-                          <p class="card-text my-1"><%= user.parts[0].name %></p>
-                          <span class="card-text"><%= user.user_parts[0].level %></span>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
+              <%= render partial: 'users/profile', locals: { users: @match_genres } %>
             <% else %>
               <p class="my-5">おすすめユーザーがいません</p>
             <% end %>

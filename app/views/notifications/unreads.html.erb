@@ -1,0 +1,35 @@
+<div class="container text-center">
+  <h5 class= "my-5">通知</h5>
+  <div class="row">
+    <div class="col-xl-2 my-5">
+      <div class="border rounded m-3">
+        <p class="my-4"><%= link_to "全ての通知", notifications_path, class: "text-dark text-decoration-none fs-5 border-bottom border-3 border-secondary" %></p>
+        <%= link_to "全て既読にする", read_all_notifications_path, data: { turbo_method: :patch }, class: "btn btn-secondary mb-4" %>
+      </div>
+    </div>
+    <div class="notification-list col-xl-8">
+      <% if @notifications.present? %>
+        <% @notifications.each do |notification| %>
+          <%= link_to read_notification_path(notification.id), data: { turbo_method: :patch }, class: "text-decoration-none text-dark" do %>
+            <div class="row notification-list-item border my-4 mx-4">
+              <div class="col-lg-3 mt-3">
+                <% unless notification.read %>
+                  <i class="fas fa-circle"></i>
+                <% end %>
+                <%= render partial: 'users/avatar', locals: { user: notification.subject.user, size: "90×90" } %>
+              </div>
+              <div class="col-lg-8 pt-4 my-2">
+                <p><%= notification.subject.name %></p>
+                <p>さんから<%= notification.notification_type_i18n %></p>
+                <p class="text-end"><%= l notification.created_at %></p>
+              </div>
+            </div>
+          <% end %>
+          <%= paginate @notifications, theme: "bootstrap-5" %>
+        <% end %>
+      <% else %>
+        <p class="m-5">通知はありません</p>
+      <% end %>
+    </div>
+  </div>
+</div>
