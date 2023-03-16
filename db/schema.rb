@@ -116,7 +116,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.bigint "user_id"
     t.string "subject_type"
     t.bigint "subject_id"
-    t.integer "action_type", null: false
+    t.integer "notification_type", null: false
     t.boolean "read", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
