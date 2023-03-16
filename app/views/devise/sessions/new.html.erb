@@ -24,10 +24,11 @@
               </div>
               <div class="action my-3">
                 <%= f.submit "ログイン", :class => "btn btn-secondary btn-block btn-lg w-100" %>
+                <%= link_to "ゲストログイン", guest_user_session_path, data: { turbo_method: :post }, class: "btn btn btn-outline-secondary btn-block btn-lg w-100 my-4" %>
               </div>
-              <%= link_to "パスワードを忘れた方はこちら", new_user_password_path, :class => "text-decoration-none text-dark d-block mb-4" %>
+              <%= link_to "パスワードを忘れた方はこちら", new_user_password_path, class: "text-decoration-none text-dark d-block mb-4" %>
               <div class="action border-top">
-                <%= link_to "アカウントを作成", new_user_registration_path, :class => "btn btn btn-outline-secondary btn-block btn-lg w-75 my-4" %>
+                <%= link_to "アカウントを作成", new_user_registration_path, class: "btn btn btn-outline-secondary btn-block btn-lg w-75 my-4" %>
               </div>
             <% end %>
           </div>

@@ -6,7 +6,7 @@ class BandsController < ApplicationController
   def index
     @parts = Part.all
     @genres = Genre.all
-    @match_ages = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5).limit(4)
+    @match_ages = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
     @match_genres = @recomend_bands.where(band_genres: { genre_id: current_user.genres.ids }).limit(4)
   end
 
