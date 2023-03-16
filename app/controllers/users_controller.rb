@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   before_action :set_levels
 
   def index
-    @match_ages = @recomend_users.where(age: current_user.age - 5..current_user.age + 5).limit(4)
+    @match_ages = @recomend_users.where(age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
     @match_genres = @recomend_users.where(user_genres: { genre_id: current_user.genres.ids }).limit(4)
   end

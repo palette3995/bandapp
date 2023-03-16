@@ -6,7 +6,7 @@
         <div class="card-body">
           <div class="profile">
             <p class="card-text"><%= band.name %></p>
-            <span class="card-text"><%= band.prefecture.name %></span>
+            <span class="card-text"><%= band.prefecture.name if band.prefecture %></span>
             <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
             <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
             <span class="card-text">曲：<%= band.original %></span>
