@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     root to: 'devise/sessions#new', as: :new_user_session
     post 'signin', to: 'devise/sessions#create', as: :user_session
     delete 'signout', to: 'devise/sessions#destroy', as: :destroy_user_session
+    post 'guest_signin', to: "users/sessions#guest_sign_in", as: :guest_user_session
   end
   resources :users, only: [:index, :show, :edit, :update] do
     collection do
