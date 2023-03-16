@@ -5,12 +5,10 @@ class Favorite < ApplicationRecord
   belongs_to :band, optional: true
   has_one :notification, as: :subject, dependent: :destroy
 
-  def name
-    user.name
-  end
+  delegate :name, to: :user
 
   def redirect_path
-  "/favorites"
+    "/favorites"
   end
 
   private
@@ -25,5 +23,4 @@ class Favorite < ApplicationRecord
       end
     end
   end
-
 end

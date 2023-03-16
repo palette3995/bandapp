@@ -10,15 +10,11 @@ class Scout < ApplicationRecord
   has_one :notification, as: :subject, dependent: :destroy
 
   def name
-    if user.name.present?
-      user.name
-    else
-      band.name
-    end
+    (user.name.presence || band.name)
   end
 
   def redirect_path
-  "/scouts"
+    "/scouts"
   end
 
   private
