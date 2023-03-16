@@ -1,16 +1,25 @@
-<h2><%= t('.forgot_your_password') %></h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="top-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="top-text col mx-auto">
+        <h1 class="top-title fw-bold">BANDAPP</h1>
+        <h3 class="top-discription">ここにテキストを入力</h3>
+      </div>
+      <div class="login-form col-xl-7">
+        <div class="card w-50 mx-auto shadow border border-1">
+          <div class="card-body mx-2">
+            <%= form_with model: @user, url: password_path(@user), local: true do |f| %>
+              <h5>パスワードを忘れた方</h5>
+              <div class="form-group my-4">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control-lg w-100 border border-1", placeholder: "メールアドレス"%>
+              </div>
+              <div class="action my-3">
+                <%= f.submit "パスワード再設定メールを送信", class: "btn btn-secondary btn-block btn-lg w-100" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="actions">
-    <%= f.submit t('.send_me_reset_password_instructions') %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
