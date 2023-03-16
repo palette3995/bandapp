@@ -16,7 +16,7 @@ class Band < ApplicationRecord
 
   # Scoutモデルとのアソシエーション
   has_many :scouts, dependent: :destroy
-  has_many :reverse_of_scouts, class_name: "Scout", dependent: :destroy
+  has_many :reverse_of_scouts, class_name: "Scout", foreign_key: "scouted_band_id", dependent: :destroy, inverse_of: :band
   has_many :scouting_users, through: :scouts, source: :scouted_user
   has_many :scouting_bands, through: :scouts, source: :scouted_band
   has_many :user_scouted_mes, through: :reverse_of_scouts, source: :user
