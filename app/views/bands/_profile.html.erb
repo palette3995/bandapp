@@ -1,0 +1,18 @@
+<% bands.each do |band| %>
+  <div class="col-md-3 my-3">
+    <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
+      <div class="card ">
+        <%= render partial: 'bands/avatar', locals: { band: band, size: "100×100" } %>
+        <div class="card-body">
+          <div class="profile">
+            <p class="card-text"><%= band.name %></p>
+            <span class="card-text"><%= band.prefecture.name %></span>
+            <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
+            <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
+            <span class="card-text">曲：<%= band.original %></span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
