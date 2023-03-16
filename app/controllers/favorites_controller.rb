@@ -2,19 +2,19 @@ class FavoritesController < ApplicationController
   before_action :set_user
 
   def index
-    @users = @user.favoriting_users
+    @users = @user.favoriting_users.page(params[:page])
   end
 
   def send_band
-    @bands = @user.favoriting_bands
+    @bands = @user.favoriting_bands.page(params[:page])
   end
 
   def received_user
-    @users = @user.user_favorited_mes
+    @users = @user.user_favorited_mes.page(params[:page])
   end
 
   def received_band
-    @favorites = Favorite.where(band_id: @user.bands.ids)
+    @favorites = Favorite.where(band_id: @user.bands.ids).page(params[:page])
   end
 
   def create_user
