@@ -38,11 +38,7 @@
           <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
             <%= link_to user_path(favorite.user_id), class: "text-decoration-none text-dark" do %>
               <div class="card" >
-                <% if favorite.user.image.attached? %>
-                 <%= image_tag favorite.image.variant(resize: "100x100", gravity: "center"), class: "avatar rounded-circle my-3 mx-auto"%>
-                <% else %>
-                 <%= image_tag 'default.png', size: "100x100", class: "avatar rounded-circle my-3 mx-auto"%>
-                <% end %>
+                <%= render partial: 'users/avatar', locals: { user: favorite.user, size: "100×100" } %>
                 <div class="card-body profile">
                   <p class="card-text"><%= favorite.band.name %></p>
                   <p class="card-text">をお気に入り登録</p>
@@ -59,6 +55,7 @@
         <% else %>
           <p class="my-5">お気に入り登録がありません</p>
         <% end %>
+        <%= paginate @favorites, theme: "bootstrap-5" %>
       </div>
     </div>
   </div>
