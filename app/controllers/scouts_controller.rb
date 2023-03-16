@@ -18,7 +18,7 @@ class ScoutsController < ApplicationController
   end
 
   def index
-    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil, scouted_band_id: nil)
+    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def create
@@ -47,60 +47,63 @@ class ScoutsController < ApplicationController
 
   def create_band
     @scout = Scout.new(scout_params)
-    band = Band.find(params[:scout][:band_id])
-    band_members = band.band_members.map(&:user)
     scouted_band = Band.find(params[:scout][:scouted_band_id])
     scouted_band_members = scouted_band.band_members.map(&:user)
-    if band.band_scouted_mes.include?(scouted_band)
-      flash[:alert] = t("alert.received")
-      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
-    elsif scouted_band.band_scouted_mes.include?(band)
-      flash[:alert] = t("alert.sent")
-      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
-    elsif (band.user_scouted_mes & scouted_band_members).present?
-      flash[:alert] = t("alert.received_other")
-      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
-    elsif (scouted_band.user_scouted_mes & band_members).present?
-      flash[:alert] = t("alert.sent_other")
-      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
-    elsif (band_members & scouted_band_members).present?
-      flash[:alert] = t("alert.duplicate")
-      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
-    elsif band_members.count + scouted_band_members.count > 10
-      flash[:alert] = t("alert.over")
-      redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
-    else
-      @scout.save
-      redirect_to scouts_path, notice: t("notice.scout")
+
+    if params[:scout][:band_id]
+      band = Band.find(params[:scout][:band_id])
+      band_members = band.band_members.map(&:user)
+      if band.band_scouted_mes.include?(scouted_band)
+        flash[:alert] = t("alert.received")
+        redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+      elsif scouted_band.band_scouted_mes.include?(band)
+        flash[:alert] = t("alert.sent")
+        redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+      elsif (band.user_scouted_mes & scouted_band_members).present?
+        flash[:alert] = t("alert.received_other")
+        redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+      elsif (scouted_band.user_scouted_mes & band_members).present?
+        flash[:alert] = t("alert.sent_other")
+        redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+      elsif (band_members & scouted_band_members).present?
+        flash[:alert] = t("alert.duplicate")
+        redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+      elsif band_members.count + scouted_band_members.count > 10
+        flash[:alert] = t("alert.over")
+        redirect_to new_band_scout_path(params[:scout][:scouted_band_id])
+      end
     end
+
+    @scout.save
+    redirect_to scouts_path, notice: t("notice.scout")
   end
 
   def received_offer
-    @scouts = Scout.where(scouted_user_id: @user.id, scouted_band_id: nil).where.not(band_id: nil)
+    @scouts = Scout.where(scouted_user_id: @user.id, scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def received_join
-    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil).where.not(scouted_band_id: nil)
+    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def received_marge
-    @scouts = Scout.where(scouted_user_id: @user.id).where.not(band_id: nil).where.not(scouted_band_id: nil)
+    @scouts = Scout.where(scouted_user_id: @user.id).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_new
-    @scouts = @user.scouts.where(band_id: nil, scouted_band_id: nil)
+    @scouts = @user.scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def send_offer
-    @scouts = @user.scouts.where(scouted_band_id: nil).where.not(band_id: nil)
+    @scouts = @user.scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def send_join
-    @scouts = @user.scouts.where(band_id: nil).where.not(scouted_band_id: nil)
+    @scouts = @user.scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_marge
-    @scouts = @user.scouts.where.not(band_id: nil).where.not(scouted_band_id: nil)
+    @scouts = @user.scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def approve_new

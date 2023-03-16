@@ -1,7 +1,7 @@
 <div class="container text-center">
   <div class="row search-wrapper mx-auto p-4">
     <p class="my-4"><%= "検索結果：#{users.count}件" %></p>
-    <% users.each do |user| %>
+    <% users.page(params[:page]).each do |user| %>
       <div class="col-xxl-3 col-lg-4 col-md-6 my-3">
         <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
           <div class="card">
@@ -17,5 +17,6 @@
         <% end %>
       </div>
     <% end %>
+    <%= paginate users.page(params[:page]), theme: "bootstrap-5" %>
   </div>
 </div>
