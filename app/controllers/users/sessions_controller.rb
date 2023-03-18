@@ -30,5 +30,4 @@ class Users::SessionsController < Devise::SessionsController
     sign_in user
     redirect_to users_path, notice: t("notice.guest_login")
   end
-
 end

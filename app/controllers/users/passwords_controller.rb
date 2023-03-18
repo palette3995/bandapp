@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
-  before_action :ensure_normal_user, only: %i[ create ]
+  before_action :ensure_normal_user, only: %i[create]
   # GET /resource/password/new
   # def new
   #   super
@@ -34,8 +34,6 @@ class Users::PasswordsController < Devise::PasswordsController
   # end
 
   def ensure_normal_user
-    if params[:user][:email].downcase == 'guest@example.com'
-      redirect_to new_user_session_path, alert: 'ゲストユーザーさんのパスワードは再設定できません。'
-    end
+    redirect_to new_user_session_path, alert: t("alert.reset_guest_password") if params[:user][:email].casecmp("guest@example.com").zero?
   end
 end

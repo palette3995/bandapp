@@ -39,7 +39,7 @@ class User < ApplicationRecord
   has_one_attached :movie
   has_one_attached :sound
 
-  GUEST_EMAIL = 'guest@example.com'.freeze
+  GUEST_EMAIL = "guest@example.com".freeze
   GUEST_NAME = "ゲストユーザー".freeze
 
   def self.guest
