@@ -26,7 +26,7 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   def guest_sign_in
-    user = User.find_or_create_by(email: "guest@example.com", name: "ゲストユーザー", password: SecureRandom.urlsafe_base64)
+    user = User.guest
     sign_in user
     redirect_to users_path, notice: t("notice.guest_login")
   end

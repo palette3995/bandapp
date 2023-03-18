@@ -39,6 +39,16 @@ class User < ApplicationRecord
   has_one_attached :movie
   has_one_attached :sound
 
+  GUEST_EMAIL = "guest@example.com".freeze
+  GUEST_NAME = "ゲストユーザー".freeze
+
+  def self.guest
+    find_or_create_by!(email: GUEST_EMAIL) do |user|
+      user.name = GUEST_NAME
+      user.password = SecureRandom.urlsafe_base64
+    end
+  end
+
   after_create do
     3.times do |n|
       user_parts.create(user_id: id, part_id: 7, priority: n + 1)

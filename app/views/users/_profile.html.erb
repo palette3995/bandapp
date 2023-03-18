@@ -6,7 +6,7 @@
         <div class="card-body">
           <div class="profile">
             <p class="card-text"><%= user.name %></p>
-            <span class="card-text"><%= user.prefecture.name %></span>
+            <span class="card-text"><%= user.prefecture.name if user.prefecture %></span>
             <span class="card-text"><%= "#{user.age}歳"%></span>
             <p class="card-text my-1"><%= user.parts[0].name %></p>
             <span class="card-text"><%= user.user_parts[0].level %></span>

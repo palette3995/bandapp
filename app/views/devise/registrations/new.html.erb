@@ -1,5 +1,6 @@
 <div class="top-wrapper">
   <div class="container">
+    <%= render "devise/shared/error_messages", resource: resource %>
     <div class="row">
       <div class="top-text col mx-auto">
         <h1 class="top-title fw-bold">BANDAPP</h1>
@@ -9,8 +10,7 @@
         <div class="card w-50 mx-auto shadow border border-1">
           <div class="card-body mx-2">
             <h2>アカウント登録</h2>
-            <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-              <%= render "devise/shared/error_messages", resource: resource %>
+            <%= form_with model: @user, url: registration_path(@user), local: true do |f| %>
               <div class="form-group">
                 <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control-lg w-100 border border-1", placeholder: "名前"%>
               </div>
@@ -27,7 +27,7 @@
                 <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control-lg w-100 border border-1", placeholder: "パスワードをもう一度入力"%>
               </div>
               <div class="action my-3">
-                <%= f.submit "登録", :class => "btn btn-secondary btn-block btn-lg w-100" %>
+                <%= f.submit "登録", class: "btn btn-secondary btn-block btn-lg w-100" %>
               </div>
             <% end %>
           </div>
