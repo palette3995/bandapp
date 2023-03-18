@@ -1,6 +1,9 @@
 class Scout < ApplicationRecord
   after_create_commit :create_notifications
+  validates :other_part, length: { maximum: 15 }
+  validates :scouted_other_part, length: { maximum: 15 }
   validates :message, length: { maximum: 30 }
+
   belongs_to :user
   belongs_to :scouted_user, class_name: "User", optional: true
   belongs_to :band, optional: true

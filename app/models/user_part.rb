@@ -1,4 +1,6 @@
 class UserPart < ApplicationRecord
+  validates :other_part, length: { maximum: 15 }
+
   belongs_to :user, optional: true
   belongs_to :part
 

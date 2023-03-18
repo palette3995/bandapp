@@ -1,4 +1,6 @@
 class RecruitMember < ApplicationRecord
+  validates :other_part, length: { maximum: 15 }
+
   belongs_to :band
   belongs_to :part
 

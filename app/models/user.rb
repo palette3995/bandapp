@@ -1,5 +1,11 @@
 class User < ApplicationRecord
   scope :near, ->(user) { where(prefecture_id: user.prefecture_id).order(current_sign_in_at: :desc) }
+  validates :name, length: { maximum: 15 }, presence: true
+  validates :favorite, length: { maximum: 30 }
+  validates :want_to_copy, length: { maximum: 50 }
+  validates :introduction, length: { maximum: 500 }
+  validates :age, numericality: { only_integer: true }
+
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to_active_hash :prefecture
   # Include default devise modules. Others available are:
