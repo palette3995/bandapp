@@ -4,11 +4,7 @@
       <div class="left-contents col-xl-6">
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
           <div class="card-body">
-            <% if @user.image.attached? %>
-             <%= image_tag @user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
-            <% else %>
-             <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
-            <% end %>
+            <%= render partial: 'users/avatar', locals: { user: @user, size: "150x150" } %>
             <h5 class= "mt-2">名前</h5>
             <p><%= @user.name %></p>
             <h5>年齢</h5>
