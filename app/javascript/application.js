@@ -6,7 +6,7 @@ import jquery from "jquery"
 import "@fortawesome/fontawesome-free"
 window.$ = jquery
 
-document.addEventListener('turbo:load', ()=>{
+$(window).on('turbo:load turbo:render', ()=>{
   //パート入力フォーム
   $(function(){
     const activate_form = function(num) {

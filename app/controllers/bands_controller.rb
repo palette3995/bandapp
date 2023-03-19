@@ -25,13 +25,13 @@ class BandsController < ApplicationController
 
   def update
     @band = Band.find(params[:id])
+    @genres = Genre.all
     # メディア削除ボタンが押された際の処理
-    if params[:delete_image]
-      delete_media(@band.image)
-    else
-      # 登録完了後の処理
-      @band.update(band_params)
+    delete_media(@band.image) if params[:delete_image]
+    if @band.update(band_params)
       redirect_to band_path, notice: t("notice.update")
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

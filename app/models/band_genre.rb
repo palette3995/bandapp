@@ -1,4 +1,6 @@
 class BandGenre < ApplicationRecord
+  validates :other_genre, length: { maximum: 15 }
+
   belongs_to :band
   belongs_to :genre
 

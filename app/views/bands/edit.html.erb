@@ -1,6 +1,7 @@
 <div class="wrapper text-center w-75 mx-auto">
   <%= form_with model: @band, local: true do |f| %>
   <div class="form-wrapper container my-4 mx-auto">
+    <%= render partial: 'shared/error_messages', locals: { resource: @band } %>
     <div class="row">
       <div class="left-contents col-xl-6">
         <div class="card mt-5 mx-auto w-75" style="width: 18rem;">

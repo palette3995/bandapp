@@ -1,4 +1,6 @@
 class BandMember < ApplicationRecord
+  validates :other_part, length: { maximum: 15 }
+
   belongs_to :band
   belongs_to :user
   belongs_to :part

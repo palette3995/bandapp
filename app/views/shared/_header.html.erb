@@ -12,8 +12,12 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              設定
+            <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <% if current_user.image.attached? %>
+                <%= image_tag current_user.image.variant(resize: "30×30", gravity: "center"), class: "avatar rounded-circle"%>
+              <% else %>
+                <%= image_tag 'default.png', size: "30×30", class: "avatar rounded-circle"%>
+              <% end %>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><%= link_to "マイページ", user_path(current_user.id), class: "dropdown-item" %></li>
@@ -22,7 +26,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               バンド
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -31,12 +35,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              お気に入り
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><%= link_to "お気に入り一覧", favorites_path, class: "dropdown-item" %></li>
-            </ul>
+            <%= link_to "お気に入り", favorites_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
             <%= link_to notifications_path, class: "nav-link notification d-inline-block" do %>

@@ -27,11 +27,12 @@ class UsersController < ApplicationController
       delete_media(@user.movie)
     elsif params[:delete_sound]
       delete_media(@user.sound)
-    else
-      # 登録完了後の処理
-      @user.update(user_params)
+    end
+    if @user.update(user_params)
       update_user_bands(@user)
       redirect_to user_path, notice: t("notice.update")
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

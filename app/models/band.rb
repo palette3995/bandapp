@@ -1,4 +1,8 @@
 class Band < ApplicationRecord
+  validates :name, length: { maximum: 30 }, presence: true
+  validates :want_to_copy, length: { maximum: 50 }
+  validates :introduction, length: { maximum: 500 }
+
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to_active_hash :prefecture
 
