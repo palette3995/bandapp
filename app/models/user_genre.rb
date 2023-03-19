@@ -1,6 +1,6 @@
 class UserGenre < ApplicationRecord
   validates :other_genre, length: { maximum: 15 }
-  
+
   belongs_to :user, optional: true
   belongs_to :genre
 
