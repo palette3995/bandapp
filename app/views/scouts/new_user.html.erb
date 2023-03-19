@@ -1,13 +1,10 @@
 <div class="container text-center">
   <div class="row">
+    <%= render partial: 'shared/error_messages', locals: { resource: @scout } %>
     <div class="top-text col mx-auto">
-      <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+      <div class="card mt-5 mx-auto w-75">
         <div class="card-body">
-          <% if @scouted_user.image.attached? %>
-           <%= image_tag @scouted_user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
-          <% else %>
-           <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
-          <% end %>
+          <%= render partial: 'users/avatar', locals: { user: @scouted_user, size: "150×150" } %>
           <h5 class= "mt-2">名前</h5>
           <p><%= @scouted_user.name %></p>
           <h5>年齢</h5>
