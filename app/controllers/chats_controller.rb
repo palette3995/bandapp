@@ -7,7 +7,11 @@ class ChatsController < ApplicationController
 
   def create
     @chat = Chat.new(chat_params)
-    redirect_to chat_path(params[:chat][:band_id]) if @chat.save
+    if @chat.save
+      redirect_to chat_path(params[:chat][:band_id])
+    else
+      render :show, status: :unprocessable_entity
+    end
   end
 
   private
