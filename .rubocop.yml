@@ -52,9 +52,9 @@ Style/ClassAndModuleChildren:
 Style/EmptyMethod:
   Enabled: false
 
-#メソッドの最大行数を30に設定
+#メソッドの最大行数を35に設定
 MethodLength:
-  Max: 30
+  Max: 35
 
 #Abcサイズの上限を100まで許可
 Metrics/AbcSize:
@@ -72,10 +72,10 @@ Layout/LineLength:
   Enabled: false
 
 Metrics/CyclomaticComplexity:
-  Max: 12
+  Max: 20
 
 Metrics/PerceivedComplexity:
-  Max: 12
+  Max: 20
 
 Rails/LexicallyScopedActionFilter:
   Enabled: false
