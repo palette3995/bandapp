@@ -1,10 +1,10 @@
 class User < ApplicationRecord
+  after_create :create_parts_and_genres
   scope :near, ->(user) { where(prefecture_id: user.prefecture_id).order(current_sign_in_at: :desc) }
   validates :name, length: { maximum: 15 }, presence: true
   validates :favorite, length: { maximum: 30 }
   validates :want_to_copy, length: { maximum: 50 }
   validates :introduction, length: { maximum: 500 }
-  validates :age, numericality: { only_integer: true }
 
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to_active_hash :prefecture
@@ -55,13 +55,6 @@ class User < ApplicationRecord
     end
   end
 
-  after_create do
-    3.times do |n|
-      user_parts.create(user_id: id, part_id: 7, priority: n + 1)
-      user_genres.create(user_id: id, genre_id: 16, priority: n + 1)
-    end
-  end
-
   # 検索機能関連のメソッド
   def self.ransackable_attributes(_auth_object = nil)
     %w[activity_time age available_day compose created_at favorite frequency id image
@@ -70,5 +63,14 @@ class User < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[band_members bands genres parts prefecture user_genres user_parts]
+  end
+
+  private
+
+  def create_parts_and_genres
+    3.times do |n|
+      user_parts.create(user_id: id, part_id: 7, priority: n + 1)
+      user_genres.create(user_id: id, genre_id: 16, priority: n + 1)
+    end
   end
 end

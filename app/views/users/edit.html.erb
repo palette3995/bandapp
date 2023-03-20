@@ -16,7 +16,7 @@
             <h5 class= "mt-2">名前</h5>
             <p><%= f.text_field :name, class: "form-control" %></p>
             <h5>年齢</h5>
-            <p><%= f.text_field :age, class: "form-control" %></p>
+            <p><%= f.number_field :age, class: "form-control" %></p>
             <h5>性別</h5>
             <p><%= f.select :sex, [["男性","男性"],["女性","女性"],["その他","その他"]], {include_blank: "未選択"}, {class: "form-select"}%></p>
             <h5>自己紹介</h5>
