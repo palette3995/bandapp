@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Band do
-  let!(:genre) {create(:other_music)}
+  let!(:genre) { create(:other_music) }
   let!(:band) { create(:band) }
   let!(:band_genre) { create(:band_genre, band: band, genre: genre, other_genre: "other_genre") }
 

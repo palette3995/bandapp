@@ -5,6 +5,5 @@ FactoryBot.define do
     level { "初心者" }
     age { "20代まで" }
     sex { "男性" }
-
   end
 end
