@@ -3,5 +3,6 @@ FactoryBot.define do
     association :band
     association :user
     association :part
+    role { "メンバー" }
   end
 end
