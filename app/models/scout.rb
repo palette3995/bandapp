@@ -24,9 +24,9 @@ class Scout < ApplicationRecord
 
   def create_notifications
     if band_id.nil? && scouted_band_id.nil?
-      Notification.create!(subject: self, user_id: favorited_user_id, notification_type: Notification.notification_types[:new_band_scout])
+      Notification.create!(subject: self, user_id: scouted_user_id, notification_type: Notification.notification_types[:new_band_scout])
     elsif band_id.present? && scouted_band_id.nil?
-      Notification.create!(subject: self, user_id: favorited_user_id, notification_type: Notification.notification_types[:band_scout_you])
+      Notification.create!(subject: self, user_id: scouted_user_id, notification_type: Notification.notification_types[:band_scout_you])
     elsif band_id.nil? && scouted_band_id.present?
       scouted_band.band_members.each do |member|
         Notification.create!(subject: self, user_id: member.user_id, notification_type: Notification.notification_types[:want_to_join_your_band])
