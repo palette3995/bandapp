@@ -9,7 +9,7 @@ RSpec.describe Band do
     expect(band.errors).not_to be_empty
   end
 
-  it "その他のジャンル名が15文字以上であれば登録できないこと" do
+  it "その他のジャンル名が16文字以上であれば登録できないこと" do
     genre = create(:other_music)
     band_genre = create(:band_genre, band: band, genre: genre)
     band_genre.other_genre = "test_other_genre"
