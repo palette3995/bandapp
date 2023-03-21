@@ -1,4 +1,5 @@
 class RecruitMembersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_parts, :set_levels, only: %i[new edit create update]
   def new
     @member = RecruitMember.new

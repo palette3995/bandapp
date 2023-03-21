@@ -1,4 +1,5 @@
 class ScoutsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user
   before_action :set_parts, :set_bands, only: %i[new_user new_band create create_band]
 

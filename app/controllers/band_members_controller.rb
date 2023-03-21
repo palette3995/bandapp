@@ -1,4 +1,5 @@
 class BandMembersController < ApplicationController
+  before_action :authenticate_user!
   def edit
     @member = BandMember.find(params[:id])
     @band = @member.band

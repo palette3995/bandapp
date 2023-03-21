@@ -1,4 +1,5 @@
 class BandsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_q, only: %i[index search]
   before_action :set_levels, only: %i[index]
   before_action :set_recomend_bands, only: %i[index match_ages match_genres]

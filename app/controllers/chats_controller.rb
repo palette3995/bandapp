@@ -1,4 +1,5 @@
 class ChatsController < ApplicationController
+  before_action :authenticate_user!
   def show
     @band = Band.find(params[:id])
     @chats = Chat.where(band_id: params[:id]).order(created_at: :desc).page(params[:page])

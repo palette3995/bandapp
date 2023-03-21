@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user, only: %i[show edit update]
   before_action :set_recomend_users, only: %i[index match_ages match_levels match_genres]
   before_action :set_user_part, only: %i[index match_levels]
