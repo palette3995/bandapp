@@ -48,7 +48,7 @@ class BandsController < ApplicationController
   end
 
   def match_ages
-    @bands = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5)
+    @bands = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5) if current_user.age
   end
 
   def match_genres

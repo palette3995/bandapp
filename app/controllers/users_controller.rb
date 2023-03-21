@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   end
 
   def match_ages
-    @users = @recomend_users.where(age: current_user.age - 5..current_user.age + 5)
+    @users = @recomend_users.where(age: current_user.age - 5..current_user.age + 5) if current_user.age
   end
 
   def match_levels
