@@ -79,3 +79,7 @@ Metrics/PerceivedComplexity:
 
 Rails/LexicallyScopedActionFilter:
   Enabled: false
+
+# Rspec
+RSpec/MultipleExpectations:
+  Enabled: false

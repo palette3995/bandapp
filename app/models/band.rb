@@ -1,4 +1,5 @@
 class Band < ApplicationRecord
+  after_create :create_genres
   validates :name, length: { maximum: 30 }, presence: true
   validates :want_to_copy, length: { maximum: 50 }
   validates :introduction, length: { maximum: 500 }
@@ -30,12 +31,6 @@ class Band < ApplicationRecord
 
   has_one_attached :image
 
-  after_create do
-    3.times do |n|
-      band_genres.create(band_id: id, genre_id: 16, priority: n + 1)
-    end
-  end
-
   def self.ransackable_attributes(_auth_object = nil)
     %w[activity_time available_day created_at frequency id image introduction motivation name
        original prefecture_id updated_at want_to_copy number_of_member maximum_age minimum_age average_age men women other_gender]
@@ -44,5 +39,13 @@ class Band < ApplicationRecord
   def self.ransackable_associations(_auth_object = nil)
     %w[band_favorited_mes band_genres band_members band_scouted_mes favorites favoriting_bands
        favoriting_users genres image_attachment image_blob parts prefecture recruit_members reverse_of_favorites reverse_of_scouts scouting_bands scouting_users scouts user_favorited_mes user_scouted_mes users]
+  end
+
+  private
+
+  def create_genres
+    3.times do |n|
+      band_genres.create(band_id: id, genre_id: 16, priority: n + 1)
+    end
   end
 end
