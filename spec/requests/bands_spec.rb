@@ -110,6 +110,7 @@ RSpec.describe "Bands" do
     context "ユーザーがログインしているとき" do
       before do
         sign_in user
+        band_member
         get edit_band_path(band)
       end
 
@@ -119,6 +120,12 @@ RSpec.describe "Bands" do
 
       it "バンド名が正しく表示されること" do
         expect(response.body).to include(band.name)
+      end
+
+      it "自分の所属バンド以外のページにアクセスしたとき、バンド一覧ページに遷移すること" do
+        band_a = create(:band)
+        get edit_band_path(band_a)
+        expect(response).to redirect_to user_bands_bands_path
       end
     end
 
@@ -160,7 +167,7 @@ RSpec.describe "Bands" do
       before do
         band_member
         sign_in user
-        get user_bands_path(user)
+        get user_bands_bands_path
       end
 
       it "リクエストが200 OKとなること" do
@@ -174,7 +181,7 @@ RSpec.describe "Bands" do
 
     context "ユーザーがログインしていないとき" do
       it "ログインページに遷移すること" do
-        get user_bands_path(user)
+        get user_bands_bands_path
         expect(response).to have_http_status :found
       end
     end

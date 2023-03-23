@@ -144,6 +144,12 @@ RSpec.describe "Users" do
       it "ユーザー名が正しく表示されること" do
         expect(response.body).to include(user.name)
       end
+
+      it "自分以外のユーザーのページにアクセスしたとき、ユーザー一覧ページに遷移すること" do
+        user_a = create(:user)
+        get edit_user_path(user_a)
+        expect(response).to redirect_to users_path
+      end
     end
 
     context "ユーザーがログインしていないとき" do
