@@ -4,6 +4,7 @@ class ChatsController < ApplicationController
     @band = Band.find(params[:id])
     @chats = Chat.where(band_id: params[:id]).order(created_at: :desc).page(params[:page])
     @chat = Chat.new
+    redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.users.include?(current_user)
   end
 
   def create
