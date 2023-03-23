@@ -14,7 +14,7 @@
             <div class="row notification-list-item border my-4 mx-4">
               <div class="col-lg-3 mt-3">
                 <% unless notification.read %>
-                  <i class="fas fa-circle"></i>
+                  <i class="fas fa-circle text-success"></i>
                 <% end %>
                 <%= render partial: 'users/avatar', locals: { user: notification.subject.user, size: "90×90" } %>
               </div>
