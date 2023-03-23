@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def index
     @match_ages = @recomend_users.where(age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
-    @match_genres = @recomend_users.where(user_genres: { genre_id: current_user.genres.ids }).limit(4)
+    @match_genres = @recomend_users.where(user_genres: { genre_id: current_user.genres.pluck(:id) }).limit(4)
   end
 
   def show
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    @users = @q.result.where.not(id: current_user.id)
+    @users = @q.result.where.not(id: current_user.id).distinct
   end
 
   def match_ages
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
   end
 
   def match_genres
-    @users = @recomend_users.where(user_genres: { genre_id: current_user.genres.ids })
+    @users = @recomend_users.where(user_genres: { genre_id: current_user.genres.pluck(:id) })
   end
 
   private
@@ -98,7 +98,7 @@ class UsersController < ApplicationController
   end
 
   def set_recomend_users
-    @recomend_users = User.joins(:user_parts, :genres).near(current_user).where.not(id: current_user.id).distinct
+    @recomend_users = User.joins(:user_parts, :user_genres).near(current_user).where.not(id: current_user.id).distinct
   end
 
   def delete_media(media)

@@ -10,9 +10,7 @@ class Band < ApplicationRecord
   has_many :band_members, dependent: :destroy
   has_many :users, through: :band_members
   has_many :recruit_members, dependent: :destroy
-  has_many :parts, through: :recruit_members
   has_many :band_genres, dependent: :destroy
-  has_many :genres, through: :band_genres
   has_many :chats, dependent: :destroy
 
   # Favoriteモデルとのアソシエーション
@@ -39,6 +37,10 @@ class Band < ApplicationRecord
   def self.ransackable_associations(_auth_object = nil)
     %w[band_favorited_mes band_genres band_members band_scouted_mes favorites favoriting_bands
        favoriting_users genres image_attachment image_blob parts prefecture recruit_members reverse_of_favorites reverse_of_scouts scouting_bands scouting_users scouts user_favorited_mes user_scouted_mes users]
+  end
+
+  def genres
+    band_genres.map(&:genre)
   end
 
   private

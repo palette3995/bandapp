@@ -15,9 +15,7 @@ class User < ApplicationRecord
          :trackable
 
   has_many :user_parts, dependent: :destroy
-  has_many :parts, through: :user_parts
   has_many :user_genres, dependent: :destroy
-  has_many :genres, through: :user_genres
   has_many :band_members, dependent: :destroy
   has_many :bands, through: :band_members
   has_many :chats, dependent: :destroy
@@ -53,6 +51,14 @@ class User < ApplicationRecord
       user.name = GUEST_NAME
       user.password = SecureRandom.urlsafe_base64
     end
+  end
+
+  def parts
+    user_parts.map(&:part)
+  end
+
+  def genres
+    user_genres.map(&:genre)
   end
 
   # 検索機能関連のメソッド
