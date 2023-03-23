@@ -16,7 +16,7 @@ class ScoutsController < ApplicationController
   end
 
   def index
-    @scouts =  @user.reverse_of_scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
+    @scouts = @user.reverse_of_scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def create
