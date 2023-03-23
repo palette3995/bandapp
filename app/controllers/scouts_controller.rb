@@ -16,7 +16,7 @@ class ScoutsController < ApplicationController
   end
 
   def index
-    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil, scouted_band_id: nil).page(params[:page])
+    @scouts =  @user.reverse_of_scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def create
@@ -78,15 +78,15 @@ class ScoutsController < ApplicationController
   end
 
   def received_offer
-    @scouts = Scout.where(scouted_user_id: @user.id, scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
+    @scouts = @user.reverse_of_scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def received_join
-    @scouts = Scout.where(scouted_user_id: @user.id, band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = @user.reverse_of_scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def received_marge
-    @scouts = Scout.where(scouted_user_id: @user.id).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = @user.reverse_of_scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_new
