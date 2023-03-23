@@ -4,11 +4,13 @@ class RecruitMembersController < ApplicationController
   def new
     @member = RecruitMember.new
     @band = Band.find(params[:id])
+    redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.users.include?(current_user)
   end
 
   def edit
     @member = RecruitMember.find(params[:id])
     @band = Band.find(@member.band_id)
+    redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.users.include?(current_user)
   end
 
   def create

@@ -18,6 +18,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    redirect_to users_path, alert: t("alert.page_unavailable") unless @user == current_user
   end
 
   def update

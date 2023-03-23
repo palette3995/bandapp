@@ -4,6 +4,7 @@ class BandMembersController < ApplicationController
     @member = BandMember.find(params[:id])
     @band = @member.band
     @parts = Part.where(id: 1..6)
+    redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.band_members.find_by(role: "リーダー").user == current_user
   end
 
   def update

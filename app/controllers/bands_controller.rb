@@ -21,6 +21,7 @@ class BandsController < ApplicationController
 
   def edit
     @band = Band.find(params[:id])
+    redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.users.include?(current_user)
     @genres = Genre.all
   end
 

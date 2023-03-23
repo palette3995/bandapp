@@ -19,6 +19,7 @@ ja:
     over: バンドメンバーが10人を超える為スカウトを送れません。
     reset_guest_password: ゲストユーザーさんのパスワードは再設定できません。
     edit_guest_data: ゲストユーザーさんは、データの編集・削除などができない設定になっています。
+    page_unavailable: ご指定いただいたページにはアクセスできません。
   enums:
     notification:
       notification_type:
