@@ -62,23 +62,8 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(
-      :name,
-      :prefecture_id,
-      :age,
-      :sex,
-      :favorite,
-      :introduction,
-      :image,
-      :movie,
-      :sound,
-      :original,
-      :want_to_copy,
-      :motivation,
-      :frequency,
-      :activity_time,
-      :available_day,
-      :compose,
+    params.require(:user).permit(:name,:prefecture_id,:age,:sex,:favorite,:introduction,:image,:movie,
+      :sound,:original,:want_to_copy,:motivation,:frequency,:activity_time,:available_day,:compose,
       user_parts_attributes: %i[id part_id user_id level other_part _destroy],
       user_genres_attributes: %i[id genre_id user_id other_genre _destroy]
     )
