@@ -5,15 +5,14 @@ RSpec.describe "Scouts" do
   let!(:user_a) { create(:user) }
   let!(:band) { create(:band) }
   let!(:band_a) { create(:band) }
-  let(:band_member) { create(:band_member, band: band, user: user, part: part) }
-  let(:band_member_a) { create(:band_member, band: band_a, user: user_a, part: part) }
-  let!(:part) { create(:vocal) }
+  let(:band_member) { create(:band_member, band: band, user: user) }
+  let(:band_member_a) { create(:band_member, band: band_a, user: user_a) }
 
   describe "GET scouts#index" do
     context "ユーザーがログインしているとき" do
       before do
         sign_in user
-        create(:scout, user: user_a, part: part, scouted_user: user, scouted_part: part)
+        create(:scout, user: user_a, part_id: 1, scouted_user: user, scouted_part_id: 1)
         get scouts_path
       end
 
@@ -43,7 +42,7 @@ RSpec.describe "Scouts" do
       before do
         sign_in user
         band_member
-        create(:scout, user: user_a, part: part, scouted_user: user, scouted_band: band)
+        create(:scout, user: user_a, part_id: 1, scouted_user: user, scouted_band: band)
         get received_join_scouts_path
       end
 
@@ -74,7 +73,7 @@ RSpec.describe "Scouts" do
       before do
         sign_in user
         band_member_a
-        create(:scout, user: user_a, band: band_a, scouted_user: user, scouted_part: part)
+        create(:scout, user: user_a, band: band_a, scouted_user: user, scouted_part_id: 1)
         get received_offer_scouts_path
       end
 
@@ -136,7 +135,7 @@ RSpec.describe "Scouts" do
     context "ユーザーがログインしているとき" do
       before do
         sign_in user
-        create(:scout, user: user, part: part, scouted_user: user_a, scouted_part: part)
+        create(:scout, user: user, part_id: 1, scouted_user: user_a, scouted_part_id: 1)
         get send_new_scouts_path
       end
 
@@ -166,7 +165,7 @@ RSpec.describe "Scouts" do
       before do
         sign_in user
         band_member_a
-        create(:scout, user: user, part: part, scouted_user: user_a, scouted_band: band_a)
+        create(:scout, user: user, part_id: 1, scouted_user: user_a, scouted_band: band_a)
         get send_join_scouts_path
       end
 
@@ -196,7 +195,7 @@ RSpec.describe "Scouts" do
       before do
         sign_in user
         band_member
-        create(:scout, user: user, band: band, scouted_user: user_a, scouted_part: part)
+        create(:scout, user: user, band: band, scouted_user: user_a, scouted_part_id: 1)
         get send_offer_scouts_path
       end
 

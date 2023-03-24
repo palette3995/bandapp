@@ -2,16 +2,10 @@ require "rails_helper"
 
 RSpec.describe "Users" do
   let!(:user) { create(:user) }
-  let!(:part) { create(:other_inst) }
-  let(:user_part) { create(:user_part, user: user, part: part) }
-  let!(:genre) { create(:other_music) }
-  let(:user_genre) { create(:user_genre, user: user, genre: genre) }
 
   describe "GET users#index" do
     context "ユーザーがログインしているとき" do
       before do
-        user_part
-        user_genre
         sign_in user
         get users_path
       end
@@ -84,7 +78,6 @@ RSpec.describe "Users" do
   describe "GET users#match_levels" do
     context "ユーザーがログインしているとき" do
       before do
-        user_part
         sign_in user
         get match_levels_users_path
       end

@@ -3,8 +3,7 @@ require "rails_helper"
 RSpec.describe "BandMembers" do
   let!(:user) { create(:user) }
   let!(:band) { create(:band) }
-  let(:band_member) { create(:band_member, band: band, user: user, part: part, role: "リーダー") }
-  let!(:part) { create(:other_inst) }
+  let(:band_member) { create(:band_member, band: band, user: user, role: "リーダー") }
 
   describe "GET band_members#edit" do
     context "ユーザーがログインしているとき" do
@@ -19,7 +18,7 @@ RSpec.describe "BandMembers" do
       end
 
       it "自分がリーダーでないとき、所属バンド一覧ページに遷移すること" do
-        create(:band_member, band: band, part: part, user: create(:user), role: "リーダー")
+        create(:band_member, band: band, user: create(:user), role: "リーダー")
         band_member.role = "メンバー"
         get edit_band_member_path(band_member)
         expect(response).to redirect_to user_bands_bands_path

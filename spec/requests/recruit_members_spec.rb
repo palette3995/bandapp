@@ -3,9 +3,8 @@ require "rails_helper"
 RSpec.describe "RecruitMembers" do
   let!(:user) { create(:user) }
   let!(:band) { create(:band) }
-  let(:band_member) { create(:band_member, band: band, user: user, part: part) }
-  let!(:recruit_member) { create(:recruit_member, band: band, part: part) }
-  let!(:part) { create(:other_inst) }
+  let(:band_member) { create(:band_member, band: band, user: user) }
+  let!(:recruit_member) { create(:recruit_member, band: band) }
 
   describe "GET recruit_members#new" do
     context "ユーザーがログインしているとき" do
@@ -48,7 +47,7 @@ RSpec.describe "RecruitMembers" do
       end
 
       it "自分の所属バンド以外のページにアクセスしたとき、バンド一覧ページに遷移すること" do
-        member = create(:recruit_member, band: create(:band), part: part)
+        member = create(:recruit_member, band: create(:band))
         get edit_recruit_member_path(member)
         expect(response).to redirect_to user_bands_bands_path
       end

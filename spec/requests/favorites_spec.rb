@@ -3,19 +3,15 @@ require "rails_helper"
 RSpec.describe "Favorites" do
   let!(:user) { create(:user) }
   let!(:user_a) { create(:user) }
-  let(:user_part) { create(:user_part, user: user_a, part: part) }
   let!(:band) { create(:band) }
   let!(:band_a) { create(:band) }
-  let(:band_member) { create(:band_member, band: band, user: user, part: part) }
-  let(:band_member_a) { create(:band_member, band: band_a, user: user_a, part: part) }
-  let(:band_genre) { create(:band_genre, band: band_a, genre: create(:jpop)) }
-  let!(:part) { create(:vocal) }
+  let(:band_member) { create(:band_member, band: band, user: user) }
+  let(:band_member_a) { create(:band_member, band: band_a, user: user_a) }
 
   describe "GET favorites#index" do
     context "ユーザーがログインしているとき" do
       before do
         sign_in user
-        user_part
         create(:favorite, user: user, favorited_user: user_a)
         get favorites_path
       end
@@ -45,7 +41,6 @@ RSpec.describe "Favorites" do
     context "ユーザーがログインしているとき" do
       before do
         sign_in user
-        user_part
         band_member
         create(:favorite, user: user_a, band: band)
         get received_band_favorites_path
@@ -77,7 +72,6 @@ RSpec.describe "Favorites" do
     context "ユーザーがログインしているとき" do
       before do
         sign_in user
-        user_part
         create(:favorite, user: user_a, favorited_user: user)
         get received_user_favorites_path
       end
@@ -107,7 +101,6 @@ RSpec.describe "Favorites" do
     context "ユーザーがログインしているとき" do
       before do
         sign_in user
-        band_genre
         create(:favorite, user: user, band: band_a)
         get send_band_favorites_path
       end

@@ -3,8 +3,7 @@ require "rails_helper"
 RSpec.describe "Chat" do
   let!(:user) { create(:user) }
   let!(:band) { create(:band) }
-  let(:band_member) { create(:band_member, band: band, user: user, part: part, role: "リーダー") }
-  let!(:part) { create(:other_inst) }
+  let(:band_member) { create(:band_member, band: band, user: user) }
 
   describe "GET chats#show" do
     context "ユーザーがログインしているとき" do

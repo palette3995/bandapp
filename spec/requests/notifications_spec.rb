@@ -5,14 +5,13 @@ RSpec.describe "Notifications" do
   let!(:user_a) { create(:user) }
   let!(:band) { create(:band) }
   let!(:band_a) { create(:band) }
-  let!(:part) { create(:vocal) }
   let(:notification) { Notification.find_by(user_id: user.id) }
 
   describe "GET Notifications#index" do
     context "ユーザーがログインしているとき" do
       before do
-        create(:band_member, band: band, user: user, part: part)
-        create(:band_member, band: band_a, user: user_a, part: part)
+        create(:band_member, band: band, user: user, part_id: 1)
+        create(:band_member, band: band_a, user: user_a, part_id: 1)
         sign_in user
       end
 
@@ -27,14 +26,14 @@ RSpec.describe "Notifications" do
       end
 
       it "ユーザーから届いた新規バンド結成のスカウトが通知として表示されていること" do
-        create(:scout, user: user_a, part: part, scouted_user: user, scouted_part: part)
+        create(:scout, user: user_a, part_id: 1, scouted_user: user, scouted_part_id: 1)
         get notifications_path
         expect(response.body).to include(user_a.name)
         expect(response.body).to include("バンド結成のお誘いが届きました")
       end
 
       it "ユーザーから届いたバンド加入希望のスカウトが通知として表示されていること" do
-        create(:scout, user: user_a, part: part, scouted_user: user, scouted_band: band)
+        create(:scout, user: user_a, part_id: 1, scouted_user: user, scouted_band: band)
         get notifications_path
         expect(response.body).to include(user_a.name)
         expect(response.body).to include("あなたのバンドへ加入申請が届きました")

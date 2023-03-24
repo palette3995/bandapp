@@ -3,15 +3,11 @@ require "rails_helper"
 RSpec.describe "Bands" do
   let!(:user) { create(:user) }
   let!(:band) { create(:band) }
-  let!(:genre) { create(:other_music) }
-  let!(:part) { create(:other_inst) }
-  let(:band_genre) { create(:band_genre, band: band, genre: genre) }
-  let(:band_member) { create(:band_member, user: user, band: band, part: part, role: "リーダー") }
+  let(:band_member) { create(:band_member, user: user, band: band, role: "リーダー") }
 
   describe "GET bands#index" do
     context "ユーザーがログインしているとき" do
       before do
-        band_genre
         sign_in user
         get bands_path
       end
