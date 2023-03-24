@@ -2,7 +2,7 @@ class RecruitMember < ApplicationRecord
   validates :other_part, length: { maximum: 15 }
 
   belongs_to :band
-  
+
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to_active_hash :part
 
