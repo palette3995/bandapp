@@ -1,10 +1,9 @@
 require "rails_helper"
 
 RSpec.describe RecruitMember do
-  let!(:part) { create(:other_inst) }
-  let!(:recruit_member) { create(:recruit_member, part: part, other_part: "other_part") }
+  let!(:recruit_member) { create(:recruit_member) }
 
-  it "すべてのフォームを入力しているとき登録できること" do
+  it "すべてのフォームを入力しているとき、その他のパート名が15文字以内であれば登録できること" do
     expect(recruit_member).to be_valid
   end
 

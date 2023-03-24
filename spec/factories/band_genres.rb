@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :band_genre do
     association :band
-    association :genre
+    genre { Genre.all.sample }
   end
 end

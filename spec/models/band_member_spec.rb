@@ -1,10 +1,9 @@
 require "rails_helper"
 
 RSpec.describe BandMember do
-  let!(:part) { create(:other_inst) }
-  let!(:band_member) { create(:band_member, part: part, other_part: "other_part") }
+  let!(:band_member) { create(:band_member) }
 
-  it "すべてのフォームを入力しているとき登録できること" do
+  it "すべてのフォームを入力しているとき、その他のパート名が15文字以内であれば登録できること" do
     expect(band_member).to be_valid
   end
 

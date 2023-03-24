@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user_part do
     association :user
-    association :part
+    part { Part.all.sample }
   end
 end

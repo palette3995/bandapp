@@ -2,10 +2,9 @@ require "rails_helper"
 
 RSpec.describe Scout do
   let!(:user) { create(:user) }
-  let!(:part) { create(:other_inst) }
-  let!(:scout) { create(:scout, part: part, scouted_user: user, scouted_part_id: part.id) }
+  let!(:scout) { create(:scout, part_id: 6, scouted_user: user, scouted_part_id: 6) }
 
-  it "すべてのフォームを入力しているとき登録できること" do
+  it "すべての値が適切な場合登録できること" do
     expect(scout).to be_valid
   end
 

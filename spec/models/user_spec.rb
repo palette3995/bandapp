@@ -39,16 +39,16 @@ RSpec.describe User do
   end
 
   it "その他のパート名が16文字以上であれば登録できないこと" do
-    part = create(:other_inst)
-    user_part = create(:user_part, user: user, part: part)
+    user_part = user.user_parts.first
+    user_part.part_id = 6
     user_part.other_part = "test_other_part1"
     expect(user_part).not_to be_valid
     expect(user_part.errors).not_to be_empty
   end
 
   it "その他のジャンル名が16文字以上であれば登録できないこと" do
-    genre = create(:other_music)
-    user_genre = create(:user_genre, user: user, genre: genre)
+    user_genre = user.user_genres.first
+    user_genre.genre_id = 15
     user_genre.other_genre = "test_other_genre"
     expect(user_genre).not_to be_valid
     expect(user_genre.errors).not_to be_empty
