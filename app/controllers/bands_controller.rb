@@ -59,19 +59,8 @@ class BandsController < ApplicationController
   private
 
   def band_params
-    params.require(:band).permit(
-      :name,
-      :prefecture_id,
-      :introduction,
-      :image,
-      :original,
-      :want_to_copy,
-      :motivation,
-      :frequency,
-      :activity_time,
-      :available_day,
-      band_genres_attributes: %i[id genre_id user_id other_genre _destroy]
-    )
+    params.require(:band).permit(:name, :prefecture_id, :introduction, :image, :original, :want_to_copy, :motivation, :frequency, :activity_time, :available_day,
+                                 band_genres_attributes: %i[id genre_id user_id other_genre _destroy])
   end
 
   def set_q
