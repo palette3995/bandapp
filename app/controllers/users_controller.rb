@@ -106,8 +106,8 @@ class UsersController < ApplicationController
   end
 
   def update_user_bands(user)
-    user.bands.ids.each do |id|
-      update_band_colums(id)
+    user.bands.each do |band|
+      update_band_colums(band)
     end
   end
 end
