@@ -6,6 +6,7 @@ class ScoutsController < ApplicationController
   def new_user
     @scout = Scout.new
     @scouted_user = User.find(params[:id])
+    redirect_to users_path, alert: t("alert.page_unavailable") if @scouted_user == current_user
   end
 
   def new_band
@@ -13,6 +14,7 @@ class ScoutsController < ApplicationController
     @scouted_band = Band.find(params[:id])
     scouted_band_members = @scouted_band.band_members
     @reader = scouted_band_members.find_by(role: "リーダー").user
+    redirect_to bands_path, alert: t("alert.page_unavailable") if scouted_band_members.map(&:user).include?(current_user)
   end
 
   def index
@@ -91,29 +93,41 @@ class ScoutsController < ApplicationController
 
   def approve_offer
     @scout = Scout.find(params[:id])
-    @band = Band.find(@scout.band_id)
-    @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
-    @scout.destroy
-    update_band_colums(@band)
-    redirect_to bands_path, notice: t("notice.approve")
+    @band = @scout.band
+    if @band.band_members.count < 10
+      @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
+      @scout.destroy
+      update_band_colums(@band)
+      redirect_to bands_path, notice: t("notice.approve")
+    else
+      render :received_offer, alert: t("alert.upper_limit"), status: :unprocessable_entity
+    end
   end
 
   def approve_join
     @scout = Scout.find(params[:id])
-    @band = Band.find(@scout.scouted_band_id)
-    @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "メンバー")
-    @scout.destroy
-    update_band_colums(@band)
-    redirect_to bands_path, notice: t("notice.approve")
+    @band = @scout.scouted_band
+    if @band.band_members.count < 10
+      @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "メンバー")
+      @scout.destroy
+      update_band_colums(@band)
+      redirect_to bands_path, notice: t("notice.approve")
+    else
+      render :received_join, alert: t("alert.upper_limit"), status: :unprocessable_entity
+    end
   end
 
   def approve_marge
     @scout = Scout.find(params[:id])
     @band = Band.create(name: "新規バンド")
-    @scout.create_new_band_members(@band)
-    @scout.after_marge_bands
-    update_band_colums(@band)
-    redirect_to bands_path, notice: t("notice.approve")
+    if @scout.band.band_members.count + @scout.scouted_band.band_members.count <= 10
+      @scout.create_new_band_members(@band)
+      @scout.after_marge_bands
+      update_band_colums(@band)
+      redirect_to bands_path, notice: t("notice.approve")
+    else
+      render :received_marge, alert: t("alert.upper_limit"), status: :unprocessable_entity
+    end
   end
 
   def refuse
