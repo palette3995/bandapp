@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       get 'match_genres'
     end
   end
-  resources :bands, except: [:new] do
+  resources :bands, except: [:new, :create] do
     collection do
       get 'search'
       get 'match_ages'
@@ -42,11 +42,11 @@ Rails.application.routes.draw do
     member do
       get 'new_user'
       get 'new_band'
-      get 'approve_new'
-      get 'approve_offer'
-      get 'approve_join'
-      get 'approve_marge'
-      get 'refuse'
+      delete 'approve_new'
+      delete 'approve_offer'
+      delete 'approve_join'
+      delete 'approve_marge'
+      delete 'refuse'
     end
   end
 
