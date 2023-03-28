@@ -7,6 +7,8 @@ RSpec.describe "Favorites" do
   let!(:band_a) { create(:band) }
   let(:band_member) { create(:band_member, band: band, user: user) }
   let(:band_member_a) { create(:band_member, band: band_a, user: user_a) }
+  let(:favorite_params) { attributes_for(:favorite, user_id: user.id, favorited_user_id: user_a.id) }
+  let(:favorite_band_params) { attributes_for(:favorite, user_id: user.id, band_id: band.id, favorited_user_id: user_a.id) }
 
   describe "GET favorites#index" do
     context "ユーザーがログインしているとき" do
@@ -122,6 +124,47 @@ RSpec.describe "Favorites" do
       it "ログインページに遷移すること" do
         get send_band_favorites_path
         expect(response).to have_http_status :found
+      end
+    end
+  end
+
+  describe "POST #create_user" do
+    before do
+      sign_in user
+    end
+
+    context "お気に入りに未登録の場合" do
+      it "リクエストが成功すること" do
+        post create_user_favorite_path(user_a), params: { favorite: favorite_params }
+        expect(response).to have_http_status :ok
+      end
+
+      it "createが成功すること" do
+        expect do
+          post create_user_favorite_path(user_a), params: { favorite: favorite_params }
+        end.to change(Favorite, :count).by 1
+      end
+
+      it "ボタンの表記がお気に入り済みになること" do
+        post create_user_favorite_path(user_a), params: { favorite: favorite_params }
+        expect(response.body).to include "お気に入り済み"
+      end
+    end
+
+    context "既に登録済みの場合" do
+      before do
+        create(:favorite, user: user, favorited_user: user_a)
+      end
+
+      it "リクエストが成功すること" do
+        post create_user_favorite_path(user_a), params: { favorite: favorite_params }
+        expect(response).to have_http_status :ok
+      end
+
+      it "createが失敗すること" do
+        expect do
+          post create_user_favorite_path(user_a), params: { favorite: favorite_params }
+        end.not_to change(Favorite, :count)
       end
     end
   end
