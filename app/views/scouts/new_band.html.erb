@@ -8,7 +8,7 @@
           <h5 class= "mt-2">バンド名</h5>
           <p><%= @scouted_band.name %></p>
           <h5>地域</h5>
-          <p><%= @scouted_band.prefecture.name %></p>
+          <p><%= @scouted_band.prefecture.name  if @scouted_band.prefecture %></p>
           <h5>バンド紹介</h5>
           <p><%= @scouted_band.introduction %></p>
         </div>
