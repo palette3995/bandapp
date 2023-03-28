@@ -29,9 +29,9 @@
             <h2><%= @scouted_user.name %></h2>
             <h2>さんをスカウト</h2>
           </div>
-          <% if @user.scouting_users.where(id: @scouted_user.id ).present? %>
+          <% if @user.scouts.where(scouted_user_id: @scouted_user.id, band_id: nil, scouted_band_id: nil ).present? %>
             既にスカウトを送っています。
-          <% elsif @user.user_scouted_mes.where(id:@scouted_user.id).present? %>
+          <% elsif @user.reverse_of_scouts.where(user_id: @scouted_user.id, band_id: nil, scouted_band_id: nil ).present? %>
             既に相手からスカウトを受けています。
           <% else %>
             <%= form_with model: @scout, url: scouts_path, method: :post do |f| %>
