@@ -26,7 +26,7 @@ class Scout < ApplicationRecord
       new_band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: member.role)
     end
     scouted_band.band_members.each do |member|
-      new_band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: "メンバー")
+      new_band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: "メンバー") unless new_band.band_members.map(&:user).include?(member.user)
     end
   end
 
