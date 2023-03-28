@@ -21,6 +21,21 @@ class Scout < ApplicationRecord
     "/scouts"
   end
 
+  def create_new_band_members(new_band)
+    band.band_members.each do |member|
+      new_band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: member.role)
+    end
+    scouted_band.band_members.each do |member|
+      new_band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: "メンバー")
+    end
+  end
+
+  def after_marge_bands
+    band.destroy
+    scouted_band.destroy
+    destroy
+  end
+
   private
 
   def create_notifications

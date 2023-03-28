@@ -43,6 +43,14 @@ class Band < ApplicationRecord
     band_genres.map(&:genre)
   end
 
+  def already_scouted?(band)
+    band_scouted_mes.include?(band)
+  end
+
+  def already_scouted_from_member?(band)
+    reverse_of_scouts.where(user_id: band.band_members.map(&:user_id), band_id: nil).present?
+  end
+
   private
 
   def create_genres

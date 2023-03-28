@@ -21,21 +21,12 @@ class ScoutsController < ApplicationController
 
   def create
     @scout = Scout.new(scout_params)
-    band = Band.find(params[:scout][:band_id]) if params[:scout][:band_id].present?
     @scouted_user = User.find(params[:scout][:scouted_user_id])
-    if band.present?
-      if @scouted_user.band_scouted_mes.include?(band)
-        flash[:alert] = t("alert.sent")
-        redirect_to new_user_scout_path(params[:scout][:scouted_user_id]) and return
-      elsif band.user_scouted_mes.include?(@scouted_user)
-        flash[:alert] = t("alert.received")
-        redirect_to new_user_scout_path(params[:scout][:scouted_user_id]) and return
-      elsif @scouted_user.bands.include?(band)
-        flash[:alert] = t("alert.registered")
-        redirect_to new_user_scout_path(params[:scout][:scouted_user_id]) and return
-      end
+    if params[:scout][:band_id].present?
+      band = Band.find(params[:scout][:band_id])
+      alerts_band_scouts_user(@scouted_user, band)
     end
-    if @scout.save
+    if flash.now[:alert].nil? && @scout.save
       redirect_to scouts_path, notice: t("notice.scout")
     else
       render :new_user, status: :unprocessable_entity
@@ -45,32 +36,15 @@ class ScoutsController < ApplicationController
   def create_band
     @scout = Scout.new(scout_params)
     @scouted_band = Band.find(params[:scout][:scouted_band_id])
-    scouted_band_members = @scouted_band.band_members.map(&:user)
     @reader = @scouted_band.band_members.find_by(role: "リーダー").user
     if params[:scout][:band_id]
       band = Band.find(params[:scout][:band_id])
-      band_members = band.band_members.map(&:user)
-      if band.band_scouted_mes.include?(@scouted_band)
-        flash[:alert] = t("alert.received")
-        redirect_to new_band_scout_path(params[:scout][:scouted_band_id]) and return
-      elsif @scouted_band.band_scouted_mes.include?(band)
-        flash[:alert] = t("alert.sent")
-        redirect_to new_band_scout_path(params[:scout][:scouted_band_id]) and return
-      elsif (band.user_scouted_mes & scouted_band_members).present?
-        flash[:alert] = t("alert.received_other")
-        redirect_to new_band_scout_path(params[:scout][:scouted_band_id]) and return
-      elsif (@scouted_band.user_scouted_mes & band_members).present?
-        flash[:alert] = t("alert.sent_other")
-        redirect_to new_band_scout_path(params[:scout][:scouted_band_id]) and return
-      elsif (band_members & scouted_band_members).present?
-        flash[:alert] = t("alert.duplicate")
-        redirect_to new_band_scout_path(params[:scout][:scouted_band_id]) and return
-      elsif band_members.count + scouted_band_members.count > 10
-        flash[:alert] = t("alert.over")
-        redirect_to new_band_scout_path(params[:scout][:scouted_band_id]) and return
-      end
+      alerts_already_scouted(band, @scouted_band)
+      alerts_already_scouted_from_member(band, @scouted_band)
+      flash.now[:alert] = t("alert.duplicate") if (band.band_members.map(&:user) & @scouted_band.band_members.map(&:user)).present?
+      flash.now[:alert] = t("alert.over") if band.band_members.count + @scouted_band.band_members.count > 10
     end
-    if @scout.save
+    if flash.now[:alert].nil? && @scout.save
       redirect_to scouts_path, notice: t("notice.scout")
     else
       render :new_band, status: :unprocessable_entity
@@ -111,7 +85,7 @@ class ScoutsController < ApplicationController
     @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "リーダー")
     @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
-    update_band_colums(@band.id)
+    update_band_colums(@band)
     redirect_to bands_path, notice: t("notice.approve")
   end
 
@@ -120,7 +94,7 @@ class ScoutsController < ApplicationController
     @band = Band.find(@scout.band_id)
     @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
-    update_band_colums(@band.id)
+    update_band_colums(@band)
     redirect_to bands_path, notice: t("notice.approve")
   end
 
@@ -129,25 +103,16 @@ class ScoutsController < ApplicationController
     @band = Band.find(@scout.scouted_band_id)
     @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "メンバー")
     @scout.destroy
-    update_band_colums(@band.id)
+    update_band_colums(@band)
     redirect_to bands_path, notice: t("notice.approve")
   end
 
   def approve_marge
     @scout = Scout.find(params[:id])
-    offering = Band.find(@scout.band_id)
-    offered = Band.find(@scout.scouted_band_id)
     @band = Band.create(name: "新規バンド")
-    offering.band_members.each do |member|
-      @band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: member.role)
-    end
-    offered.band_members.each do |member|
-      @band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: "メンバー")
-    end
-    @scout.destroy
-    offered.destroy
-    offering.destroy
-    update_band_colums(@band.id)
+    @scout.create_new_band_members(@band)
+    @scout.after_marge_bands
+    update_band_colums(@band)
     redirect_to bands_path, notice: t("notice.approve")
   end
 
@@ -174,5 +139,31 @@ class ScoutsController < ApplicationController
 
   def set_bands
     @bands = Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
+  end
+
+  def alerts_band_scouts_user(user, band)
+    if user.band_scouted_mes.include?(band)
+      flash.now[:alert] = t("alert.sent")
+    elsif band.user_scouted_mes.include?(user)
+      flash.now[:alert] = t("alert.received")
+    elsif user.bands.include?(band)
+      flash.now[:alert] = t("alert.registered")
+    end
+  end
+
+  def alerts_already_scouted(band, scouted_band)
+    if band.already_scouted?(scouted_band)
+      flash.now[:alert] = t("alert.received")
+    elsif scouted_band.already_scouted?(band)
+      flash.now[:alert] = t("alert.sent")
+    end
+  end
+
+  def alerts_already_scouted_from_member(band, scouted_band)
+    if band.already_scouted_from_member?(scouted_band)
+      flash.now[:alert] = t("alert.received_other")
+    elsif scouted_band.already_scouted_from_member?(band)
+      flash.now[:alert] = t("alert.sent_other")
+    end
   end
 end
