@@ -26,11 +26,17 @@ class BandMembersController < ApplicationController
     @member = BandMember.find(params[:id])
     @band = @member.band
     if @member.role == "リーダー"
-      other_member = @band.band_members.where.not(id: @member.id).first
+      other_member = @band.band_members.find_by(role: "メンバー")
       other_member.update!(role: "リーダー")
     end
     @member.destroy
-    update_band_colums(@band.id)
+    update_band_colums(@band)
+    @band.destroy if @band.band_members.count <= 1
+    if @member.user == current_user || @band.blank?
+      redirect_to bands_path, notice: t("notice.leave_band")
+    else
+      redirect_to band_path(@band.id), notice: t("notice.kick_out")
+    end
   end
 
   private
