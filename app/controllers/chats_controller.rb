@@ -9,8 +9,9 @@ class ChatsController < ApplicationController
 
   def create
     @chat = Chat.new(chat_params)
+    @band = Band.find(params[:chat][:band_id])
     if @chat.save
-      redirect_to chat_path(params[:chat][:band_id])
+      redirect_to chat_path(@band.id)
     else
       render :show, status: :unprocessable_entity
     end
