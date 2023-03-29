@@ -2,13 +2,12 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: %i[show edit update]
   before_action :set_recomend_users, only: %i[index match_ages match_levels match_genres]
-  before_action :set_user_part, only: %i[index match_levels]
   before_action :set_parts, :set_genres, except: %i[show search]
-  before_action :set_user_parts, only: %i[edit update]
-  before_action :set_q, only: %i[index search]
   before_action :set_levels
 
   def index
+    @q = User.ransack(params[:q])
+    @user_part = current_user.user_parts.first
     @match_ages = @recomend_users.where(age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
     @match_genres = @recomend_users.where(user_genres: { genre_id: current_user.genres.pluck(:id) }).limit(4)
@@ -18,10 +17,12 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user_parts = @user.parts
     redirect_to users_path, alert: t("alert.page_unavailable") unless @user == current_user
   end
 
   def update
+    @user_parts = @user.parts
     # メディア削除ボタンが押された際の処理
     if params[:delete_image]
       delete_media(@user.image)
@@ -44,6 +45,7 @@ class UsersController < ApplicationController
   end
 
   def search
+    @q = User.ransack(params[:q])
     @users = @q.result.where.not(id: current_user.id).distinct
   end
 
@@ -52,6 +54,7 @@ class UsersController < ApplicationController
   end
 
   def match_levels
+    @user_part = current_user.user_parts.first
     @users = @recomend_users.where(user_parts: { level: @user_part.level })
   end
 
@@ -76,24 +79,12 @@ class UsersController < ApplicationController
     @parts = Part.all
   end
 
-  def set_user_part
-    @user_part = current_user.user_parts.first
-  end
-
-  def set_user_parts
-    @user_parts = @user.parts
-  end
-
   def set_genres
     @genres = Genre.all
   end
 
   def set_levels
     @levels = %W[未経験 初心者 中級者 上級者]
-  end
-
-  def set_q
-    @q = User.ransack(params[:q])
   end
 
   def set_recomend_users
