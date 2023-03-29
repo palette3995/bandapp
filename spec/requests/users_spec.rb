@@ -124,66 +124,59 @@ RSpec.describe "Users" do
   end
 
   describe "GET users/registrations#edit" do
-    context "メール・パスワード編集ページが正しく表示されること" do
-      before do
-        sign_in user
-        get edit_user_registration_path
-      end
+    before do
+      sign_in user
+      get edit_user_registration_path
+    end
 
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
 
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("アカウント設定")
-      end
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("アカウント設定")
+    end
   end
 
   describe "GET users/registrations#new" do
-    context "新規登録ページが正しく表示されること" do
-      before do
-        get new_user_registration_path
-      end
+    before do
+      get new_user_registration_path
+    end
 
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
 
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("アカウント登録")
-      end
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("アカウント登録")
     end
   end
 
   describe "GET devise/sessions#new" do
-    context "ログインページが正しく表示されること" do
-      before do
-        get new_user_session_path
-      end
+    before do
+      get new_user_session_path
+    end
 
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
 
-      it "ログインが正しく表示されること" do
-        expect(response.body).to include("ログイン")
-      end
+    it "ログインが正しく表示されること" do
+      expect(response.body).to include("ログイン")
     end
   end
 
   describe "GET users/passwords#new" do
-    context "パスワード再設定ページが正しく表示されること" do
-      before do
-        get new_user_password_path
-      end
+    before do
+      get new_user_password_path
+    end
 
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
 
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("パスワードを忘れた方")
-      end
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("パスワードを忘れた方")
     end
   end
 end
