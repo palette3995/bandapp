@@ -1,6 +1,5 @@
 class ScoutsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user
   before_action :set_parts, :set_bands, only: %i[new_user new_band create create_band]
 
   def new_user
@@ -18,7 +17,7 @@ class ScoutsController < ApplicationController
   end
 
   def index
-    @scouts = @user.reverse_of_scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def create
@@ -54,38 +53,38 @@ class ScoutsController < ApplicationController
   end
 
   def received_offer
-    @scouts = @user.reverse_of_scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def received_join
-    @scouts = @user.reverse_of_scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def received_marge
-    @scouts = @user.reverse_of_scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_new
-    @scouts = @user.scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def send_offer
-    @scouts = @user.scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def send_join
-    @scouts = @user.scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_marge
-    @scouts = @user.scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def approve_new
     @scout = Scout.find(params[:id])
     @band = Band.create(name: "新規バンド")
     @band.band_members.create(user_id: @scout.user_id, part_id: @scout.part_id, other_part: @scout.other_part, role: "リーダー")
-    @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
+    @band.band_members.create(user_id: current_user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
     @scout.destroy
     update_band_colums(@band)
     redirect_to bands_path, notice: t("notice.approve")
@@ -95,7 +94,7 @@ class ScoutsController < ApplicationController
     @scout = Scout.find(params[:id])
     @band = @scout.band
     if @band.band_members.count < 10
-      @band.band_members.create(user_id: @user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
+      @band.band_members.create(user_id: current_user.id, part_id: @scout.scouted_part_id, other_part: @scout.scouted_other_part, role: "メンバー")
       @scout.destroy
       update_band_colums(@band)
       redirect_to bands_path, notice: t("notice.approve")
@@ -143,16 +142,12 @@ class ScoutsController < ApplicationController
                                   :other_part, :scouted_other_part, :message)
   end
 
-  def set_user
-    @user = current_user
-  end
-
   def set_parts
     @parts = Part.where(id: 1..6)
   end
 
   def set_bands
-    @bands = Band.where(id: @user.band_members.where(role: "リーダー").pluck(:band_id))
+    @bands = Band.where(id: current_user.band_members.where(role: "リーダー").pluck(:band_id))
   end
 
   def alerts_band_scouts_user(user, band)
