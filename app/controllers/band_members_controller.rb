@@ -24,6 +24,7 @@ class BandMembersController < ApplicationController
 
   def destroy
     @member = BandMember.find(params[:id])
+    member = @member.user
     @band = @member.band
     if @member.role == "リーダー"
       other_member = @band.band_members.find_by(role: "メンバー")
@@ -31,8 +32,11 @@ class BandMembersController < ApplicationController
     end
     @member.destroy
     update_band_colums(@band)
-    @band.destroy if @band.band_members.count <= 1
-    if @member.user == current_user || @band.blank?
+    if @band.band_members.count <= 1
+      @band.destroy
+      redirect_to bands_path, notice: t("notice.broke_up_band") and return
+    end
+    if member == current_user
       redirect_to bands_path, notice: t("notice.leave_band")
     else
       redirect_to band_path(@band.id), notice: t("notice.kick_out")
