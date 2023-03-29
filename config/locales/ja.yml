@@ -11,6 +11,7 @@ ja:
     guest_login: ゲストユーザーとしてログインしました
     leave_band: "バンドから脱退しました"
     kick_out: "メンバーが脱退しました"
+    broke_up_band: "バンドが解散されました"
   alert:
     sent: 既にスカウトを送っています。
     sent_other: 他の所属メンバーが相手バンドへ既にスカウトを送っています。
