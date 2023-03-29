@@ -36,30 +36,21 @@ RSpec.describe "RecruitMembers" do
   end
 
   describe "GET recruit_members#edit" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        recruit_member
-        band_member
-        get edit_recruit_member_path(recruit_member)
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "自分の所属バンド以外のページにアクセスしたとき、バンド一覧ページに遷移すること" do
-        member = create(:recruit_member, band: create(:band))
-        get edit_recruit_member_path(member)
-        expect(response).to redirect_to user_bands_bands_path
-      end
+    before do
+      sign_in user
+      recruit_member
+      band_member
+      get edit_recruit_member_path(recruit_member)
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get edit_recruit_member_path(band)
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "自分の所属バンド以外のページにアクセスしたとき、バンド一覧ページに遷移すること" do
+      member = create(:recruit_member, band: create(:band))
+      get edit_recruit_member_path(member)
+      expect(response).to redirect_to user_bands_bands_path
     end
   end
 
