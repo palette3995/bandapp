@@ -9,7 +9,7 @@ class RecruitMembersController < ApplicationController
 
   def edit
     @member = RecruitMember.find(params[:id])
-    @band = Band.find(@member.band_id)
+    @band = @member.band
     redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.users.include?(current_user)
   end
 
@@ -18,7 +18,7 @@ class RecruitMembersController < ApplicationController
     @band = Band.find(params[:recruit_member][:band_id])
     if @member.save
       flash[:notice] = t("notice.create")
-      redirect_to band_path(@member.band_id)
+      redirect_to band_path(@band.id)
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,9 +26,9 @@ class RecruitMembersController < ApplicationController
 
   def update
     @member = RecruitMember.find(params[:id])
-    @band = Band.find(@member.band_id)
+    @band = @member.band
     if @member.update(member_params)
-      redirect_to band_path(@member.band_id), notice: t("notice.update")
+      redirect_to band_path(@band.id), notice: t("notice.update")
     else
       render :edit, status: :unprocessable_entity
     end
