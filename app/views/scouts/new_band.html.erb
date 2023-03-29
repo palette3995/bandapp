@@ -27,9 +27,9 @@
             <h2><%= @scouted_band.name %></h2>
             <h2>へ加入申請</h2>
           </div>
-          <% if @user.scouting_bands.include?(@scouted_band) || @user.bands.joins(:scouting_bands).where(scouting_bands: {id: @scouted_band.id }).present? %>
+          <% if current_user.scouting_bands.include?(@scouted_band) || current_user.bands.joins(:scouting_bands).where(scouting_bands: {id: @scouted_band.id }).present? %>
             既にスカウトを送っています。
-          <% elsif @user.band_scouted_mes.include?(@scouted_band) || @user.bands.joins(:band_scouted_mes).where(band_scouted_mes: {id: @scouted_band.id }).present? %>
+          <% elsif current_user.band_scouted_mes.include?(@scouted_band) || current_user.bands.joins(:band_scouted_mes).where(band_scouted_mes: {id: @scouted_band.id }).present? %>
             既に相手からスカウトを受けています。
           <% elsif @scouted_band.band_members.count >= 10 %>
             メンバー数が上限に達している為スカウトできません。
@@ -45,7 +45,7 @@
               <div class="form-group my-3">
                 <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-0" %>
               </div>
-              <%= f.hidden_field :user_id, value: @user.id %>
+              <%= f.hidden_field :user_id, value: current_user.id %>
               <%= f.hidden_field :scouted_user_id, value: @reader.id %>
               <%= f.hidden_field :scouted_band_id, value: @scouted_band.id %>
               <div class="row">
@@ -75,7 +75,7 @@
               <div class="form-group my-3">
                 <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-1" %>
               </div>
-              <%= f.hidden_field :user_id, value: @user.id %>
+              <%= f.hidden_field :user_id, value: current_user.id %>
               <%= f.hidden_field :scouted_user_id, value: @reader.id %>
               <%= f.hidden_field :scouted_band_id, value: @scouted_band.id %>
               <div class="row">
