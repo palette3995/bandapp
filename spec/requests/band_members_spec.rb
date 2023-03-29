@@ -35,33 +35,53 @@ RSpec.describe "BandMembers" do
   end
 
   describe "DELETE band_members#destroy" do
-    before do
-      sign_in user
-      band_member
-      band_member_a
-    end
+    context "メンバーが三人以上のとき" do
+      before do
+        sign_in user
+        band_member
+        band_member_a
+        create(:band_member, band: band)
+      end
 
-    it "リクエストが成功すること" do
-      delete band_member_path(band_member)
-      expect(response).to have_http_status :found
-    end
-
-    it "メンバーが一人以下になったとき、バンドごと削除されること" do
-      expect do
+      it "リクエストが成功すること" do
         delete band_member_path(band_member)
-      end.to change(BandMember, :count).by(-2)
-                                       .and change(Band, :count).by(-1)
+        expect(response).to have_http_status :found
+      end
+
+      it "リーダーが脱退すると、別のメンバーがリーダーになること" do
+        delete band_member_path(band_member)
+        expect(band_member_a.reload.role).to eq "リーダー"
+      end
+
+      it "リーダーが脱退すると、バンド一覧ページにリダイレクトされること" do
+        delete band_member_path(band_member)
+        expect(response).to redirect_to bands_path
+      end
+
+      it "リーダー以外が脱退すると、バンド詳細ページにリダイレクトされること" do
+        delete band_member_path(band_member_a)
+        expect(response).to redirect_to band_path(band)
+      end
     end
 
-    it "リーダーが脱退すると、別のメンバーがリーダーになること" do
-      create(:band_member, band: band)
-      delete band_member_path(band_member)
-      expect(band_member_a.reload.role).to eq "リーダー"
-    end
+    context "メンバーが二人以下のとき" do
+      before do
+        sign_in user
+        band_member
+        band_member_a
+      end
 
-    it "リダイレクトされること" do
-      delete band_member_path(band_member)
-      expect(response).to redirect_to bands_path
+      it "メンバーが一人以下になったとき、バンドごと削除されること" do
+        expect do
+          delete band_member_path(band_member)
+        end.to change(BandMember, :count).by(-2)
+                                         .and change(Band, :count).by(-1)
+      end
+
+      it "バンド一覧ページにリダイレクトされること" do
+        delete band_member_path(band_member_a)
+        expect(response).to redirect_to bands_path
+      end
     end
   end
 end
