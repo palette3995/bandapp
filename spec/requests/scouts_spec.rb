@@ -195,15 +195,28 @@ RSpec.describe "Scouts" do
   describe "GET scouts#new_user" do
     before do
       sign_in user
-      get new_user_scout_path(user_a)
     end
 
     it "リクエストが200 OKとなること" do
+      get new_user_scout_path(user_a)
       expect(response).to have_http_status :ok
     end
 
-    it "申請相手の名前が正しく表示されること" do
+    it "申請相手の名前が表示されること" do
+      get new_user_scout_path(user_a)
       expect(response.body).to include(user_a.name)
+    end
+
+    it "相手に新バンド結成のスカウトを送っているとき、スカウトを送れないこと" do
+      create(:scout, user: user, scouted_user: user_a, part_id: 1, scouted_part_id: 1)
+      get new_user_scout_path(user_a)
+      expect(response.body).to include("既にスカウトを送っています。")
+    end
+
+    it "相手から新バンド結成のスカウトが届いているとき、スカウトを送れないこと" do
+      create(:scout, user: user_a, scouted_user: user, part_id: 1, scouted_part_id: 1)
+      get new_user_scout_path(user_a)
+      expect(response.body).to include("既に相手からスカウトを受けています。")
     end
   end
 
@@ -211,15 +224,34 @@ RSpec.describe "Scouts" do
     before do
       sign_in user
       band_member_a
-      get new_band_scout_path(band_a)
     end
 
     it "リクエストが200 OKとなること" do
+      get new_band_scout_path(band_a)
       expect(response).to have_http_status :ok
     end
 
     it "申請先バンドの名前が正しく表示されること" do
+      get new_band_scout_path(band_a)
       expect(response.body).to include(band_a.name)
+    end
+
+    it "相手バンドに加入希望のスカウトを送っているとき、スカウトを送れないこと" do
+      create(:scout, user: user, scouted_band: band_a, part_id: 1, scouted_user: user_a)
+      get new_band_scout_path(band_a)
+      expect(response.body).to include("既にスカウトを送っています。")
+    end
+
+    it "相手バンドからメンバースカウトが届いているとき、スカウトを送れないこと" do
+      create(:scout, user: user_a, band: band_a, scouted_part_id: 1, scouted_user: user)
+      get new_band_scout_path(band_a)
+      expect(response.body).to include("既に相手からスカウトを受けています。")
+    end
+
+    it "相手バンドのメンバー数が10人のとき、スカウトを送れないこと" do
+      create_list(:band_member, 9, band: band_a)
+      get new_band_scout_path(band_a)
+      expect(response.body).to include("メンバー数が上限に達している為スカウトできません。")
     end
   end
 
