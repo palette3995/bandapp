@@ -10,7 +10,7 @@
             <li><%= link_to "アカウント設定", edit_user_registration_path, class: "text-muted text-decoration-none"%></li>
             <h5 class="mt-5 mb-2">バンド</h5>
             <%= link_to "バンド検索", bands_path, class: "text-muted text-decoration-none" %>
-            <li><%= link_to "所属バンド一覧", user_bands_path(current_user.id), class: "text-muted text-decoration-none"%></li>
+            <li><%= link_to "所属バンド一覧", user_bands_bands_path, class: "text-muted text-decoration-none"%></li>
           </ul>
         </div>
         <div class="col-md-4">

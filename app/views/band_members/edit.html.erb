@@ -23,6 +23,6 @@
     </div>
   </div>
   <% if @member.user != current_user %>
-    <%= link_to "脱退させる", band_member_path(@member.id), data: { turbo_method: :delete }, class: "btn btn-danger mt-5" %>
+    <%= link_to "脱退させる", band_member_path(@member.id), data: { turbo_confirm: "#{@member.user.name}さんを脱退させます、本当によろしいですか？", turbo_method: :delete }, class: "btn btn-danger mt-5" %>
   <% end %>
 </div>

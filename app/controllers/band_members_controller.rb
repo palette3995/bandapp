@@ -1,8 +1,10 @@
 class BandMembersController < ApplicationController
+  before_action :authenticate_user!
   def edit
     @member = BandMember.find(params[:id])
     @band = @member.band
     @parts = Part.where(id: 1..6)
+    redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.band_members.find_by(role: "リーダー").user == current_user
   end
 
   def update
@@ -22,13 +24,23 @@ class BandMembersController < ApplicationController
 
   def destroy
     @member = BandMember.find(params[:id])
+    member = @member.user
     @band = @member.band
     if @member.role == "リーダー"
-      other_member = @band.band_members.where.not(id: @member.id).first
+      other_member = @band.band_members.find_by(role: "メンバー")
       other_member.update!(role: "リーダー")
     end
     @member.destroy
-    update_band_colums(@band.id)
+    update_band_colums(@band)
+    if @band.band_members.count <= 1
+      @band.destroy
+      redirect_to bands_path, notice: t("notice.broke_up_band") and return
+    end
+    if member == current_user
+      redirect_to bands_path, notice: t("notice.leave_band")
+    else
+      redirect_to band_path(@band.id), notice: t("notice.kick_out")
+    end
   end
 
   private

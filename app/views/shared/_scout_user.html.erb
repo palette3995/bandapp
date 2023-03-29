@@ -1,5 +1,0 @@
-<% unless user.bands.count == 10 %>
-  <%= link_to "スカウト", new_user_scout_path(user.id), class: "btn btn-secondary" %>
-<% else %>
-  相手のバンド数が上限に達している為<br>スカウトできません
-<% end %>

@@ -1,6 +1,5 @@
 FactoryBot.define do
-  factory :user_part do
+  factory :notification do
     association :user
-    part { Part.all.sample }
   end
 end

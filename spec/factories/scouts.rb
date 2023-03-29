@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :scout do
     association :user
-    message { "scoutmessage" }
+    message { SecureRandom.alphanumeric(30) }
   end
 end

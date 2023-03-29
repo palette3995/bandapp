@@ -43,7 +43,7 @@
                   <p class="card-text"><%= favorite.band.name %></p>
                   <p class="card-text">をお気に入り登録</p>
                   <p class="card-text"><%= favorite.user.name %></p>
-                  <span class="card-text"><%= favorite.user.prefecture.name %></span>
+                  <span class="card-text"><%= favorite.user.prefecture.name  if favorite.user.prefecture %></span>
                   <span class="card-text"><%= "#{favorite.user.age}歳"%></span>
                   <p class="card-text my-1"><%= favorite.user.parts[0].name %></p>
                   <span class="card-text"><%= favorite.user.user_parts[0].level %></span>

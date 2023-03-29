@@ -41,25 +41,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
 
   create_table "band_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "band_id"
-    t.bigint "genre_id"
+    t.integer "genre_id"
     t.string "priority"
     t.string "other_genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["band_id"], name: "index_band_genres_on_band_id"
-    t.index ["genre_id"], name: "index_band_genres_on_genre_id"
   end
 
   create_table "band_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "band_id"
+    t.integer "part_id"
     t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "part_id"
     t.string "other_part"
     t.index ["band_id"], name: "index_band_members_on_band_id"
-    t.index ["part_id"], name: "index_band_members_on_part_id"
     t.index ["user_id"], name: "index_band_members_on_user_id"
   end
 
@@ -106,12 +104,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
-  create_table "genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.string "subject_type"
@@ -124,15 +116,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "parts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "recruit_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "band_id"
-    t.bigint "part_id"
+    t.integer "part_id"
     t.string "level"
     t.string "other_part"
     t.string "age"
@@ -140,7 +126,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["band_id"], name: "index_recruit_members_on_band_id"
-    t.index ["part_id"], name: "index_recruit_members_on_part_id"
   end
 
   create_table "scouts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -148,41 +133,37 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.bigint "scouted_user_id"
     t.bigint "band_id"
     t.bigint "scouted_band_id"
-    t.bigint "part_id"
-    t.bigint "scouted_part_id"
+    t.integer "part_id"
+    t.integer "scouted_part_id"
     t.string "other_part"
     t.string "scouted_other_part"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "message"
     t.index ["band_id"], name: "index_scouts_on_band_id"
-    t.index ["part_id"], name: "index_scouts_on_part_id"
     t.index ["scouted_band_id"], name: "index_scouts_on_scouted_band_id"
-    t.index ["scouted_part_id"], name: "index_scouts_on_scouted_part_id"
     t.index ["scouted_user_id"], name: "index_scouts_on_scouted_user_id"
     t.index ["user_id"], name: "index_scouts_on_user_id"
   end
 
   create_table "user_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "genre_id"
+    t.integer "genre_id"
     t.integer "priority"
     t.string "other_genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["genre_id"], name: "index_user_genres_on_genre_id"
     t.index ["user_id"], name: "index_user_genres_on_user_id"
   end
 
   create_table "user_parts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "part_id"
+    t.integer "part_id"
     t.integer "priority"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "level"
     t.string "other_part"
-    t.index ["part_id"], name: "index_user_parts_on_part_id"
     t.index ["user_id"], name: "index_user_parts_on_user_id"
   end
 
@@ -206,10 +187,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.string "want_to_copy"
     t.string "motivation"
     t.string "frequency"
-    t.boolean "compose", default: false
-    t.integer "prefecture_id"
     t.string "activity_time"
     t.string "available_day"
+    t.boolean "compose", default: false
+    t.integer "prefecture_id"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -222,9 +203,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "band_genres", "bands"
-  add_foreign_key "band_genres", "genres"
   add_foreign_key "band_members", "bands"
-  add_foreign_key "band_members", "parts"
   add_foreign_key "band_members", "users"
   add_foreign_key "chats", "bands"
   add_foreign_key "chats", "users"
@@ -233,13 +212,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
   add_foreign_key "favorites", "users", column: "favorited_user_id"
   add_foreign_key "notifications", "users"
   add_foreign_key "recruit_members", "bands"
-  add_foreign_key "recruit_members", "parts"
   add_foreign_key "scouts", "bands"
   add_foreign_key "scouts", "bands", column: "scouted_band_id"
-  add_foreign_key "scouts", "parts"
-  add_foreign_key "scouts", "parts", column: "scouted_part_id"
   add_foreign_key "scouts", "users"
   add_foreign_key "scouts", "users", column: "scouted_user_id"
-  add_foreign_key "user_genres", "genres"
   add_foreign_key "user_genres", "users"
 end

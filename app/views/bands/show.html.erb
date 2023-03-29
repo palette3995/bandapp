@@ -92,25 +92,29 @@
               <p>性別：<%= recruit.sex %></p>
             </div>
             <div class="col-lg-3 py-2">
-              <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
+              <% if @band.users.include?(current_user) %>
                 <%= link_to "編集", edit_recruit_member_path(recruit.id), class: "btn btn-secondary" %>
                 <%= link_to "削除", recruit_member_path(recruit.id), data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary" %>
               <% end %>
             </div>
           </div>
         <% end %>
-        <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
+        <% if @band.users.include?(current_user) %>
           <%= link_to "新規作成", new_recruit_member_path(@band.id), class: "btn btn-success" %>
         <% end %>
       </div>
     </div>
   </div>
-  <% if @band.band_members.pluck(:user_id).include?(current_user.id) %>
+  <% if @band.users.include?(current_user) %>
     <%= link_to "脱退する", band_member_path(@user.id), data: { turbo_confirm: "バンドから脱退します、本当によろしいですか？", turbo_method: :delete }, class: "btn btn-danger" %>
   <% else %>
     <div class="my-3">
       <%= render partial: 'shared/favorite_band', locals: { band: @band } %>
-      <%= render partial: 'shared/scout_band', locals: { band: @band } %>
+      <% unless @band.band_members.count >= 10 %>
+        <%= link_to "スカウト", new_band_scout_path(@band.id), class: "btn btn-secondary" %>
+      <% else %>
+        メンバー数が上限に達している為<br>スカウトできません
+      <% end %>
     </div>
   <% end %>
 </div>

@@ -9,6 +9,9 @@ ja:
     approve: スカウトを承認しました！
     refuse: スカウトを拒否しました。
     guest_login: ゲストユーザーとしてログインしました
+    leave_band: "バンドから脱退しました"
+    kick_out: "メンバーが脱退しました"
+    broke_up_band: "バンドが解散されました"
   alert:
     sent: 既にスカウトを送っています。
     sent_other: 他の所属メンバーが相手バンドへ既にスカウトを送っています。
@@ -19,6 +22,8 @@ ja:
     over: バンドメンバーが10人を超える為スカウトを送れません。
     reset_guest_password: ゲストユーザーさんのパスワードは再設定できません。
     edit_guest_data: ゲストユーザーさんは、データの編集・削除などができない設定になっています。
+    page_unavailable: ご指定いただいたページにはアクセスできません。
+    upper_limit: バンドのメンバー数が上限を超える為スカウトを承認できませんでした。
   enums:
     notification:
       notification_type:

@@ -3,7 +3,7 @@ class CreateBandMembers < ActiveRecord::Migration[7.0]
     create_table :band_members do |t|
       t.references :user, foreign_key: true
       t.references :band, foreign_key: true
-      t.string :part
+      t.integer :part_id
       t.string :role
       t.timestamps
     end

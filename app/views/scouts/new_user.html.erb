@@ -1,6 +1,6 @@
+<%= render partial: 'shared/error_messages', locals: { resource: @scout } %>
 <div class="container text-center">
   <div class="row">
-    <%= render partial: 'shared/error_messages', locals: { resource: @scout } %>
     <div class="top-text col mx-auto">
       <div class="card mt-5 mx-auto w-75">
         <div class="card-body">
@@ -29,9 +29,9 @@
             <h2><%= @scouted_user.name %></h2>
             <h2>さんをスカウト</h2>
           </div>
-          <% if @user.scouting_users.where(id: @scouted_user.id ).present? %>
+          <% if current_user.scouts.where(scouted_user_id: @scouted_user.id, band_id: nil, scouted_band_id: nil ).present? %>
             既にスカウトを送っています。
-          <% elsif @user.user_scouted_mes.where(id:@scouted_user.id).present? %>
+          <% elsif current_user.reverse_of_scouts.where(user_id: @scouted_user.id, band_id: nil, scouted_band_id: nil ).present? %>
             既に相手からスカウトを受けています。
           <% else %>
             <%= form_with model: @scout, url: scouts_path, method: :post do |f| %>
@@ -52,7 +52,7 @@
               <div class="form-group my-3">
                 <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-0 user-scout-0" %>
               </div>
-              <%= f.hidden_field :user_id, value: @user.id %>
+              <%= f.hidden_field :user_id, value: current_user.id %>
               <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
               <div class="row">
                 <div class="action my-3 col">
@@ -85,7 +85,7 @@
             <div class="form-group my-3">
               <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-1 user-scout-1" %>
             </div>
-            <%= f.hidden_field :user_id, value: @user.id %>
+            <%= f.hidden_field :user_id, value: current_user.id %>
             <%= f.hidden_field :scouted_user_id, value: @scouted_user.id %>
             <div class="row">
               <div class="action my-3 col">

@@ -1,4 +1,5 @@
 class BandsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_q, only: %i[index search]
   before_action :set_levels, only: %i[index]
   before_action :set_recomend_bands, only: %i[index match_ages match_genres]
@@ -7,7 +8,7 @@ class BandsController < ApplicationController
     @parts = Part.all
     @genres = Genre.all
     @match_ages = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
-    @match_genres = @recomend_bands.where(band_genres: { genre_id: current_user.genres.ids }).limit(4)
+    @match_genres = @recomend_bands.where(band_genres: { genre_id: current_user.genres.pluck(:id) }).limit(4)
   end
 
   def show
@@ -20,6 +21,7 @@ class BandsController < ApplicationController
 
   def edit
     @band = Band.find(params[:id])
+    redirect_to user_bands_bands_path, alert: t("alert.page_unavailable") unless @band.users.include?(current_user)
     @genres = Genre.all
   end
 
@@ -47,29 +49,18 @@ class BandsController < ApplicationController
   end
 
   def match_ages
-    @bands = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5)
+    @bands = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5) if current_user.age
   end
 
   def match_genres
-    @bands = @recomend_bands.where(band_genres: { genre_id: current_user.genres.ids })
+    @bands = @recomend_bands.where(band_genres: { genre_id: current_user.genres.pluck(:id) })
   end
 
   private
 
   def band_params
-    params.require(:band).permit(
-      :name,
-      :prefecture_id,
-      :introduction,
-      :image,
-      :original,
-      :want_to_copy,
-      :motivation,
-      :frequency,
-      :activity_time,
-      :available_day,
-      band_genres_attributes: %i[id genre_id user_id other_genre _destroy]
-    )
+    params.require(:band).permit(:name, :prefecture_id, :introduction, :image, :original, :want_to_copy, :motivation, :frequency, :activity_time, :available_day,
+                                 band_genres_attributes: %i[id genre_id user_id other_genre _destroy])
   end
 
   def set_q

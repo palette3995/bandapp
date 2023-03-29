@@ -8,8 +8,9 @@ class Scout < ApplicationRecord
   belongs_to :scouted_user, class_name: "User", optional: true
   belongs_to :band, optional: true
   belongs_to :scouted_band, class_name: "Band", optional: true
-  belongs_to :part, optional: true
-  belongs_to :scouted_part, class_name: "Part", optional: true
+  extend ActiveHash::Associations::ActiveRecordExtensions
+  belongs_to_active_hash :part, optional: true
+  belongs_to_active_hash :scouted_part, class_name: "Part", optional: true
   has_one :notification, as: :subject, dependent: :destroy
 
   def name
@@ -20,13 +21,28 @@ class Scout < ApplicationRecord
     "/scouts"
   end
 
+  def create_new_band_members(new_band)
+    band.band_members.each do |member|
+      new_band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: member.role)
+    end
+    scouted_band.band_members.each do |member|
+      new_band.band_members.create(user_id: member.user_id, part_id: member.part_id, role: "メンバー") unless new_band.band_members.map(&:user).include?(member.user)
+    end
+  end
+
+  def after_marge_bands
+    band.destroy
+    scouted_band.destroy
+    destroy
+  end
+
   private
 
   def create_notifications
     if band_id.nil? && scouted_band_id.nil?
       Notification.create!(subject: self, user_id: scouted_user_id, notification_type: Notification.notification_types[:new_band_scout])
     elsif band_id.present? && scouted_band_id.nil?
-      Notification.create!(subject: self, user_id: scouted_user_id, notification_type: Notification.notification_types[:band_scout_you])
+      Notification.create!(subject: self, user_id: scouted_user_id, notification_type: Notification.notification_types[:band_scouts_you])
     elsif band_id.nil? && scouted_band_id.present?
       scouted_band.band_members.each do |member|
         Notification.create!(subject: self, user_id: member.user_id, notification_type: Notification.notification_types[:want_to_join_your_band])

@@ -83,3 +83,9 @@ Rails/LexicallyScopedActionFilter:
 # Rspec
 RSpec/MultipleExpectations:
   Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false

@@ -82,7 +82,7 @@
         <% else %>
           <div class="my-3">
             <%= render partial: 'shared/favorite_user', locals: { user: @user } %>
-            <%= render partial: 'shared/scout_user', locals: { user: @user } %>
+            <%= link_to "スカウト", new_user_scout_path(@user.id), class: "btn btn-secondary" %>
           </div>
         <% end %>
       </div>

@@ -1,25 +1,25 @@
 class FavoritesController < ApplicationController
-  before_action :set_user
+  before_action :authenticate_user!
 
   def index
-    @users = @user.favoriting_users.page(params[:page])
+    @users = current_user.favoriting_users.page(params[:page])
   end
 
   def send_band
-    @bands = @user.favoriting_bands.page(params[:page])
+    @bands = current_user.favoriting_bands.page(params[:page])
   end
 
   def received_user
-    @users = @user.user_favorited_mes.page(params[:page])
+    @users = current_user.user_favorited_mes.page(params[:page])
   end
 
   def received_band
-    @favorites = Favorite.where(band_id: @user.bands.ids).page(params[:page])
+    @favorites = Favorite.where(band_id: current_user.bands.ids).page(params[:page])
   end
 
   def create_user
     @favorited_user = User.find(params[:id])
-    @user.favorites.find_or_create_by(favorited_user_id: params[:id])
+    current_user.favorites.find_or_create_by(favorited_user_id: params[:id])
 
     render turbo_stream: turbo_stream.replace(
       "favorite-user-button",
@@ -30,7 +30,7 @@ class FavoritesController < ApplicationController
 
   def create_band
     @favorited_band = Band.find(params[:id])
-    @user.favorites.find_or_create_by(band_id: params[:id])
+    current_user.favorites.find_or_create_by(band_id: params[:id])
 
     render turbo_stream: turbo_stream.replace(
       "favorite-band-button",
@@ -41,7 +41,7 @@ class FavoritesController < ApplicationController
 
   def destroy
     @favorited_user = User.find(params[:id])
-    @favorite = @user.favorites.find_by(favorited_user_id: params[:id])
+    @favorite = current_user.favorites.find_by(favorited_user_id: params[:id])
     @favorite&.destroy
 
     render turbo_stream: turbo_stream.replace(
@@ -53,7 +53,7 @@ class FavoritesController < ApplicationController
 
   def destroy_band
     @favorited_band = Band.find(params[:id])
-    @favorite = @user.favorites.find_by(band_id: params[:id])
+    @favorite = current_user.favorites.find_by(band_id: params[:id])
     @favorite&.destroy
 
     render turbo_stream: turbo_stream.replace(
@@ -61,11 +61,5 @@ class FavoritesController < ApplicationController
       partial: "shared/favorite_band",
       locals: { band: @favorited_band }
     )
-  end
-
-  private
-
-  def set_user
-    @user = current_user
   end
 end
