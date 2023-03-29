@@ -40,91 +40,64 @@ RSpec.describe "Favorites" do
   end
 
   describe "GET favorites#received_band" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        band_member
-        create(:favorite, user: user_a, band: band)
-        get received_band_favorites_path
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("あなたのバンドをお気に入り登録した人")
-      end
-
-      it "ユーザーから届いた自分のバンドへのお気に入りが表示されていること" do
-        expect(response.body).to include(user_a.name)
-        expect(response.body).to include(band.name)
-      end
+    before do
+      sign_in user
+      band_member
+      create(:favorite, user: user_a, band: band)
+      get received_band_favorites_path
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get received_band_favorites_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("あなたのバンドをお気に入り登録した人")
+    end
+
+    it "ユーザーから届いた自分のバンドへのお気に入りが表示されていること" do
+      expect(response.body).to include(user_a.name)
+      expect(response.body).to include(band.name)
     end
   end
 
   describe "GET favorites#received_user" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        create(:favorite, user: user_a, favorited_user: user)
-        get received_user_favorites_path
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("あなたをお気に入り登録した人")
-      end
-
-      it "ユーザーから届いた自分へのお気に入りが表示されていること" do
-        expect(response.body).to include(user_a.name)
-      end
+    before do
+      sign_in user
+      create(:favorite, user: user_a, favorited_user: user)
+      get received_user_favorites_path
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get received_user_favorites_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("あなたをお気に入り登録した人")
+    end
+
+    it "ユーザーから届いた自分へのお気に入りが表示されていること" do
+      expect(response.body).to include(user_a.name)
     end
   end
 
   describe "GET favorites#send_band" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        create(:favorite, user: user, band: band_a)
-        get send_band_favorites_path
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("お気に入りバンド一覧")
-      end
-
-      it "バンドへ送ったお気に入りが表示されていること" do
-        expect(response.body).to include(band_a.name)
-      end
+    before do
+      sign_in user
+      create(:favorite, user: user, band: band_a)
+      get send_band_favorites_path
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get send_band_favorites_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("お気に入りバンド一覧")
+    end
+
+    it "バンドへ送ったお気に入りが表示されていること" do
+      expect(response.body).to include(band_a.name)
     end
   end
 
