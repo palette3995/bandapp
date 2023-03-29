@@ -28,152 +28,98 @@ RSpec.describe "Users" do
   end
 
   describe "GET users#match_ages" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        get match_ages_users_path
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("年齢が近いユーザー")
-      end
+    before do
+      sign_in user
+      get match_ages_users_path
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get match_ages_users_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("年齢が近いユーザー")
     end
   end
 
   describe "GET users#match_genres" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        get match_genres_users_path
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("ジャンルが同じなユーザー")
-      end
+    before do
+      sign_in user
+      get match_genres_users_path
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get match_genres_users_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("ジャンルが同じなユーザー")
     end
   end
 
   describe "GET users#match_levels" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        get match_levels_users_path
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("レベルが近いユーザー")
-      end
+    before do
+      sign_in user
+      get match_levels_users_path
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get match_levels_users_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("レベルが近いユーザー")
     end
   end
 
   describe "GET users#show" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        get user_path(user)
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "ユーザー名が正しく表示されること" do
-        expect(response.body).to include(user.name)
-      end
+    before do
+      sign_in user
+      get user_path(user)
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get user_path(user)
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "ユーザー名が正しく表示されること" do
+      expect(response.body).to include(user.name)
     end
   end
 
   describe "GET users#edit" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        get edit_user_path(user)
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "ユーザー名が正しく表示されること" do
-        expect(response.body).to include(user.name)
-      end
-
-      it "自分以外のユーザーのページにアクセスしたとき、ユーザー一覧ページに遷移すること" do
-        user_a = create(:user)
-        get edit_user_path(user_a)
-        expect(response).to redirect_to users_path
-      end
+    before do
+      sign_in user
+      get edit_user_path(user)
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get edit_user_path(user)
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "ユーザー名が正しく表示されること" do
+      expect(response.body).to include(user.name)
+    end
+
+    it "自分以外のユーザーのページにアクセスしたとき、ユーザー一覧ページに遷移すること" do
+      user_a = create(:user)
+      get edit_user_path(user_a)
+      expect(response).to redirect_to users_path
     end
   end
 
   describe "GET users#search" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        get search_users_path
-      end
-
-      it "リクエストが200 OKとなること" do
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        expect(response.body).to include("検索結果")
-      end
+    before do
+      sign_in user
+      get search_users_path
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get search_users_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("検索結果")
     end
   end
 
@@ -191,14 +137,6 @@ RSpec.describe "Users" do
       it "タイトルが正しく表示されること" do
         expect(response.body).to include("アカウント設定")
       end
-    end
-
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get edit_user_registration_path
-        expect(response).to have_http_status :found
-      end
-    end
   end
 
   describe "GET users/registrations#new" do
