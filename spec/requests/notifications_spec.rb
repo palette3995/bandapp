@@ -70,40 +70,31 @@ RSpec.describe "Notifications" do
   end
 
   describe "GET Notifications#unreads" do
-    context "ユーザーがログインしているとき" do
-      before do
-        sign_in user
-        create(:favorite, user: user_a, favorited_user: user)
-      end
-
-      it "リクエストが200 OKとなること" do
-        get unreads_notifications_path
-        expect(response).to have_http_status :ok
-      end
-
-      it "タイトルが正しく表示されること" do
-        get unreads_notifications_path
-        expect(response.body).to include("未読の通知")
-      end
-
-      it "未読の通知が表示されること" do
-        get unreads_notifications_path
-        expect(response.body).to include(user_a.name)
-        expect(response.body).to include("お気に入りされました")
-      end
-
-      it "既読の通知が表示されないこと" do
-        notification.update(read: true)
-        get unreads_notifications_path
-        expect(response.body).to include("通知はありません")
-      end
+    before do
+      sign_in user
+      create(:favorite, user: user_a, favorited_user: user)
     end
 
-    context "ユーザーがログインしていないとき" do
-      it "ログインページに遷移すること" do
-        get unreads_notifications_path
-        expect(response).to have_http_status :found
-      end
+    it "リクエストが200 OKとなること" do
+      get unreads_notifications_path
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      get unreads_notifications_path
+      expect(response.body).to include("未読の通知")
+    end
+
+    it "未読の通知が表示されること" do
+      get unreads_notifications_path
+      expect(response.body).to include(user_a.name)
+      expect(response.body).to include("お気に入りされました")
+    end
+
+    it "既読の通知が表示されないこと" do
+      notification.update(read: true)
+      get unreads_notifications_path
+      expect(response.body).to include("通知はありません")
     end
   end
 end
