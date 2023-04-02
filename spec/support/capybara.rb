@@ -20,6 +20,7 @@ Capybara.register_driver :remote_chrome do |app|
 end
 
 Capybara.javascript_driver = :selenium_chrome_headless
+Capybara.server = :puma
 
 RSpec.configure do |config|
   config.before(:each, type: :system) do
@@ -28,7 +29,8 @@ RSpec.configure do |config|
 
   config.before(:each, js: true, type: :system) do
     driven_by :remote_chrome
-    Capybara.server_host = "web"
-    Capybara.app_host = "http://web"
+    Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
+    Capybara.server_port = 8080
+    Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
   end
 end
