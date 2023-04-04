@@ -47,7 +47,7 @@ RSpec.describe "users", js: true, type: :system do
       expect(page).to have_no_content user_b.name
     end
 
-    it "MIN〜MAXに入力した年齢の範囲内にユーザーが検索できること" do
+    it "MIN〜MAXに入力した年齢の範囲内のユーザーが検索できること" do
       fill_in "q[age_gteq]", with: 20
       fill_in "q[age_lteq]", with: 39
       find_by_id("search-users").send_keys :enter
@@ -113,14 +113,14 @@ RSpec.describe "users", js: true, type: :system do
       expect(page).to have_no_content user_b.name
     end
 
-    it "検索フォームに好きなアーティスト名を入力し、検索できること" do
+    it "検索フォームに好きなアーティスト名を入力し、ユーザーを検索できること" do
       fill_in "q[favorite_cont]", with: "アジカン"
       find_by_id("search-users").send_keys :enter
       expect(page).to have_content user_a.name
       expect(page).to have_no_content user_b.name
     end
 
-    it "検索フォームにコピーしたい楽曲名を入力し、検索できること" do
+    it "検索フォームにコピーしたい楽曲名を入力し、ユーザーを検索できること" do
       fill_in "q[want_to_copy_cont]", with: "リライト"
       find_by_id("search-users").send_keys :enter
       expect(page).to have_content user_a.name
