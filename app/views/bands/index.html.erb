@@ -22,7 +22,7 @@
         <p class="my-2"><%= f.label :part, '募集しているパート' %></p>
         <%= f.select :recruit_members_part_id_eq, @parts.map {|part| [part.name, part.id]}, {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
         <p class="my-2"><%= f.label :level, '募集しているレベル' %></p>
-        <%= f.select :recruit_members_level_eq, @levels.map {|level| [level, level]}, {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
+        <%= f.select :recruit_members_level_eq, [["未経験", "未経験" ],["初心者", "初心者" ],["中級者", "中級者" ],["上級者", "上級者" ]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
         <p class="my-2"><%= f.label :age, '募集している年齢' %></p>
         <%= f.select :recruit_members_age_eq, [["20代まで","20代まで"],["30代","30代"],["40代","40代"],["50代","50代"],["60歳以上","60歳以上"],["気にしない","気にしない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
         <p class="my-2"><%= f.label :sex, '募集している性別' %></p>
