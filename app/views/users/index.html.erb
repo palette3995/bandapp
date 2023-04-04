@@ -17,7 +17,7 @@
         <%= f.label :priority, 'サブパートを含む' %>
         <%=  f.check_box :user_parts_priority_lteq, {}, 3, 1%><br>
         <p class="my-2"><%= f.label :level, 'レベル' %></p>
-        <%= f.select :user_parts_level_eq, @levels.map.with_index {|level,index| [level, index]}, {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
+        <%= f.select :user_parts_level_eq, [["未経験", 0 ],["初心者", 1 ],["中級者", 2 ],["上級者", 3 ]], {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
         <p class="my-2"><%= f.label :genre, 'ジャンル' %></p>
         <%= f.select :user_genres_genre_id_eq, @genres.map {|genre| [genre.name, genre.id]}, {include_blank: ""}, {class: "form-select w-75 mx-auto"}%>
         <%= f.label :priority, 'サブジャンルを含む' %>
