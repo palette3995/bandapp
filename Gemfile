@@ -74,6 +74,7 @@ group :test do
   gem "rspec_junit_formatter"
   gem "rspec-rails"
   gem "selenium-webdriver"
+  gem "webdrivers"
   gem "factory_bot_rails"
 end
 

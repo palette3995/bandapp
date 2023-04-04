@@ -12,8 +12,6 @@ services:
 
   selenium_chrome:
     image: selenium/standalone-chrome-debug
-    ports:
-      - '4444:4444'
     logging:
       driver: none
 
