@@ -164,21 +164,6 @@ $(window).on('turbo:load turbo:render', ()=>{
     });
   });
 
-  //アップロードファイル削除時
-  $(function(){
-    $('.delete-avatar').click(function() {
-      $('.avatar').html('<img class="avatar rounded-circle my-3" src="/assets/default-3e61fd5dbed2c9fbc17ab2c035668b0940109837057d0b73678e696904e8d7c1.png" width="150" height="150">');
-    });
-
-    $('.delete-movie').click(function() {
-      $('.movie').html('<p>動画がありません</p>');
-    });
-
-    $('.delete-sound').click(function() {
-      $('.sound').html('<p>音源がありません</p>');
-    });
-  });
-
   //タブの切り替え
   $(function(){
     $('.tab1__link').click(function(){

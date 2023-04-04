@@ -1,9 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: %i[show edit update]
   before_action :set_recomend_users, only: %i[index match_ages match_levels match_genres]
   before_action :set_parts, :set_genres, except: %i[show search]
-  before_action :set_levels
 
   def index
     @q = User.ransack(params[:q])
@@ -14,34 +12,29 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = User.find(params[:id])
   end
 
   def edit
+    @user = User.find(params[:id])
     @user_parts = @user.parts
     redirect_to users_path, alert: t("alert.page_unavailable") unless @user == current_user
   end
 
   def update
+    @user = User.find(params[:id])
     @user_parts = @user.parts
-    # メディア削除ボタンが押された際の処理
-    if params[:delete_image]
-      delete_media(@user.image)
-    elsif params[:delete_movie]
-      delete_media(@user.movie)
-    elsif params[:delete_sound]
-      delete_media(@user.sound)
-    end
+      @user.image.purge if params[:delete_image]
+      @user.movie.purge if params[:delete_movie]
+      @user.sound.purge if params[:delete_sound]
     if @user.update(user_params)
-      update_user_bands(@user)
+      @user.bands.each do |band|
+        update_band_colums(band)
+      end
       redirect_to user_path, notice: t("notice.update")
     else
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
   end
 
   def search
@@ -71,10 +64,6 @@ class UsersController < ApplicationController
                                  user_genres_attributes: %i[id genre_id user_id other_genre _destroy])
   end
 
-  def set_user
-    @user = User.find(params[:id])
-  end
-
   def set_parts
     @parts = Part.all
   end
@@ -83,22 +72,7 @@ class UsersController < ApplicationController
     @genres = Genre.all
   end
 
-  def set_levels
-    @levels = %W[未経験 初心者 中級者 上級者]
-  end
-
   def set_recomend_users
     @recomend_users = User.joins(:user_parts, :user_genres).near(current_user).where.not(id: current_user.id).distinct
-  end
-
-  def delete_media(media)
-    media.purge
-    render action: "edit"
-  end
-
-  def update_user_bands(user)
-    user.bands.each do |band|
-      update_band_colums(band)
-    end
   end
 end
