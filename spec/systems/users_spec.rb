@@ -162,4 +162,51 @@ RSpec.describe "users", js: true, type: :system do
       expect(page).to have_no_content user_b.name
     end
   end
+
+  describe "ユーザー詳細画面の機能" do
+    before do
+      sign_in user
+    end
+
+    context "自分の詳細画面にアクセスしたとき" do
+      it "マイページ編集画面へのリンクが表示されること" do
+        visit user_path(user)
+        expect(page).to have_link "マイページを編集", href: edit_user_path(user)
+      end
+
+      it "お気に入り登録ボタン、スカウトボタンが表示されないこと" do
+        expect(page).not_to have_link "お気に入り", href: create_user_favorite_path(user)
+        expect(page).not_to have_link "スカウト", href: new_user_scout_path(user)
+      end
+    end
+
+    context "自分以外のユーザーの詳細画面にアクセスしたとき" do
+      before do
+        visit user_path(user_a)
+      end
+
+      it "編集画面へのリンクが表示されないこと" do
+        expect(page).not_to have_link "マイページを編集", href: edit_user_path(user)
+        expect(page).not_to have_link "マイページを編集", href: edit_user_path(user_a)
+      end
+
+      it "お気に入り登録ボタン、スカウトボタンが表示されること" do
+        expect(page).to have_link "お気に入り", href: create_user_favorite_path(user_a)
+        expect(page).to have_link "スカウト", href: new_user_scout_path(user_a)
+      end
+
+      it "お気に入り登録ボタンをクリックすると、表記が「お気に入り済み」になること" do
+        click_link("unfavorite")
+        expect(page).to have_link "お気に入り済み", href: favorite_path(user_a)
+        expect(page).not_to have_link "お気に入り", href: create_user_favorite_path(user_a)
+      end
+
+      it "お気に入り済みのボタンをクリックすると、再度お気に入り登録ボタンに切り替わること" do
+        click_link("unfavorite")
+        click_link("favoriting")
+        expect(page).to have_link "お気に入り", href: create_user_favorite_path(user_a)
+        expect(page).not_to have_link "お気に入り済み", href: favorite_path(user_a)
+      end
+    end
+  end
 end
