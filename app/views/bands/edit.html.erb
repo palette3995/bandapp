@@ -8,7 +8,7 @@
           <div class="card-body">
             <% if @band.image.attached? %>
              <%= image_tag @band.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
-             <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block mx-auto" %>
+             <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block my-2 mx-auto" %>
             <% else %>
              <%= image_tag 'default_band.png', size: "150x150", class: "avatar rounded-circle my-3"%>
             <% end %>
