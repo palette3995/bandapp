@@ -24,9 +24,9 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user_parts = @user.parts
-      @user.image.purge if params[:delete_image]
-      @user.movie.purge if params[:delete_movie]
-      @user.sound.purge if params[:delete_sound]
+    @user.image.purge if params[:delete_image]
+    @user.movie.purge if params[:delete_movie]
+    @user.sound.purge if params[:delete_sound]
     if @user.update(user_params)
       @user.bands.each do |band|
         update_band_colums(band)
