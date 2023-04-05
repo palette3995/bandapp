@@ -6,6 +6,8 @@ RSpec.describe "bands", js: true, type: :system do
   let!(:band_b) { create(:band, number_of_member: 5, average_age: 40, maximum_age: 42, minimum_age: 38, prefecture_id: 26, motivation: "プロを目指す", original: "オリジナル曲", want_to_copy: "なし", frequency: "週３日以上", available_day: "いつでも", activity_time: "いつでも") }
   let(:recruit_member_a) { create(:recruit_member, band: band_a) }
   let(:recruit_member_b) { create(:recruit_member, band: band_b, age: "40代", sex: "女性", part_id: 1, level: "中級者") }
+  let(:band_member_a) { create(:band_member, user: user, band: band_a) }
+  let(:reader) { create(:band_member, band: band_a, role: "リーダー") }
 
   describe "検索機能" do
     before do
@@ -204,6 +206,109 @@ RSpec.describe "bands", js: true, type: :system do
       find_by_id("search-bands").send_keys :enter
       expect(page).to have_content band_a.name
       expect(page).to have_no_content band_b.name
+    end
+  end
+
+  describe "バンド詳細画面の機能" do
+    before do
+      sign_in user
+      reader
+    end
+
+    context "自分の所属バンドの詳細画面にアクセスしたとき" do
+      before do
+        band_member_a
+      end
+
+      it "バンド編集画面へのリンクが表示されること" do
+        visit band_path(band_a)
+        expect(page).to have_link "編集", href: edit_band_path(band_a)
+      end
+
+      it "メンバー募集新規作成へのリンクが表示されること" do
+        visit band_path(band_a)
+        expect(page).to have_link "新規作成", href: new_recruit_member_path(band_a)
+      end
+
+      it "メンバー募集の削除と編集画面へのリンクが表示されること" do
+        recruit_member_a
+        visit band_path(band_a)
+        expect(page).to have_link "削除", href: recruit_member_path(recruit_member_a)
+        expect(page).to have_link "編集", href: edit_recruit_member_path(recruit_member_a)
+      end
+
+      it "バンド脱退のリンクが表示されること" do
+        visit band_path(band_a)
+        expect(page).to have_link "脱退する", href: band_member_path(band_member_a)
+      end
+
+      it "自分がリーダーでないとき、メンバー編集画面へのリンクが表示されないこと" do
+        visit band_path(band_a)
+        expect(page).not_to have_link "編集", href: edit_band_member_path(band_member_a)
+      end
+
+      it "自分がリーダーのとき、メンバー編集画面へのリンクが表示されること" do
+        sign_out user
+        sign_in reader.user
+        visit band_path(band_a)
+        expect(page).to have_link "編集", href: edit_band_member_path(band_member_a)
+      end
+
+      it "お気に入り登録ボタン、スカウトボタンが表示されないこと" do
+        visit band_path(band_a)
+        expect(page).not_to have_link "お気に入り", href: create_band_favorite_path(band_a)
+        expect(page).not_to have_link "スカウト", href: new_user_scout_path(band_a)
+      end
+    end
+
+    context "所属バンド以外のバンドの詳細画面にアクセスしたとき" do
+      it "バンド編集画面へのリンクが表示されないこと" do
+        visit band_path(band_a)
+        expect(page).not_to have_link "編集", href: edit_band_path(band_a)
+      end
+
+      it "メンバー募集新規作成へのリンクが表示されないこと" do
+        visit band_path(band_a)
+        expect(page).not_to have_link "新規作成", href: new_recruit_member_path(band_a)
+      end
+
+      it "メンバー募集の削除と編集画面へのリンクが表示されないこと" do
+        recruit_member_a
+        visit band_path(band_a)
+        expect(page).not_to have_link "削除", href: recruit_member_path(recruit_member_a)
+        expect(page).not_to have_link "編集", href: edit_recruit_member_path(recruit_member_a)
+      end
+
+      it "バンド脱退のリンクが表示されないこと" do
+        visit band_path(band_a)
+        expect(page).not_to have_link "脱退する", href: band_member_path(band_member_a)
+      end
+
+      it "メンバー編集画面へのリンクが表示されないこと" do
+        visit band_path(band_a)
+        expect(page).not_to have_link "編集", href: edit_band_member_path(band_member_a)
+      end
+
+      it "お気に入り登録ボタン、スカウトボタンが表示されること" do
+        visit band_path(band_a)
+        expect(page).to have_link "お気に入り", href: create_band_favorite_path(band_a)
+        expect(page).to have_link "スカウト", href: new_band_scout_path(band_a)
+      end
+
+      it "お気に入り登録ボタンをクリックすると、表記が「お気に入り済み」になること" do
+        visit band_path(band_a)
+        click_link("unfavorite")
+        expect(page).to have_link "お気に入り済み", href: destroy_band_favorite_path(band_a)
+        expect(page).not_to have_link "お気に入り", href: create_band_favorite_path(band_a)
+      end
+
+      it "お気に入り済みのボタンをクリックすると、再度お気に入り登録ボタンに切り替わること" do
+        visit band_path(band_a)
+        click_link("unfavorite")
+        click_link("favoriting")
+        expect(page).to have_link "お気に入り", href: create_band_favorite_path(band_a)
+        expect(page).not_to have_link "お気に入り済み", href: destroy_band_favorite_path(band_a)
+      end
     end
   end
 end
