@@ -3,7 +3,9 @@ class CreateUserParts < ActiveRecord::Migration[7.0]
     create_table :user_parts do |t|
       t.belongs_to :user
       t.integer :part_id
-      t.string :priority
+      t.integer :priority
+      t.string :other_part
+      t.integer :level
       t.timestamps
     end
   end

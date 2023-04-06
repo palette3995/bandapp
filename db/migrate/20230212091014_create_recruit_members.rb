@@ -5,7 +5,6 @@ class CreateRecruitMembers < ActiveRecord::Migration[7.0]
       t.integer :part_id
       t.string :level
       t.string :other_part
-      t.integer :priority
       t.string :age
       t.string :sex
       t.timestamps
