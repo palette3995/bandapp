@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "users_form", js: true, type: :system do
-  let!(:user) { create(:user, age: 22, prefecture_id: 27) }
+  let!(:user) { create(:user) }
 
   describe "パート入力フォームの表示機能" do
     before do
