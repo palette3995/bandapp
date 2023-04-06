@@ -10,7 +10,7 @@
     <div class="notification-list col-xl-8">
       <% if @notifications.present? %>
         <% @notifications.each do |notification| %>
-          <%= link_to read_notification_path(notification.id), data: { turbo_method: :patch }, class: "text-decoration-none text-dark" do %>
+          <%= link_to read_notification_path(notification.id), data: { turbo_method: :patch }, class: "text-decoration-none text-dark notification-link" do %>
             <div class="row notification-list-item border my-4 mx-4">
               <div class="col-lg-3 mt-3">
                 <% unless notification.read %>
