@@ -67,4 +67,7 @@ RSpec.configure do |config|
   config.include FirstPartModule
   config.include SecondPartModule
   config.include ThirdPartModule
+  config.include FirstGenreModule
+  config.include SecondGenreModule
+  config.include ThirdGenreModule
 end
