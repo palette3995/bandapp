@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    @q = User.ransack(params[:q])
+    @q = User.with_attached_image.includes(:user_parts).ransack(params[:q])
     @users = @q.result.where.not(id: current_user.id).distinct
   end
 
@@ -73,6 +73,6 @@ class UsersController < ApplicationController
   end
 
   def set_recomend_users
-    @recomend_users = User.joins(:user_parts, :user_genres).near(current_user).where.not(id: current_user.id).distinct
+    @recomend_users = User.with_attached_image.includes(:user_parts, :user_genres).near(current_user).where.not(id: current_user.id).distinct
   end
 end

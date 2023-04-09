@@ -11,9 +11,10 @@ class BandsController < ApplicationController
   end
 
   def show
-    @band = Band.find(params[:id])
-    @reader = @band.band_members.find_by(role: "リーダー").user
-    @user = @band.band_members.find_by(user_id: current_user.id)
+    @band = Band.includes(:users).find(params[:id])
+    @members = @band.band_members.includes(user: { image_attachment: :blob })
+    @reader = @members.find_by(role: "リーダー").user
+    @user = @members.find_by(user_id: current_user.id)
   end
 
   def edit
@@ -36,7 +37,7 @@ class BandsController < ApplicationController
   end
 
   def search
-    @q = Band.ransack(params[:q])
+    @q = Band.with_attached_image.includes(:band_genres).ransack(params[:q])
     @bands = @q.result.where.not(id: current_user.bands.ids).distinct
   end
 
@@ -56,7 +57,7 @@ class BandsController < ApplicationController
   end
 
   def set_recomend_bands
-    @recomend_bands = Band.joins(:band_genres).where(prefecture_id: current_user.prefecture_id).where.not(id: current_user.bands.ids).distinct
+    @recomend_bands = Band.with_attached_image.includes(:band_genres).where(prefecture_id: current_user.prefecture_id).where.not(id: current_user.bands.ids).distinct
   end
 
   def set_genres
