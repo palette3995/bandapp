@@ -12,7 +12,11 @@ class BandsController < ApplicationController
     @recruiting_beginners = @recomend_bands.where(recruit_members: { level: %W[初心者 未経験] }).limit(4)
     match_originals = @recomend_bands.where(original: current_user.original)
     @match_policies = match_originals.where(motivation: current_user.motivation).or(match_originals.where(frequency: current_user.frequency)).limit(4)
-    @match_schedules = @recomend_bands.where(available_day: current_user.available_day).or(@recomend_bands.where(activity_time: current_user.activity_time)).limit(4)
+    @match_schedules = if current_user.available_day == "いつでも" || current_user.activity_time == "いつでも"
+                         @recomend_bands.limit(4)
+                       else
+                         @recomend_bands.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_users.where(activity_time: [current_user.activity_time, "いつでも"])).limit(4)
+                       end
   end
 
   def show
@@ -68,7 +72,11 @@ class BandsController < ApplicationController
   end
 
   def match_schedules
-    @bands = @recomend_bands.where(available_day: current_user.available_day).or(@recomend_bands.where(activity_time: current_user.activity_time))
+    @bands = if current_user.available_day == "いつでも" || current_user.activity_time == "いつでも"
+               @recomend_bands
+             else
+               @recomend_bands.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_users.where(activity_time: [current_user.activity_time, "いつでも"]))
+             end
   end
 
   private

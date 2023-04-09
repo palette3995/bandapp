@@ -11,7 +11,11 @@ class UsersController < ApplicationController
     @match_genres = @recomend_users.where(user_genres: { genre_id: current_user.genres.pluck(:id) }).limit(4)
     match_originals = @recomend_users.where(original: current_user.original)
     @match_policies = match_originals.where(motivation: current_user.motivation).or(match_originals.where(frequency: current_user.frequency)).limit(4)
-    @match_schedules = @recomend_users.where(available_day: current_user.available_day).or(@recomend_users.where(activity_time: current_user.activity_time)).limit(4)
+    @match_schedules = if current_user.available_day == "いつでも" || current_user.activity_time == "いつでも"
+                         @recomend_users.limit(4)
+                       else
+                         @recomend_users.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_users.where(activity_time: [current_user.activity_time, "いつでも"])).limit(4)
+                       end
   end
 
   def show
@@ -64,7 +68,11 @@ class UsersController < ApplicationController
   end
 
   def match_schedules
-    @users = @recomend_users.where(available_day: current_user.available_day).or(@recomend_users.where(activity_time: current_user.activity_time))
+    @users = if current_user.available_day == "いつでも" || current_user.activity_time == "いつでも"
+               @recomend_users
+             else
+               @recomend_users.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_users.where(activity_time: [current_user.activity_time, "いつでも"]))
+             end
   end
 
   private
