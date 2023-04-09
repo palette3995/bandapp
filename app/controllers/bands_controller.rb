@@ -15,7 +15,7 @@ class BandsController < ApplicationController
     @match_schedules = if current_user.available_day == "いつでも" || current_user.activity_time == "いつでも"
                          @recomend_bands.limit(4)
                        else
-                         @recomend_bands.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_users.where(activity_time: [current_user.activity_time, "いつでも"])).limit(4)
+                         @recomend_bands.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_bands.where(activity_time: [current_user.activity_time, "いつでも"])).limit(4)
                        end
   end
 
@@ -75,7 +75,7 @@ class BandsController < ApplicationController
     @bands = if current_user.available_day == "いつでも" || current_user.activity_time == "いつでも"
                @recomend_bands
              else
-               @recomend_bands.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_users.where(activity_time: [current_user.activity_time, "いつでも"]))
+               @recomend_bands.where(available_day: [current_user.available_day, "いつでも"]).or(@recomend_bands.where(activity_time: [current_user.activity_time, "いつでも"]))
              end
   end
 
