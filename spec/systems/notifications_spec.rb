@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "notifications", js: true, type: :system do
+RSpec.describe "notifications", type: :system do
   let!(:user) { create(:user) }
   let!(:user_a) { create(:user) }
   let!(:user_b) { create(:user) }
