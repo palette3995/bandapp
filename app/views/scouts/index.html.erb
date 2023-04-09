@@ -18,21 +18,7 @@
             </div>
           </div>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-            <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-              送ったスカウト
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-            <div class="accordion-body">
-              <div class="scout-links"><%= link_to "新規バンド結成", send_new_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "あなたのバンドにお誘い", send_offer_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "相手バンドへの加入申請", send_join_scouts_path, class: "side-memu-links" %></div>
-              <div class="scout-links"><%= link_to "バンド合併申請", send_marge_scouts_path, class: "side-memu-links" %></div>
-            </div>
-          </div>
-        </div>
+        <%= render partial: 'scouts/send_accordion' %>
       </div>
     </div>
     <div class="container col-xl-8">
