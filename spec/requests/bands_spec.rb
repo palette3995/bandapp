@@ -59,6 +59,66 @@ RSpec.describe "Bands" do
     end
   end
 
+  describe "GET bands#match_policies" do
+    before do
+      sign_in user
+      get match_policies_bands_path
+    end
+
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("活動スタイルが合いそうなバンド")
+    end
+  end
+
+  describe "GET bands#match_schedules" do
+    before do
+      sign_in user
+      get match_schedules_bands_path
+    end
+
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("予定が合いそうなバンド")
+    end
+  end
+
+  describe "GET bands#match_parts" do
+    before do
+      sign_in user
+      get match_parts_bands_path
+    end
+
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("あなたのパートを募集しているバンド")
+    end
+  end
+
+  describe "GET bands#recruiting_beginners" do
+    before do
+      sign_in user
+      get recruiting_beginners_bands_path
+    end
+
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("未経験者、初心者歓迎なバンド")
+    end
+  end
+
   describe "GET bands#show" do
     before do
       band_member
