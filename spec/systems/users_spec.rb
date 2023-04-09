@@ -5,6 +5,177 @@ RSpec.describe "users", js: true, type: :system do
   let!(:user_a) { create(:user, age: 20, sex: "男性", prefecture_id: 27, favorite: "アジカン", motivation: "趣味で楽しく", original: "既存曲のコピー", want_to_copy: "リライト", frequency: "月２〜３日", available_day: "土日", activity_time: "午後", compose: false) }
   let!(:user_b) { create(:user, age: 40, sex: "女性", prefecture_id: 26, favorite: "特になし", motivation: "プロを目指す", original: "オリジナル曲", want_to_copy: "なし", frequency: "週３日以上", available_day: "いつでも", activity_time: "いつでも", compose: true) }
 
+  describe "おすすめ表示機能" do
+    before do
+      user_b.update(prefecture_id: 27)
+      sign_in user
+    end
+
+    describe "歳の近いユーザーを表示する機能" do
+      before do
+        user_a.update(age: 27)
+        user_b.update(age: 28)
+        visit users_path
+      end
+
+      it "年齢が5歳差以内のユーザーが表示されること" do
+        within first(".recomend-users") do
+          expect(page).to have_content user_a.name
+        end
+      end
+
+      it "年齢が5歳差より大きいユーザーが表示されないこと" do
+        within first(".recomend-users") do
+          expect(page).to have_no_content user_b.name
+        end
+      end
+
+      it "歳の近いユーザー一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_ages_users_path)
+      end
+    end
+
+    describe "レベルの近いユーザーを表示する機能" do
+      before do
+        user.user_parts.first.update(part_id: 3, level: "初心者")
+        user_a.user_parts.first.update(part_id: 1, level: "初心者")
+        user_b.user_parts.first.update(part_id: 2, level: "中級者")
+        visit users_path
+      end
+
+      it "レベルが同じユーザーが表示されていること" do
+        within page.all(".recomend-users")[1] do
+          expect(page).to have_content user_a.name
+        end
+      end
+
+      it "レベルが異なるユーザーが表示されないこと" do
+        within page.all(".recomend-users")[1] do
+          expect(page).to have_no_content user_b.name
+        end
+      end
+
+      it "レベルの近いユーザー一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_levels_users_path)
+      end
+    end
+
+    describe "ジャンルが同じなユーザーを表示する機能" do
+      before do
+        user_b.user_genres[0].update(genre_id: 1)
+        user_b.user_genres[1].update(genre_id: 2)
+        user_b.user_genres[2].update(genre_id: 3)
+        visit users_path
+      end
+
+      it "ジャンルが同じなユーザーが表示されていること" do
+        within page.all(".recomend-users")[2] do
+          expect(page).to have_content user_a.name
+        end
+      end
+
+      it "ジャンルが異なるユーザーが表示されないこと" do
+        within page.all(".recomend-users")[2] do
+          expect(page).to have_no_content user_b.name
+        end
+      end
+
+      it "ジャンルが同じなユーザー一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_genres_users_path)
+      end
+    end
+
+    describe "活動スタイルが合いそうなユーザーを表示する機能" do
+      before do
+        user.update(motivation: "趣味で楽しく", original: "既存曲のコピー", frequency: "週３日以上")
+        visit users_path
+      end
+
+      it "original、motivationが同じなユーザーが表示されていること" do
+        within page.all(".recomend-users")[3] do
+          expect(page).to have_content user_a.name
+          expect(page).to have_no_content user_b.name
+        end
+      end
+
+      it "original、frequencyが同じなユーザーが表示されていること" do
+        user.update(motivation: "プロを目指す", frequency: "月２〜３日")
+        visit users_path
+        within page.all(".recomend-users")[3] do
+          expect(page).to have_content user_a.name
+          expect(page).to have_no_content user_b.name
+        end
+      end
+
+      it "originalのみ一致するユーザーが表示されないこと" do
+        user.update(motivation: "プロを目指す", frequency: "週３日以上")
+        visit users_path
+        within page.all(".recomend-users")[3] do
+          expect(page).to have_no_content user_a.name
+          expect(page).to have_no_content user_b.name
+        end
+      end
+
+      it "活動スタイルが合いそうなユーザー一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_policies_users_path)
+      end
+    end
+
+    describe "予定が合いそうなユーザーを表示する機能" do
+      before do
+        user.update(available_day: "土日")
+        visit users_path
+      end
+
+      it "available_dayが同じか「いつでも」のユーザーが表示されていること" do
+        within page.all(".recomend-users")[4] do
+          expect(page).to have_content user_a.name
+          expect(page).to have_content user_b.name
+        end
+      end
+
+      it "activity_timeが同じか「いつでも」のユーザーが表示されていること" do
+        user.update(available_day: "平日", activity_time: "午後")
+        visit users_path
+        within page.all(".recomend-users")[4] do
+          expect(page).to have_content user_a.name
+          expect(page).to have_content user_b.name
+        end
+      end
+
+      it "available_dayが「いつでも」のとき、全てのユーザーが表示されること" do
+        user.update(available_day: "いつでも")
+        visit users_path
+        within page.all(".recomend-users")[4] do
+          expect(page).to have_content user_a.name
+          expect(page).to have_content user_b.name
+        end
+      end
+
+      it "activity_timeが「いつでも」のとき、全てのユーザーが表示されること" do
+        user.update(available_day: "平日", activity_time: "いつでも")
+        visit users_path
+        within page.all(".recomend-users")[4] do
+          expect(page).to have_content user_a.name
+          expect(page).to have_content user_b.name
+        end
+      end
+
+      it "available_dayとactivity_timeが異なるユーザーが表示されないこと" do
+        user.update(available_day: "平日", activity_time: "午前")
+        visit users_path
+        within page.all(".recomend-users")[4] do
+          expect(page).to have_no_content user_a.name
+          expect(page).to have_content user_b.name
+        end
+      end
+
+      it "予定が合いそうなユーザー一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_schedules_users_path)
+      end
+    end
+  end
+
   describe "検索機能" do
     before do
       user_a.user_parts.first.update(part_id: 1, level: "初心者")
