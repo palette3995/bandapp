@@ -55,6 +55,8 @@
         <%= render partial: 'users/profile', locals: { users: @match_ages, title: "歳の近いユーザー", link: match_ages_users_path } %>
         <%= render partial: 'users/profile', locals: { users: @match_levels, title: "レベルの近いユーザー", link: match_levels_users_path } %>
         <%= render partial: 'users/profile', locals: { users: @match_genres, title: "ジャンルが同じなユーザー", link: match_genres_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_policies, title: "活動スタイルが合いそうなユーザー", link: match_policies_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_schedules, title: "予定が合いそうなユーザー", link: match_schedules_users_path } %>
       </div>
     </div>
   </div>

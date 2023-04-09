@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_recomend_users, only: %i[index match_ages match_levels match_genres]
+  before_action :set_recomend_users, except: %i[show edit update search]
   before_action :set_parts, :set_genres, except: %i[show search]
 
   def index
@@ -9,6 +9,9 @@ class UsersController < ApplicationController
     @match_ages = @recomend_users.where(age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
     @match_levels = @recomend_users.where(user_parts: { level: @user_part.level }).limit(4)
     @match_genres = @recomend_users.where(user_genres: { genre_id: current_user.genres.pluck(:id) }).limit(4)
+    match_originals = @recomend_users.where(original: current_user.original)
+    @match_policies = match_originals.where(motivation: current_user.motivation).or(match_originals.where(frequency: current_user.frequency)).limit(4)
+    @match_schedules = @recomend_users.where(available_day: current_user.available_day).or(@recomend_users.where(activity_time: current_user.activity_time)).limit(4)
   end
 
   def show
@@ -53,6 +56,15 @@ class UsersController < ApplicationController
 
   def match_genres
     @users = @recomend_users.where(user_genres: { genre_id: current_user.genres.pluck(:id) })
+  end
+
+  def match_policies
+    match_originals = @recomend_users.where(original: current_user.original)
+    @users = match_originals.where(motivation: current_user.motivation).or(match_originals.where(frequency: current_user.frequency))
+  end
+
+  def match_schedules
+    @users = @recomend_users.where(available_day: current_user.available_day).or(@recomend_users.where(activity_time: current_user.activity_time))
   end
 
   private

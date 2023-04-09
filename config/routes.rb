@@ -15,6 +15,8 @@ Rails.application.routes.draw do
       get 'match_ages'
       get 'match_levels'
       get 'match_genres'
+      get 'match_policies'
+      get 'match_schedules'
     end
   end
   resources :bands, except: [:new, :create] do
@@ -23,6 +25,10 @@ Rails.application.routes.draw do
       get 'match_ages'
       get 'match_genres'
       get 'user_bands'
+      get 'recruiting_beginners'
+      get 'match_parts'
+      get 'match_policies'
+      get 'match_schedules'
     end
   end
   resources :band_members, except: [:new]

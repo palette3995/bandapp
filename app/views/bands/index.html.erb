@@ -56,6 +56,10 @@
     <div class="bands-wrapper border p-5">
       <%= render partial: 'bands/profile', locals: { bands: @match_ages, title: "平均年齢が近いバンド", link: match_ages_bands_path } %>
       <%= render partial: 'bands/profile', locals: { bands: @match_genres, title: "ジャンルが同じなバンド", link: match_genres_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_policies, title: "活動スタイルが合いそうなバンド", link: match_policies_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_schedules, title: "予定が合いそうなバンド", link: match_schedules_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_parts, title: "あなたのパートを募集しているバンド", link: match_parts_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @recruiting_beginners, title: "未経験者、初心者歓迎なバンド", link: recruiting_beginners_bands_path } %>
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 class BandsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_recomend_bands, only: %i[index match_ages match_genres]
+  before_action :set_recomend_bands, except: %i[show edit update user_bands search]
   before_action :set_genres, only: %i[index edit update]
 
   def index
@@ -8,6 +8,11 @@ class BandsController < ApplicationController
     @q = Band.ransack(params[:q])
     @match_ages = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
     @match_genres = @recomend_bands.where(band_genres: { genre_id: current_user.genres.pluck(:id) }).limit(4)
+    @match_parts = @recomend_bands.where(recruit_members: { part_id: current_user.parts.pluck(:id) }).limit(4)
+    @recruiting_beginners = @recomend_bands.where(recruit_members: { level: %w[初心者 未経験] }).limit(4)
+    match_originals = @recomend_bands.where(original: current_user.original)
+    @match_policies = match_originals.where(motivation: current_user.motivation).or(match_originals.where(frequency: current_user.frequency)).limit(4)
+    @match_schedules = @recomend_bands.where(available_day: current_user.available_day).or(@recomend_bands.where(activity_time: current_user.activity_time)).limit(4)
   end
 
   def show
@@ -49,6 +54,23 @@ class BandsController < ApplicationController
     @bands = @recomend_bands.where(band_genres: { genre_id: current_user.genres.pluck(:id) })
   end
 
+  def match_parts
+    @bands = @recomend_bands.where(recruit_members: { part_id: current_user.parts.pluck(:id) })
+  end
+
+  def recruiting_beginners
+    @bands = @recomend_bands.where(recruit_members: { level: %w[初心者 未経験] })
+  end
+
+  def match_policies
+    match_originals = @recomend_bands.where(original: current_user.original)
+    @bands = match_originals.where(motivation: current_user.motivation).or(match_originals.where(frequency: current_user.frequency))
+  end
+
+  def match_schedules
+    @bands = @recomend_bands.where(available_day: current_user.available_day).or(@recomend_bands.where(activity_time: current_user.activity_time))
+  end
+
   private
 
   def band_params
@@ -57,7 +79,7 @@ class BandsController < ApplicationController
   end
 
   def set_recomend_bands
-    @recomend_bands = Band.with_attached_image.includes(:band_genres).where(prefecture_id: current_user.prefecture_id).where.not(id: current_user.bands.ids).distinct
+    @recomend_bands = Band.with_attached_image.includes(:band_genres, :recruit_members).where(prefecture_id: current_user.prefecture_id).where.not(id: current_user.bands.ids).distinct
   end
 
   def set_genres
