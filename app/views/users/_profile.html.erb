@@ -1,18 +1,28 @@
-<% users.each do |user| %>
-  <div class="col-md-3 my-3">
-    <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
-      <div class="card ">
-        <%= render partial: 'users/avatar', locals: { user: user, size: "100×100" } %>
-        <div class="card-body">
-          <div class="profile">
-            <p class="card-text"><%= user.name %></p>
-            <span class="card-text"><%= user.prefecture.name if user.prefecture %></span>
-            <span class="card-text"><%= "#{user.age}歳"%></span>
-            <p class="card-text my-1"><%= user.parts[0].name %></p>
-            <span class="card-text"><%= user.user_parts[0].level %></span>
+<div class="container text-center mt-4">
+  <h5><%= title %></h5>
+  <div class="row">
+  <% if users.present? %>
+  <% users.each do |user| %>
+    <div class="col-md-3 my-3">
+      <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
+        <div class="card ">
+          <%= render partial: 'users/avatar', locals: { user: user, size: "100×100" } %>
+          <div class="card-body">
+            <div class="profile">
+              <p class="card-text"><%= user.name %></p>
+              <span class="card-text"><%= user.prefecture.name if user.prefecture %></span>
+              <span class="card-text"><%= "#{user.age}歳"%></span>
+              <p class="card-text my-1"><%= user.parts[0].name %></p>
+              <span class="card-text"><%= user.user_parts[0].level %></span>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  <% else %>
+    <p class="my-5">おすすめユーザーがいません</p>
+  <% end %>
   </div>
-<% end %>
+</div>
+<%= link_to "全てを表示", link, class: "text-decoration-none text-dark link" if users.present? %>

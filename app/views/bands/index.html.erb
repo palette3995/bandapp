@@ -54,28 +54,8 @@
       </div>
     </div>
     <div class="bands-wrapper border p-5">
-      <div class="container text-center mt-4">
-        <h5>平均年齢が近いバンド</h5>
-        <div class="row">
-        <% if @match_ages.present? %>
-          <%= render partial: 'bands/profile', locals: { bands: @match_ages } %>
-        <% else %>
-          <p class="my-5">おすすめバンドがいません</p>
-        <% end %>
-        </div>
-      </div>
-        <%= link_to "全てを表示", match_ages_bands_path, class: "text-decoration-none text-dark link" if @match_ages.present? %>
-      <div class="container text-center mt-5">
-        <h5>ジャンルが同じなバンド</h5>
-        <div class="row">
-          <% if @match_genres.present? %>
-            <%= render partial: 'bands/profile', locals: { bands: @match_genres } %>
-          <% else %>
-            <p class="my-5">おすすめバンドがいません</p>
-          <% end %>
-        </div>
-      </div>
-      <%= link_to "全てを表示", match_genres_bands_path, class: "text-decoration-none text-dark link"  if @match_genres.present? %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_ages, title: "平均年齢が近いバンド", link: match_ages_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_genres, title: "ジャンルが同じなバンド", link: match_genres_bands_path } %>
     </div>
   </div>
 </div>

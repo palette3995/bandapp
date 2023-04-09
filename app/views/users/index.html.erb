@@ -52,39 +52,9 @@
         </div>
       </div>
       <div class="users-wrapper border p-5">
-        <div class="container text-center mt-4">
-          <h5>歳の近いユーザー</h5>
-          <div class="row">
-          <% if @match_ages.present? %>
-            <%= render partial: 'users/profile', locals: { users: @match_ages } %>
-          <% else %>
-            <p class="my-5">おすすめユーザーがいません</p>
-          <% end %>
-          </div>
-        </div>
-        <%= link_to "全てを表示", match_ages_users_path, class: "text-decoration-none text-dark link" if @match_ages.present? %>
-        <div class="container text-center mt-5">
-          <h5>レベルの近いユーザー</h5>
-          <div class="row">
-            <% if @match_levels.present? %>
-              <%= render partial: 'users/profile', locals: { users: @match_levels } %>
-            <% else %>
-              <p class="my-5">おすすめユーザーがいません</p>
-            <% end %>
-          </div>
-        </div>
-        <%= link_to "全てを表示", match_levels_users_path, class: "text-decoration-none text-dark link" if @match_levels.present? %>
-        <div class="container text-center mt-5">
-          <h5>ジャンルが同じなユーザー</h5>
-          <div class="row">
-            <% if @match_genres.present? %>
-              <%= render partial: 'users/profile', locals: { users: @match_genres } %>
-            <% else %>
-              <p class="my-5">おすすめユーザーがいません</p>
-            <% end %>
-          </div>
-        </div>
-        <%= link_to "全てを表示", match_genres_users_path, class: "text-decoration-none text-dark link"  if @match_genres.present? %>
+        <%= render partial: 'users/profile', locals: { users: @match_ages, title: "歳の近いユーザー", link: match_ages_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_levels, title: "レベルの近いユーザー", link: match_levels_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_genres, title: "ジャンルが同じなユーザー", link: match_genres_users_path } %>
       </div>
     </div>
   </div>
