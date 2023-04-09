@@ -53,15 +53,15 @@ class ScoutsController < ApplicationController
   end
 
   def received_offer
-    @scouts = current_user.reverse_of_scouts.includes(:users, band: { image_attachment: :blob }).where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.includes(:user, band: { image_attachment: :blob }).where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def received_join
-    @scouts = current_user.reverse_of_scouts.includes(:scouted_bands, user: { image_attachment: :blob }).where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.includes(:scouted_band, user: { image_attachment: :blob }).where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def received_marge
-    @scouts = current_user.reverse_of_scouts.includes(:users, :scouted_bands, band: { image_attachment: :blob }).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.includes(:user, :scouted_band, band: { image_attachment: :blob }).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_new
@@ -69,7 +69,7 @@ class ScoutsController < ApplicationController
   end
 
   def send_offer
-    @scouts = current_user.scouts.includes(:bands, scouted_user: { image_attachment: :blob }).where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.includes(:band, scouted_user: { image_attachment: :blob }).where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def send_join
@@ -77,7 +77,7 @@ class ScoutsController < ApplicationController
   end
 
   def send_marge
-    @scouts = current_user.scouts.includes(:bands, scouted_band: { image_attachment: :blob }).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.includes(:band, scouted_band: { image_attachment: :blob }).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def approve_new

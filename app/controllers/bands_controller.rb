@@ -9,7 +9,7 @@ class BandsController < ApplicationController
     @match_ages = @recomend_bands.where(average_age: current_user.age - 5..current_user.age + 5).limit(4) if current_user.age
     @match_genres = @recomend_bands.where(band_genres: { genre_id: current_user.genres.pluck(:id) }).limit(4)
     @match_parts = @recomend_bands.where(recruit_members: { part_id: current_user.parts.pluck(:id) }).limit(4)
-    @recruiting_beginners = @recomend_bands.where(recruit_members: { level: %w[初心者 未経験] }).limit(4)
+    @recruiting_beginners = @recomend_bands.where(recruit_members: { level: %W[初心者 未経験] }).limit(4)
     match_originals = @recomend_bands.where(original: current_user.original)
     @match_policies = match_originals.where(motivation: current_user.motivation).or(match_originals.where(frequency: current_user.frequency)).limit(4)
     @match_schedules = @recomend_bands.where(available_day: current_user.available_day).or(@recomend_bands.where(activity_time: current_user.activity_time)).limit(4)
@@ -59,7 +59,7 @@ class BandsController < ApplicationController
   end
 
   def recruiting_beginners
-    @bands = @recomend_bands.where(recruit_members: { level: %w[初心者 未経験] })
+    @bands = @recomend_bands.where(recruit_members: { level: %W[初心者 未経験] })
   end
 
   def match_policies
