@@ -9,6 +9,207 @@ RSpec.describe "bands", js: true, type: :system do
   let(:band_member_a) { create(:band_member, user: user, band: band_a) }
   let(:reader) { create(:band_member, band: band_a, role: "リーダー") }
 
+  describe "おすすめ表示機能" do
+    before do
+      band_b.update(prefecture_id: 27)
+      sign_in user
+    end
+
+    describe "平均年齢が近いバンドを表示する機能" do
+      before do
+        band_a.update(average_age: 27)
+        band_b.update(average_age: 28)
+        visit bands_path
+      end
+
+      it "平均年齢がが5歳差以内のバンドが表示されること" do
+        within first(".recomend-bands") do
+          expect(page).to have_content band_a.name
+        end
+      end
+
+      it "平均年齢がが5歳差より大きいバンドが表示されないこと" do
+        within first(".recomend-bands") do
+          expect(page).to have_no_content band_b.name
+        end
+      end
+
+      it "歳の近いバンド一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_ages_bands_path)
+      end
+    end
+
+    describe "ジャンルが同じなバンドを表示する機能" do
+      before do
+        band_b.band_genres[0].update(genre_id: 1)
+        band_b.band_genres[1].update(genre_id: 2)
+        band_b.band_genres[2].update(genre_id: 3)
+        visit bands_path
+      end
+
+      it "ジャンルが同じなバンドが表示されていること" do
+        within page.all(".recomend-bands")[1] do
+          expect(page).to have_content band_a.name
+        end
+      end
+
+      it "ジャンルが異なるバンドが表示されないこと" do
+        within page.all(".recomend-bands")[1] do
+          expect(page).to have_no_content band_b.name
+        end
+      end
+
+      it "ジャンルが同じなバンド一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_genres_bands_path)
+      end
+    end
+
+    describe "活動スタイルが合いそうなバンドを表示する機能" do
+      before do
+        user.update(motivation: "趣味で楽しく", original: "既存曲のコピー", frequency: "週３日以上")
+        visit bands_path
+      end
+
+      it "original、motivationが同じなバンドが表示されていること" do
+        within page.all(".recomend-bands")[2] do
+          expect(page).to have_content band_a.name
+          expect(page).to have_no_content band_b.name
+        end
+      end
+
+      it "original、frequencyが同じなバンドが表示されていること" do
+        user.update(motivation: "プロを目指す", frequency: "月２〜３日")
+        visit bands_path
+        within page.all(".recomend-bands")[2] do
+          expect(page).to have_content band_a.name
+          expect(page).to have_no_content band_b.name
+        end
+      end
+
+      it "originalのみ一致するバンドが表示されないこと" do
+        user.update(motivation: "プロを目指す", frequency: "週３日以上")
+        visit bands_path
+        within page.all(".recomend-bands")[2] do
+          expect(page).to have_no_content band_a.name
+          expect(page).to have_no_content band_b.name
+        end
+      end
+
+      it "活動スタイルが合いそうなバンド一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_policies_bands_path)
+      end
+    end
+
+    describe "予定が合いそうなバンドを表示する機能" do
+      before do
+        user.update(available_day: "土日")
+        visit bands_path
+      end
+
+      it "available_dayが同じか「いつでも」のバンドが表示されていること" do
+        within page.all(".recomend-bands")[3] do
+          expect(page).to have_content band_a.name
+          expect(page).to have_content band_b.name
+        end
+      end
+
+      it "activity_timeが同じか「いつでも」のバンドが表示されていること" do
+        user.update(available_day: "平日", activity_time: "午後")
+        visit bands_path
+        within page.all(".recomend-bands")[3] do
+          expect(page).to have_content band_a.name
+          expect(page).to have_content band_b.name
+        end
+      end
+
+      it "available_dayが「いつでも」のとき、全てのバンドが表示されること" do
+        user.update(available_day: "いつでも")
+        visit bands_path
+        within page.all(".recomend-bands")[3] do
+          expect(page).to have_content band_a.name
+          expect(page).to have_content band_b.name
+        end
+      end
+
+      it "activity_timeが「いつでも」のとき、全てのバンドが表示されること" do
+        user.update(available_day: "平日", activity_time: "いつでも")
+        visit bands_path
+        within page.all(".recomend-bands")[3] do
+          expect(page).to have_content band_a.name
+          expect(page).to have_content band_b.name
+        end
+      end
+
+      it "available_dayとactivity_timeが異なるバンドが表示されないこと" do
+        user.update(available_day: "平日", activity_time: "午前")
+        visit bands_path
+        within page.all(".recomend-bands")[3] do
+          expect(page).to have_no_content band_a.name
+          expect(page).to have_content band_b.name
+        end
+      end
+
+      it "予定が合いそうなバンド一覧ページへのリンクが表示されていること" do
+        expect(page).to have_link("全てを表示", href: match_schedules_bands_path)
+      end
+    end
+
+    describe "あなたのパートを募集しているバンドを表示する機能" do
+      before do
+        user.user_parts.first.update(part_id: 1)
+        create(:recruit_member, band: band_a, part_id: 1)
+        visit bands_path
+      end
+
+      it "自分のパートを募集しているバンドが表示されること" do
+        within page.all(".recomend-bands")[4] do
+          expect(page).to have_content band_a.name
+        end
+      end
+
+      it "自分のパートを募集していないバンドが表示されないこと" do
+        user.user_parts.first.update(part_id: 2)
+        visit bands_path
+        within page.all(".recomend-bands")[4] do
+          expect(page).to have_no_content band_a.name
+        end
+      end
+
+      it "あなたのパートを募集しているバンド一覧ページへのリンクが表示されること" do
+        expect(page).to have_link("全てを表示", href: match_parts_bands_path)
+      end
+    end
+
+    describe "未経験者、初心者歓迎なバンドを表示する機能" do
+      before do
+        user.user_parts.first.update(part_id: 1)
+        recruit_member_a.update(level: "未経験")
+        recruit_member_b.update(level: "初心者")
+        visit bands_path
+      end
+
+      it "未経験者、初心者を募集しているバンドが表示されること" do
+        within page.all(".recomend-bands")[5] do
+          expect(page).to have_content band_a.name
+          expect(page).to have_content band_b.name
+        end
+      end
+
+      it "未経験者、初心者を募集していないバンドが表示されないこと" do
+        recruit_member_a.update(level: "中級者")
+        visit bands_path
+        within page.all(".recomend-bands")[5] do
+          expect(page).to have_no_content band_a.name
+          expect(page).to have_content band_b.name
+        end
+      end
+
+      it "未経験者、初心者歓迎なバンド一覧ページへのリンクが表示されること" do
+        expect(page).to have_link("全てを表示", href: recruiting_beginners_bands_path)
+      end
+    end
+  end
+
   describe "検索機能" do
     before do
       band_a.band_genres.first.update(genre_id: 1)
