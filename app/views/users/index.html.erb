@@ -1,6 +1,6 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
-    <div class="col-xxl-3 search-form-0 text-center form-wrapper mx-3 mt-5 p-3 ">
+    <div class="col-xxl-3 search-form-0 text-center form-wrapper mt-5 p-3 ">
       <h5>ユーザー詳細検索</h5>
       <%= search_form_for @q, url: search_users_path do |f| %>
         <p class="mb-2 mt-4"><%= f.label :name, 'ユーザー名'%></p>
@@ -51,7 +51,7 @@
           <div class="col tab1__item"><%= link_to "おすすめバンド", bands_path, class: "tab1__link" %></div>
         </div>
       </div>
-      <div class="users-wrapper border p-5">
+      <div class="users-wrapper border p-3">
         <%= render partial: 'users/profile', locals: { users: @match_ages, title: "歳の近いユーザー", link: match_ages_users_path } %>
         <%= render partial: 'users/profile', locals: { users: @match_levels, title: "レベルの近いユーザー", link: match_levels_users_path } %>
         <%= render partial: 'users/profile', locals: { users: @match_genres, title: "ジャンルが同じなユーザー", link: match_genres_users_path } %>

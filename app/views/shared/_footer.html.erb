@@ -3,29 +3,25 @@
     <div class="row text-muted pb-5">
       <% if user_signed_in? %>
         <div class="col-md-4">
-          <ul>
-            <h2 class="mt-5 mb-2">BANDAPP</h2>
-            <li><%= link_to "トップページ", users_path, class: "text-muted text-decoration-none"%></li>
-            <li><%= link_to "マイページ", user_path(current_user.id), class: "text-muted text-decoration-none"%></li>
-            <li><%= link_to "アカウント設定", edit_user_registration_path, class: "text-muted text-decoration-none"%></li>
-            <h5 class="mt-5 mb-2">バンド</h5>
-            <%= link_to "バンド検索", bands_path, class: "text-muted text-decoration-none" %>
-            <li><%= link_to "所属バンド一覧", user_bands_bands_path, class: "text-muted text-decoration-none"%></li>
-          </ul>
+          <h2 class="mt-5 mb-2">BANDAPP</h2>
+          <li><%= link_to "トップページ", users_path, class: "text-muted text-decoration-none"%></li>
+          <li><%= link_to "マイページ", user_path(current_user.id), class: "text-muted text-decoration-none"%></li>
+          <li><%= link_to "アカウント設定", edit_user_registration_path, class: "text-muted text-decoration-none"%></li>
+          <h5 class="mt-5 mb-2">バンド</h5>
+          <%= link_to "バンド検索", bands_path, class: "text-muted text-decoration-none" %>
+          <li><%= link_to "所属バンド一覧", user_bands_bands_path, class: "text-muted text-decoration-none"%></li>
         </div>
         <div class="col-md-4">
-          <ul>
-            <h5 class="mt-5 mb-2">届いたスカウト</h5>
-            <li><%= link_to "新規バンド結成", scouts_path, class: "text-muted text-decoration-none" %></li>
-            <li><%= link_to "バンドからのお誘い", received_offer_scouts_path, class: "text-muted text-decoration-none" %></li>
-            <li><%= link_to "あなたのバンドへの加入申請", received_join_scouts_path, class: "text-muted text-decoration-none" %></li>
-            <li><%= link_to "バンド合併申請", received_marge_scouts_path, class: "text-muted text-decoration-none" %></li>
-            <h5 class="mt-5 mb-2">送ったスカウト</h5>
-            <li><%= link_to "新規バンド結成", send_new_scouts_path, class: "text-muted text-decoration-none" %></li>
-            <li><%= link_to "あなたのバンドにお誘い", send_offer_scouts_path, class: "text-muted text-decoration-none" %></li>
-            <li><%= link_to "相手バンドへの加入申請", send_join_scouts_path, class: "text-muted text-decoration-none" %></li>
-            <li><%= link_to "バンド合併申請", send_marge_scouts_path, class: "text-muted text-decoration-none" %></li>
-          </ul>
+          <h5 class="mt-5 mb-2">届いたスカウト</h5>
+          <li><%= link_to "新規バンド結成", scouts_path, class: "text-muted text-decoration-none" %></li>
+          <li><%= link_to "バンドからのお誘い", received_offer_scouts_path, class: "text-muted text-decoration-none" %></li>
+          <li><%= link_to "あなたのバンドへの加入申請", received_join_scouts_path, class: "text-muted text-decoration-none" %></li>
+          <li><%= link_to "バンド合併申請", received_marge_scouts_path, class: "text-muted text-decoration-none" %></li>
+          <h5 class="mt-5 mb-2">送ったスカウト</h5>
+          <li><%= link_to "新規バンド結成", send_new_scouts_path, class: "text-muted text-decoration-none" %></li>
+          <li><%= link_to "あなたのバンドにお誘い", send_offer_scouts_path, class: "text-muted text-decoration-none" %></li>
+          <li><%= link_to "相手バンドへの加入申請", send_join_scouts_path, class: "text-muted text-decoration-none" %></li>
+          <li><%= link_to "バンド合併申請", send_marge_scouts_path, class: "text-muted text-decoration-none" %></li>
         </div>
         <div class="col-md-4">
           <h5 class="mt-5 mb-2">届いたお気に入り</h5>
@@ -36,7 +32,7 @@
           <li><%= link_to "あなたのバンド宛", received_band_favorites_path, class: "text-muted text-decoration-none" %></li>
         </div>
     <% else %>
-      <div class="m-5">
+      <div class="my-5 mx-auto">
         <h2>BANDAPP</h2>
       </div>
     <% end %>

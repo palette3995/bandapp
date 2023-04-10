@@ -41,10 +41,6 @@ li {
 
 //トップページ
 
-.link {
-  float: right;
-}
-
 .profile {
   font-size: 14px;
 }
@@ -98,7 +94,7 @@ li {
     }
 }
 
-.band-list, .show-wrapper, .form-wrapper, .search-wrapper, .notification-list {
+.band-list, .user-list, .show-wrapper, .form-wrapper, .search-wrapper, .notification-list {
   background-color: #EEEEEE;
   border-radius: $border-radius;
 }
