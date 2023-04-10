@@ -1,13 +1,13 @@
 <div class="wrapper text-center mx-auto">
   <%= form_with model: @user, local: true do |f| %>
-  <div class="form-wrapper container my-5 mx-auto">
+  <div class="form-wrapper container my-5 mx-auto pb-3">
     <%= render partial: 'shared/error_messages', locals: { resource: @user } %>
     <div class="row">
       <div class="left-contents col-xl-6">
-        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+        <div class="card mt-5 mx-auto w-75">
           <div class="card-body">
             <% if @user.image.attached? %>
-             <%= image_tag @user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
+             <%= image_tag @user.image, size: "150x150", class: "avatar rounded-circle my-3"%>
              <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block my-2 mx-auto" %>
             <% else %>
              <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
@@ -23,11 +23,11 @@
             <p><%= f.text_area :introduction, class: "form-control" %></p>
           </div>
         </div>
-        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+        <div class="card mt-5 mx-auto w-75">
           <div class="card-body">
             <h5>動画</h5>
             <% if @user.movie.attached? %>
-              <%= video_tag rails_blob_path(@user.movie), class: "movie border", size: "250×250", controls: true %>
+              <%= video_tag rails_blob_path(@user.movie), class: "movie border", width: "250", controls: true %>
               <%= f.submit "動画を削除", name: "delete_movie", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "delete-movie btn btn-secondary d-block mx-auto my-2" %>
             <% else %>
               <p class= "mb-2">動画はありません</p>
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="right-contents col">
-        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+        <div class="card mt-5 mx-auto w-75">
           <div class="card-body">
             <h5>地域</h5>
             <p><%= f.collection_select :prefecture_id, Prefecture.all, :id, :name, {include_blank: "未選択"}, {class: "form-select"} %></p>

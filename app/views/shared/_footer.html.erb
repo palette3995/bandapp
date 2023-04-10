@@ -3,7 +3,7 @@
     <div class="row text-muted pb-5">
       <% if user_signed_in? %>
         <div class="col-md-4">
-          <h2 class="mt-5 mb-2">BANDAPP</h2>
+          <%= image_tag 'logo.png', width: "45%", height: "20%", class: "mt-5 mb-3" %>
           <li><%= link_to "トップページ", users_path, class: "text-muted text-decoration-none"%></li>
           <li><%= link_to "マイページ", user_path(current_user.id), class: "text-muted text-decoration-none"%></li>
           <li><%= link_to "アカウント設定", edit_user_registration_path, class: "text-muted text-decoration-none"%></li>
@@ -33,7 +33,7 @@
         </div>
     <% else %>
       <div class="my-5 mx-auto">
-        <h2>BANDAPP</h2>
+        <%= image_tag 'logo.png', width: "20%" %>
       </div>
     <% end %>
     </div>

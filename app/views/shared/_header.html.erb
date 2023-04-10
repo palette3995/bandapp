@@ -1,9 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
     <% if user_signed_in? %>
-      <%= link_to "BANDAPP", users_path, class: "navbar-brand" %>
+      <%= link_to users_path do %>
+        <%= image_tag 'logo.png', width: "27%" %>
+      <% end %>
     <% else %>
-      <%= link_to "BANDAPP", "/", class: "navbar-brand" %>
+      <%= link_to "/" do %>
+        <%= image_tag 'logo.png', width: "27%" %>
+      <% end %>
     <% end %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -14,9 +18,9 @@
           <li class="nav-item dropdown">
             <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <% if current_user.image.attached? %>
-                <%= image_tag current_user.image.variant(resize: "30×30", gravity: "center"), class: "avatar rounded-circle"%>
+                <%= image_tag current_user.image, size: "40×40", class: "avatar rounded-circle"%>
               <% else %>
-                <%= image_tag 'default.png', size: "30×30", class: "avatar rounded-circle"%>
+                <%= image_tag 'default.png', size: "40×40", class: "avatar rounded-circle"%>
               <% end %>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -26,7 +30,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link mt-1 fs-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               バンド
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -35,10 +39,10 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <%= link_to "お気に入り", favorites_path, class: "nav-link" %>
+            <%= link_to "お気に入り", favorites_path, class: "nav-link mt-1 fs-5" %>
           </li>
           <li class="nav-item">
-            <%= link_to notifications_path, class: "nav-link notification d-inline-block" do %>
+            <%= link_to notifications_path, class: "nav-link notification d-inline-block mt-1 fs-5" do %>
             通知
             <% if current_user.notifications.where(read: false).present? %>
               <i class="fas fa-circle fa-xs text-success"></i>
