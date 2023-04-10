@@ -1,0 +1,13 @@
+<div class="accordion-item">
+  <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+    <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+      送ったお気に入り
+    </button>
+  </h2>
+  <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+    <div class="accordion-body">
+      <div class="user-links"><%= link_to "ユーザー", favorites_path, class: "side-memu-links" %></div>
+      <div class="user-links"><%= link_to "バンド", send_band_favorites_path, class: "side-memu-links" %></div>
+    </div>
+  </div>
+</div>

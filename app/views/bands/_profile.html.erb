@@ -1,18 +1,28 @@
-<% bands.each do |band| %>
-  <div class="col-md-3 my-3">
-    <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
-      <div class="card ">
-        <%= render partial: 'bands/avatar', locals: { band: band, size: "100×100" } %>
-        <div class="card-body">
-          <div class="profile">
-            <p class="card-text"><%= band.name %></p>
-            <span class="card-text"><%= band.prefecture.name if band.prefecture %></span>
-            <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
-            <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
-            <span class="card-text">曲：<%= band.original %></span>
+<div class="container text-center mt-4 recomend-bands">
+  <h5><%= title %></h5>
+  <div class="row">
+  <% if bands.present? %>
+  <% bands.each do |band| %>
+    <div class="col-md-3 my-3">
+      <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
+        <div class="card ">
+          <%= render partial: 'bands/avatar', locals: { band: band, size: "100×100" } %>
+          <div class="card-body">
+            <div class="profile">
+              <p class="card-text"><%= band.name %></p>
+              <span class="card-text"><%= band.prefecture.name if band.prefecture %></span>
+              <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
+              <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
+              <span class="card-text">曲：<%= band.original %></span>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  <% else %>
+    <p class="my-5">おすすめバンドがいません</p>
+  <% end %>
   </div>
-<% end %>
+</div>
+  <%= link_to "全てを表示", link, class: "text-decoration-none text-dark link" if bands.present? %>

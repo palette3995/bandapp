@@ -17,7 +17,7 @@ class ScoutsController < ApplicationController
   end
 
   def index
-    @scouts = current_user.reverse_of_scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.includes(user: { image_attachment: :blob }).where(band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def create
@@ -53,31 +53,31 @@ class ScoutsController < ApplicationController
   end
 
   def received_offer
-    @scouts = current_user.reverse_of_scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.includes(:user, band: { image_attachment: :blob }).where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def received_join
-    @scouts = current_user.reverse_of_scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.includes(:scouted_band, user: { image_attachment: :blob }).where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def received_marge
-    @scouts = current_user.reverse_of_scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.reverse_of_scouts.includes(:user, :scouted_band, band: { image_attachment: :blob }).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_new
-    @scouts = current_user.scouts.where(band_id: nil, scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.includes(scouted_user: { image_attachment: :blob }).where(band_id: nil, scouted_band_id: nil).page(params[:page])
   end
 
   def send_offer
-    @scouts = current_user.scouts.where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.includes(:band, scouted_user: { image_attachment: :blob }).where(scouted_band_id: nil).where.not(band_id: nil).page(params[:page])
   end
 
   def send_join
-    @scouts = current_user.scouts.where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.includes(scouted_band: { image_attachment: :blob }).where(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def send_marge
-    @scouts = current_user.scouts.where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
+    @scouts = current_user.scouts.includes(:band, scouted_band: { image_attachment: :blob }).where.not(band_id: nil).where.not(scouted_band_id: nil).page(params[:page])
   end
 
   def approve_new

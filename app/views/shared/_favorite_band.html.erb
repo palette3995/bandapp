@@ -1,7 +1,7 @@
 <turbo-frame id="favorite-band-button">
   <% if current_user.favorites.where(band_id: band.id).present? %>
-    <%= link_to "お気に入り済み", destroy_band_favorite_path(band.id), data: { turbo_method: :delete }, class: "btn favorite-btn favoriting" %>
+    <%= link_to "お気に入り済み", destroy_band_favorite_path(band.id), data: { turbo_method: :delete }, id: "favoriting", class: "btn favorite-btn" %>
   <% else %>
-    <%= link_to "お気に入り", create_band_favorite_path(band.id), data: { turbo_method: :post }, class: "btn favorite-btn unfavorite" %>
+    <%= link_to "お気に入り", create_band_favorite_path(band.id), data: { turbo_method: :post }, id: "unfavorite", class: "btn favorite-btn" %>
   <% end %>
 </turbo-frame>

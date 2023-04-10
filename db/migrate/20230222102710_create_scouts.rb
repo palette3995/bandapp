@@ -9,6 +9,7 @@ class CreateScouts < ActiveRecord::Migration[7.0]
       t.integer :scouted_part_id
       t.string :other_part
       t.string :scouted_other_part
+      t.string :message
       t.timestamps
     end
   end

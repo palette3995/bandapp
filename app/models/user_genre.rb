@@ -1,7 +1,7 @@
 class UserGenre < ApplicationRecord
   validates :other_genre, length: { maximum: 15 }
 
-  belongs_to :user, optional: true
+  belongs_to :user
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to_active_hash :genre
 

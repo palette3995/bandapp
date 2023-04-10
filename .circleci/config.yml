@@ -4,6 +4,7 @@ orbs:
   ruby: circleci/ruby@1.1.0
   node: circleci/node@5.0.3
   heroku: circleci/heroku@2.0.0
+  browser-tools: circleci/browser-tools@1.4.1
 
 commands:
   setup:
@@ -28,16 +29,25 @@ jobs:
   rspec:
     docker:
       - image: cimg/ruby:3.0.5-node
+        environment:
+          RAILS_ENV: test
+          APP_DATABASE_HOST: "127.0.0.1"
       - image: cimg/mysql:8.0
         environment:
           MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: bandapp_test
-    environment:
-      RAILS_ENV: test
-      APP_DATABASE_HOST: "127.0.0.1"
+          MYSQL_DATABASE: ci_test
     working_directory: ~/bandapp
     steps:
       - setup
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run: mv config/database.ci.yml config/database.yml
+      - run:
+          name: rails db:create
+          command: bundle exec rails db:create
+      - run:
+          name: rails db:migrate
+          command: bundle exec rails db:migrate
       - ruby/rspec-test
 
   heroku_deploy:

@@ -3,7 +3,7 @@ class CreateBandGenres < ActiveRecord::Migration[7.0]
     create_table :band_genres do |t|
       t.references :band, foreign_key: true
       t.integer :genre_id
-      t.string :priority
+      t.integer :priority
       t.string :other_genre
       t.timestamps
     end

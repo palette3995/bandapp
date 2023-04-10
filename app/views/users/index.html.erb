@@ -17,7 +17,7 @@
         <%= f.label :priority, 'サブパートを含む' %>
         <%=  f.check_box :user_parts_priority_lteq, {}, 3, 1%><br>
         <p class="my-2"><%= f.label :level, 'レベル' %></p>
-        <%= f.select :user_parts_level_eq, @levels.map.with_index {|level,index| [level, index]}, {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
+        <%= f.select :user_parts_level_eq, [["未経験", 0 ],["初心者", 1 ],["中級者", 2 ],["上級者", 3 ]], {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
         <p class="my-2"><%= f.label :genre, 'ジャンル' %></p>
         <%= f.select :user_genres_genre_id_eq, @genres.map {|genre| [genre.name, genre.id]}, {include_blank: ""}, {class: "form-select w-75 mx-auto"}%>
         <%= f.label :priority, 'サブジャンルを含む' %>
@@ -33,15 +33,15 @@
         <p class="my-2"><%= f.label :frequency, '活動頻度' %></p>
         <%= f.select :frequency_eq, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
         <p class="my-2"><%= f.label :available_day, '活動できる日' %></p>
-        <%= f.select :available_day_cont, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <%= f.select :available_day_eq, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
         <p class="my-2"><%= f.label :activity_time, '活動できる時間帯' %></p>
-        <%= f.select :activity_time_cont, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <%= f.select :activity_time_eq, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
         <p class="my-2"><%= f.label :compose, "曲作り" %></p>
         <%= f.radio_button :compose_eq, true %>
         <%= f.label :compose, "できる" %>
         <%= f.radio_button :compose_eq, false %>
         <%= f.label :compose, "できない" %> <br>
-        <%= f.submit '検索', class: "mt-4 btn btn-success"%>
+        <%= f.submit '検索', id: "search-users", class: "mt-4 btn btn-success" %>
       <% end %>
     </div>
     <div class="col-xxl-8 text-center">
@@ -52,39 +52,11 @@
         </div>
       </div>
       <div class="users-wrapper border p-5">
-        <div class="container text-center mt-4">
-          <h5>歳の近いユーザー</h5>
-          <div class="row">
-          <% if @match_ages.present? %>
-            <%= render partial: 'users/profile', locals: { users: @match_ages } %>
-          <% else %>
-            <p class="my-5">おすすめユーザーがいません</p>
-          <% end %>
-          </div>
-        </div>
-        <%= link_to "全てを表示", match_ages_users_path, class: "text-decoration-none text-dark link" if @match_ages.present? %>
-        <div class="container text-center mt-5">
-          <h5>レベルの近いユーザー</h5>
-          <div class="row">
-            <% if @match_levels.present? %>
-              <%= render partial: 'users/profile', locals: { users: @match_levels } %>
-            <% else %>
-              <p class="my-5">おすすめユーザーがいません</p>
-            <% end %>
-          </div>
-        </div>
-        <%= link_to "全てを表示", match_levels_users_path, class: "text-decoration-none text-dark link" if @match_levels.present? %>
-        <div class="container text-center mt-5">
-          <h5>ジャンルが同じなユーザー</h5>
-          <div class="row">
-            <% if @match_genres.present? %>
-              <%= render partial: 'users/profile', locals: { users: @match_genres } %>
-            <% else %>
-              <p class="my-5">おすすめユーザーがいません</p>
-            <% end %>
-          </div>
-        </div>
-        <%= link_to "全てを表示", match_genres_users_path, class: "text-decoration-none text-dark link"  if @match_genres.present? %>
+        <%= render partial: 'users/profile', locals: { users: @match_ages, title: "歳の近いユーザー", link: match_ages_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_levels, title: "レベルの近いユーザー", link: match_levels_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_genres, title: "ジャンルが同じなユーザー", link: match_genres_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_policies, title: "活動スタイルが合いそうなユーザー", link: match_policies_users_path } %>
+        <%= render partial: 'users/profile', locals: { users: @match_schedules, title: "予定が合いそうなユーザー", link: match_schedules_users_path } %>
       </div>
     </div>
   </div>

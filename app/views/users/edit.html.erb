@@ -8,7 +8,7 @@
           <div class="card-body">
             <% if @user.image.attached? %>
              <%= image_tag @user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
-             <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block mx-auto" %>
+             <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block my-2 mx-auto" %>
             <% else %>
              <%= image_tag 'default.png', size: "150x150", class: "avatar rounded-circle my-3"%>
             <% end %>
@@ -28,7 +28,7 @@
             <h5>動画</h5>
             <% if @user.movie.attached? %>
               <%= video_tag rails_blob_path(@user.movie), class: "movie border", size: "250×250", controls: true %>
-              <%= f.submit "動画を削除", name: "delete_movie", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "delete-movie btn btn-secondary d-block mx-auto　mb-2" %>
+              <%= f.submit "動画を削除", name: "delete_movie", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "delete-movie btn btn-secondary d-block mx-auto my-2" %>
             <% else %>
               <p class= "mb-2">動画はありません</p>
             <% end %>
@@ -55,7 +55,7 @@
                   <h5><%= "パート#{user_part.index + 1}" %></h5>
                   <%= user_part.select :part_id, @parts.map {|part| [part.name, part.id]}, {}, {class: "form-select part-name"}%>
                   <%= user_part.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part" %>
-                  <%= user_part.select :level, @levels.map{|level| [level,level]} , {include_blank: "レベル"}, {class: "form-select level"}%>
+                  <%= user_part.select :level, [["未経験","未経験"],["初心者","初心者"],["中級者","中級者"],["上級者","上級者"]] , {include_blank: "レベル"}, {class: "form-select level"}%>
                   <%= user_part.hidden_field :user_id %>
                 </div>
               <% end %>

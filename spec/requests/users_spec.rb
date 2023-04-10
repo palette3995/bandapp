@@ -72,6 +72,36 @@ RSpec.describe "Users" do
     end
   end
 
+  describe "GET users#match_policies" do
+    before do
+      sign_in user
+      get match_policies_users_path
+    end
+
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("活動スタイルが合いそうなユーザー")
+    end
+  end
+
+  describe "GET users#match_schedules" do
+    before do
+      sign_in user
+      get match_schedules_users_path
+    end
+
+    it "リクエストが200 OKとなること" do
+      expect(response).to have_http_status :ok
+    end
+
+    it "タイトルが正しく表示されること" do
+      expect(response.body).to include("予定が合いそうなユーザー")
+    end
+  end
+
   describe "GET users#show" do
     before do
       sign_in user

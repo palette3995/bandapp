@@ -2,19 +2,19 @@ class FavoritesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @users = current_user.favoriting_users.page(params[:page])
+    @users = current_user.favoriting_users.includes(:user_parts).with_attached_image.page(params[:page])
   end
 
   def send_band
-    @bands = current_user.favoriting_bands.page(params[:page])
+    @bands = current_user.favoriting_bands.includes(:band_genres).with_attached_image.page(params[:page])
   end
 
   def received_user
-    @users = current_user.user_favorited_mes.page(params[:page])
+    @users = current_user.user_favorited_mes.includes(:user_parts).with_attached_image.page(params[:page])
   end
 
   def received_band
-    @favorites = Favorite.where(band_id: current_user.bands.ids).page(params[:page])
+    @favorites = Favorite.includes(:band, user: [{ image_attachment: :blob }, :user_parts]).where(band_id: current_user.bands.ids).page(params[:page])
   end
 
   def create_user

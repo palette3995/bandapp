@@ -80,7 +80,7 @@
     <div class="card my-5 w-75 mx-auto px-3">
       <div class="card-body">
         <h5>募集中のメンバー</h5>
-        <% @recruits.each do |recruit| %>
+        <% @band.recruit_members.each do |recruit| %>
           <div class="row member-list-item border mb-2">
             <div class="col-lg-3 pt-3">
               <p>パート：<%= recruit.part.name if recruit.part_id != 7 %> <%= recruit.other_part%> <%= recruit.level %></p>

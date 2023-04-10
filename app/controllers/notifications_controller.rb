@@ -1,11 +1,11 @@
 class NotificationsController < ApplicationController
   before_action :authenticate_user!
   def index
-    @notifications = current_user.notifications.order(created_at: :desc).page(params[:page])
+    @notifications = current_user.notifications.includes(subject: [user: { image_attachment: :blob }, band: { image_attachment: :blob }]).order(created_at: :desc).page(params[:page])
   end
 
   def unreads
-    @notifications = current_user.notifications.where(read: false).order(created_at: :desc).page(params[:page])
+    @notifications = current_user.notifications.includes(subject: [user: { image_attachment: :blob }, band: { image_attachment: :blob }]).where(read: false).order(created_at: :desc).page(params[:page])
   end
 
   def read

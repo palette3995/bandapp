@@ -5,24 +5,24 @@
       <%= search_form_for @q, url: search_bands_path do |f| %>
         <p class="mb-2 mt-4"><%= f.label :name, 'バンド名'%></p>
         <%= f.text_field :name_cont, class: "form-control w-50 mx-auto"  %>
-        <p class="my-2"><%= f.label :name, '都道府県' %></p>
+        <p class="my-2"><%= f.label :prefecture_id, '都道府県' %></p>
         <%= f.collection_select :prefecture_id_eq, Prefecture.all, :id, :name, {include_blank: ""}, {class: "form-select w-25 mx-auto"} %>
-        <p class="my-2"><%= f.label :age, 'メンバーの人数' %></p>
+        <p class="my-2"><%= f.label :number_of_member, 'メンバーの人数' %></p>
         <%= f.number_field :number_of_member_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
         <%= f.number_field :number_of_member_lteq, class: "form-control w-25 mx-auto d-inline-block" %>人
-        <p class="my-2"><%= f.label :age, 'メンバーの平均年齢' %></p>
+        <p class="my-2"><%= f.label :average_age, 'メンバーの平均年齢' %></p>
         <%= f.number_field :average_age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
         <%= f.number_field :average_age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
-        <p class="my-2"><%= f.label :age, 'メンバーの最大年齢' %></p>
+        <p class="my-2"><%= f.label :maximum_age, 'メンバーの最大年齢' %></p>
         <%= f.number_field :maximum_age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
         <%= f.number_field :maximum_age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
-        <p class="my-2"><%= f.label :age, 'メンバーの最小年齢' %></p>
+        <p class="my-2"><%= f.label :minimum_age, 'メンバーの最小年齢' %></p>
         <%= f.number_field :minimum_age_gteq, class: "form-control w-25 mx-auto d-inline-block" %> ~
         <%= f.number_field :minimum_age_lteq, class: "form-control w-25 mx-auto d-inline-block" %>歳
         <p class="my-2"><%= f.label :part, '募集しているパート' %></p>
         <%= f.select :recruit_members_part_id_eq, @parts.map {|part| [part.name, part.id]}, {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
         <p class="my-2"><%= f.label :level, '募集しているレベル' %></p>
-        <%= f.select :recruit_members_level_eq, @levels.map {|level| [level, level]}, {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
+        <%= f.select :recruit_members_level_eq, [["未経験", "未経験" ],["初心者", "初心者" ],["中級者", "中級者" ],["上級者", "上級者" ]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
         <p class="my-2"><%= f.label :age, '募集している年齢' %></p>
         <%= f.select :recruit_members_age_eq, [["20代まで","20代まで"],["30代","30代"],["40代","40代"],["50代","50代"],["60歳以上","60歳以上"],["気にしない","気にしない"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %>
         <p class="my-2"><%= f.label :sex, '募集している性別' %></p>
@@ -40,10 +40,10 @@
         <p class="my-2"><%= f.label :frequency, '活動頻度' %></p>
         <%= f.select :frequency_eq, [["月１日以下","月１日以下"],["月２〜３日","月２〜３日"],["週１〜２日","週１〜２日"],["週３日以上","週３日以上"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"}%><br>
         <p class="my-2"><%= f.label :available_day, '活動できる日' %></p>
-        <%= f.select :available_day_cont, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <%= f.select :available_day_eq, [["平日","平日"],["土日","土日"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
         <p class="my-2"><%= f.label :activity_time, '活動できる時間帯' %></p>
-        <%= f.select :activity_time_cont, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
-        <%= f.submit '検索', class: "mt-4 btn btn-success"%>
+        <%= f.select :activity_time_eq, [["午前","午前"],["午後","午後"],["不定","不定"],["いつでも","いつでも"]], {include_blank: ""}, {class: "form-select w-50 mx-auto"} %><br>
+        <%= f.submit '検索', class: "mt-4 btn btn-success", id: "search-bands" %>
       <% end %>
     </div>
   <div class="col-xxl-8 text-center">
@@ -54,28 +54,12 @@
       </div>
     </div>
     <div class="bands-wrapper border p-5">
-      <div class="container text-center mt-4">
-        <h5>平均年齢が近いバンド</h5>
-        <div class="row">
-        <% if @match_ages.present? %>
-          <%= render partial: 'bands/profile', locals: { bands: @match_ages } %>
-        <% else %>
-          <p class="my-5">おすすめバンドがいません</p>
-        <% end %>
-        </div>
-      </div>
-        <%= link_to "全てを表示", match_ages_bands_path, class: "text-decoration-none text-dark link" if @match_ages.present? %>
-      <div class="container text-center mt-5">
-        <h5>ジャンルが同じなバンド</h5>
-        <div class="row">
-          <% if @match_genres.present? %>
-            <%= render partial: 'bands/profile', locals: { bands: @match_genres } %>
-          <% else %>
-            <p class="my-5">おすすめバンドがいません</p>
-          <% end %>
-        </div>
-      </div>
-      <%= link_to "全てを表示", match_genres_bands_path, class: "text-decoration-none text-dark link"  if @match_genres.present? %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_ages, title: "平均年齢が近いバンド", link: match_ages_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_genres, title: "ジャンルが同じなバンド", link: match_genres_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_policies, title: "活動スタイルが合いそうなバンド", link: match_policies_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_schedules, title: "予定が合いそうなバンド", link: match_schedules_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @match_parts, title: "あなたのパートを募集しているバンド", link: match_parts_bands_path } %>
+      <%= render partial: 'bands/profile', locals: { bands: @recruiting_beginners, title: "未経験者、初心者歓迎なバンド", link: recruiting_beginners_bands_path } %>
     </div>
   </div>
 </div>

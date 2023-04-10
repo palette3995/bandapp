@@ -4,6 +4,7 @@ class CreateBandMembers < ActiveRecord::Migration[7.0]
       t.references :user, foreign_key: true
       t.references :band, foreign_key: true
       t.integer :part_id
+      t.string :other_part
       t.string :role
       t.timestamps
     end

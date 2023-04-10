@@ -42,7 +42,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
   create_table "band_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "band_id"
     t.integer "genre_id"
-    t.string "priority"
+    t.integer "priority"
     t.string "other_genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -53,10 +53,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.bigint "user_id"
     t.bigint "band_id"
     t.integer "part_id"
+    t.string "other_part"
     t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "other_part"
     t.index ["band_id"], name: "index_band_members_on_band_id"
     t.index ["user_id"], name: "index_band_members_on_user_id"
   end
@@ -71,9 +71,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.string "want_to_copy"
     t.string "activity_time"
     t.string "available_day"
+    t.string "frequency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "frequency"
     t.integer "maximum_age"
     t.integer "minimum_age"
     t.integer "average_age"
@@ -137,9 +137,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.integer "scouted_part_id"
     t.string "other_part"
     t.string "scouted_other_part"
+    t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "message"
     t.index ["band_id"], name: "index_scouts_on_band_id"
     t.index ["scouted_band_id"], name: "index_scouts_on_scouted_band_id"
     t.index ["scouted_user_id"], name: "index_scouts_on_scouted_user_id"
@@ -160,10 +160,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.bigint "user_id"
     t.integer "part_id"
     t.integer "priority"
+    t.string "other_part"
+    t.integer "level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "level"
-    t.string "other_part"
     t.index ["user_id"], name: "index_user_parts_on_user_id"
   end
 
@@ -186,11 +186,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.string "original"
     t.string "want_to_copy"
     t.string "motivation"
+    t.integer "prefecture_id"
     t.string "frequency"
     t.string "activity_time"
     t.string "available_day"
     t.boolean "compose", default: false
-    t.integer "prefecture_id"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
