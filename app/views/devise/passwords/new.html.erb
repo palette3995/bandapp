@@ -2,12 +2,9 @@
 <div class="top-wrapper">
   <div class="container">
     <div class="row">
-      <div class="top-text col mx-auto">
-        <h1 class="top-title fw-bold">BANDAPP</h1>
-        <h3 class="top-discription">ここにテキストを入力</h3>
-      </div>
-      <div class="login-form col-xl-7">
-        <div class="card w-50 mx-auto shadow border border-1">
+      <%= render partial: 'devise/shared/top_page_logo' %>
+      <div class="login-form col-xl-4">
+        <div class="card mx-auto shadow border border-1">
           <div class="card-body mx-2">
             <%= form_with model: @user, url: password_path(@user), local: true do |f| %>
               <h5>パスワードを忘れた方</h5>
