@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
-  before_action :ensure_normal_user, only: %i[create]
+  before_action :ensure_normal_user, only: :create
   # GET /resource/password/new
   # def new
   #   super
@@ -34,6 +34,6 @@ class Users::PasswordsController < Devise::PasswordsController
   # end
 
   def ensure_normal_user
-    redirect_to new_user_session_path, alert: t("alert.reset_guest_password") if params[:user][:email].casecmp("guest@example.com").zero?
+    redirect_to new_user_session_path, alert: t("alert.reset_guest_password") if params[:user][:email]&.downcase == "guest@example.com"
   end
 end
