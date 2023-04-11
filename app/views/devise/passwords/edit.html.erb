@@ -6,7 +6,7 @@
       <div class="login-form col-xl-4">
         <div class="card mx-auto shadow border border-1">
           <div class="card-body mx-2">
-            <%= form_with model: @user, url: user_password_path, local: true do |f| %>
+            <%= form_with model: @user, url: user_password_path, method: :patch, local: true do |f| %>
               <%= render "devise/shared/error_messages", resource: resource %>
               <%= f.hidden_field :reset_password_token %>
               <h5>パスワード再設定</h5>
