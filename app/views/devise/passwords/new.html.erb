@@ -6,7 +6,7 @@
       <div class="login-form col-xl-4">
         <div class="card mx-auto shadow border border-1">
           <div class="card-body mx-2">
-            <%= form_with model: @user, url: password_path(@user), local: true do |f| %>
+            <%= form_with model: @user, url: user_password_path, local: true do |f| %>
               <h5>パスワードを忘れた方</h5>
               <div class="form-group my-4">
                 <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control-lg w-100 border border-1", placeholder: "メールアドレス"%>
