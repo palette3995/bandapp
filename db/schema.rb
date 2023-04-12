@@ -80,7 +80,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_130022) do
     t.integer "number_of_member"
     t.integer "men"
     t.integer "women"
-    t.integer "other_gender"
   end
 
   create_table "chats", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
