@@ -2,8 +2,10 @@
 <div class="container text-center">
   <div class="row">
     <div class="col-xl-2 my-5">
-      <h5><%= @band.name %></h5>
-      <%= link_to "バンド一覧に戻る", user_bands_bands_path, class: "text-dark" %>
+      <div class="border rounded m-2">
+          <p class="w-75 my-4 fs-5 mx-auto border-bottom border-3 border-secondary"><%= @band.name %></p>
+        <%= link_to "バンド一覧に戻る", user_bands_bands_path, class: "btn btn-secondary mb-4 w-75" %>
+      </div>
     </div>
     <div class="col-xl-8 my-4">
       <div class="form-wrapper my-5">
