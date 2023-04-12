@@ -25,8 +25,8 @@
               </div>
             </div>
           <% end %>
-          <%= paginate @notifications, theme: "bootstrap-5" %>
         <% end %>
+        <%= paginate @notifications, theme: "bootstrap-5" %>
       <% else %>
         <p class="m-5">通知はありません</p>
       <% end %>
