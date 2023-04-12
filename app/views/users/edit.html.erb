@@ -14,7 +14,7 @@
             <% end %>
             <%= f.file_field :image, accept: "image/*", class: "d-block mx-auto" %>
             <h5 class= "mt-2">名前</h5>
-            <p><%= f.text_field :name, class: "form-control" %></p>
+            <p><%= @user.name %></p>
             <h5>年齢</h5>
             <p><%= f.number_field :age, class: "form-control" %></p>
             <h5>性別</h5>

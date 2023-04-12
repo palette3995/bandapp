@@ -3,17 +3,22 @@
   <div class="card mx-auto">
     <div class="card-body">
       <h4 class="card-title my-5">アカウント設定</h4>
-      <%= form_with model: @user, url: registration_path(@user), local: true do |f| %>
+      <%= form_with model: @user, url: user_registration_path, method: :patch, local: true do |f| %>
         <div class="w-75 mx-auto">
-          <h5>メールアドレス</h5>
+          <h5>名前</h5>
+          <p><%= f.text_field :name, class: "form-control" %></p>
+          <h5 class="mt-3">メールアドレス</h5>
           <%= f.text_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
-          <h5 class="mt-3">現在のパスワード</h5>
-          <%= f.text_field :current_password, class: "form-control" %>
-          <h5 class="mt-3">新しいパスワード</h5>
-          <%= f.text_field :password, class: "form-control" %>
-          <h5 class="mt-3">もう一度入力してください</h5>
-          <%= f.text_field :password_confirmation, class: "form-control" %>
+          <div class="my-5 border-top border-bottom border-3 border-secondary">
+            <h4 class="card-title my-5">パスワード変更</h4>
+            <h5 class="mt-3">新しいパスワード</h5>
+            <%= f.text_field :password, class: "form-control" %>
+            <h5 class="mt-3">もう一度入力してください</h5>
+            <%= f.text_field :password_confirmation, class: "form-control mb-5" %>
+          </div>
           <div class="my-5">
+            <h5>現在のパスワード(必須)</h5>
+            <%= f.text_field :current_password, class: "form-control my-3" %>
             <%= f.submit "編集完了", class: "btn btn-secondary" %>
           </div>
         </div>
