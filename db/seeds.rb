@@ -45,28 +45,10 @@ end
   )
 end
 
-30.times do |n|
-  User.create!(
-    name: "テストユーザー(京都)#{n + 1}",
-    email: "#{n + 61}@#{n + 61}",
-    password: 111_111,
-    prefecture_id: 26,
-    introduction: "よろしくお願いします！",
-    age: n + 18,
-    sex: sexes.sample,
-    original: originals.sample,
-    frequency: frequencies.sample,
-    motivation: motivations.sample,
-    activity_time: times.sample,
-    available_day: days.sample,
-    compose: composes.sample
-  )
-end
-
 # バンド初期データ作成
-readers = User.first(40)
-members = User.last(40)
-40.times do |n|
+readers = User.first(30)
+members = User.last(30)
+30.times do |n|
   band = Band.create(
     name: "テストバンド#{n}",
     introduction: "メンバー募集中！",
@@ -89,44 +71,39 @@ band_b = Band.create(name: "ゲストバンドB", introduction: "真剣に音楽
 
 band_a.band_members.create(user_id: guest.id, part_id: 1, role: "リーダー")
 band_a.band_members.create(user_id: 28, part_id: 2, role: "メンバー")
-band_a.band_members.create(user_id: 24, part_id: 4, role: "メンバー")
 band_b.band_members.create(user_id: guest.id, part_id: 1, role: "メンバー")
 band_b.band_members.create(user_id: 25, part_id: 2, role: "リーダー")
 band_b.band_members.create(user_id: 35, part_id: 3, role: "メンバー")
-band_b.band_members.create(user_id: 30, part_id: 4, role: "メンバー")
 
 band_a.chats.create(user_id: band_a.band_members[1].user_id, message: "こんにちは！")
-band_a.chats.create(user_id: band_a.band_members[2].user_id, message: "よろしくお願いします！")
-band_b.chats.create(user_id: band_b.band_members[1].user_id, message: "あと一人くらいメンバーほしいですね。")
-band_b.chats.create(user_id: band_b.band_members[2].user_id, message: "ギターもう一人かな？？")
-band_b.chats.create(user_id: band_b.band_members[3].user_id, message: "鍵盤系入れるのもいいと思います！")
+band_b.chats.create(user_id: band_b.band_members[1].user_id, message: "あとはドラムほしいですね。")
+band_b.chats.create(user_id: band_b.band_members[2].user_id, message: "私いい人探しときます！")
 
 # favoritesデータ作成
-5.times do |n|
+2.times do |n|
   guest.favorites.create(favorited_user_id: n + 1)
-  guest.favorites.create(band_id: n + 6)
-  Favorite.create(user_id: n + 11, favorited_user_id: guest.id)
+  guest.favorites.create(band_id: n + 5)
+  Favorite.create(user_id: n + 7, favorited_user_id: guest.id)
 end
 
-3.times do |n|
+2.times do |n|
   Favorite.create(user_id: n + 15, band_id: band_a.id)
-  Favorite.create(user_id: n + 20, band_id: band_b.id)
 end
 
 # scouts初期データ作成
-5.times do |n|
+2.times do |n|
   guest.scouts.create(part_id: 1, scouted_user_id: n + 1, scouted_part_id: rand(1..6))
   guest.scouts.create(part_id: 1, scouted_user_id: Band.find(n + 5).band_members.find_by(role: "リーダー").user_id, scouted_band_id: n + 5)
   guest.scouts.create(band_id: band_a.id, scouted_user_id: n + 30, scouted_part_id: rand(1..6))
   guest.scouts.create(band_id: band_a.id, scouted_user_id: Band.find(n + 10).band_members.find_by(role: "リーダー").user_id, scouted_band_id: n + 10)
   Scout.create(scouted_user_id: guest.id, part_id: rand(1..6), user_id: n + 40, scouted_part_id: 1)
-  Scout.create(scouted_user_id: guest.id, part_id: rand(1..6), user_id: n + 60, scouted_band_id: band_a.id)
-  Scout.create(scouted_user_id: guest.id, band_id: n + 32, user_id: Band.find(n + 32).band_members.find_by(role: "リーダー").user_id, scouted_part_id: 1)
+  Scout.create(scouted_user_id: guest.id, part_id: rand(1..6), user_id: n + 50, scouted_band_id: band_a.id)
+  Scout.create(scouted_user_id: guest.id, band_id: n + 15, user_id: Band.find(n + 15).band_members.find_by(role: "リーダー").user_id, scouted_part_id: 1)
   Scout.create(scouted_user_id: guest.id, band_id: n + 25, user_id: Band.find(n + 25).band_members.find_by(role: "リーダー").user_id, scouted_band_id: band_a.id)
 end
 
 # recruit_members初期データ作成 ジャンル設定
-Band.includes(:band_genres).each do |band|
+Band.includes(:band_genres).limit(20).each do |band|
   band.recruit_members.create!(part_id: rand(1..6), level: levels.sample, age: ages.sample, sex: sexes.sample)
   band.band_genres[0].update(genre_id: rand(1..15))
   band.update!(
@@ -140,7 +117,7 @@ Band.includes(:band_genres).each do |band|
 end
 
 # パート、ジャンルの設定
-User.includes(:user_parts, :user_genres).each do |user|
+User.includes(:user_parts, :user_genres).limit(30).each do |user|
   user.user_parts.each do |part|
     part.update!(part_id: rand(1..6), level: levels.sample)
   end
@@ -148,4 +125,12 @@ User.includes(:user_parts, :user_genres).each do |user|
   user.user_genres.each do |genre|
     genre.update!(genre_id: rand(1..15))
   end
+end
+
+guest.user_parts.each do |part|
+  part.update!(part_id: rand(1..6), level: levels.sample)
+end
+
+guest.user_genres.each do |genre|
+  genre.update!(genre_id: rand(1..15))
 end
