@@ -30,6 +30,31 @@ li {
   text-align: center;
 }
 
+.top-image {
+  background-image: url("../images/top.jpeg");
+  height: 1200px;
+  background-size: cover;
+  position: relative;
+}
+
+.top-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 0.5em;
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.23);
+  border-radius: 0.5em;
+}
+
+.banner {
+  background-image: url("../images/banner.jpg");
+  height: 200px;
+  background-size: cover;
+  position: relative;
+}
+
 //プロフィール編集画面
 .other-part {
   display: none;
