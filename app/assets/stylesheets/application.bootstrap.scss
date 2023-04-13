@@ -3,6 +3,7 @@
 @import 'custom';
 
 body {
+  text-align: center;
 }
 
 li {
@@ -39,13 +40,13 @@ li {
 
 .top-message {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%,-50%);
   padding: 0.5em;
-  background-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.23);
   border-radius: 0.5em;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .banner {
@@ -55,7 +56,17 @@ li {
   position: relative;
 }
 
-//プロフィール編集画面
+.banner-message {
+  background-color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 0.5em;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.23);
+  border-radius: 0.5em;
+}
+
 .other-part {
   display: none;
 }
@@ -64,13 +75,10 @@ li {
   display: none;
 }
 
-//トップページ
-
 .profile {
   font-size: 14px;
 }
 
-// タブ
 .tab1 {
   background-color: #fff !important;
 }
@@ -86,13 +94,16 @@ li {
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
 }
+
 .tab1__link.on {
   background-color: #b1e2dc;
 }
+
 .tab1-body__item {
   margin: 30px 15px;
   display: none;
 }
+
 .tab1-body__item.on {
   display: block;
 }
