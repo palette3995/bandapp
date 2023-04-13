@@ -1,5 +1,5 @@
+<%= render partial: 'shared/banners', locals: { title: "未読の通知"} %>
 <div class="container text-center">
-  <h5 class= "my-5">未読の通知</h5>
   <div class="row">
     <div class="col-xl-2 my-5">
       <div class="border rounded m-3">
@@ -7,7 +7,7 @@
         <%= link_to "全て既読にする", read_all_notifications_path, data: { turbo_method: :patch }, class: "btn btn-secondary mb-4" %>
       </div>
     </div>
-    <div class="notification-list col-xl-8">
+    <div class="notification-list col-xl-8 mt-5">
       <% if @notifications.present? %>
         <% @notifications.each do |notification| %>
           <%= link_to read_notification_path(notification.id), data: { turbo_method: :patch }, class: "text-decoration-none text-dark notification-link" do %>

@@ -1,9 +1,9 @@
+<%= render partial: 'shared/banners', locals: { title: "所属バンド一覧"} %>
 <div class="container text-center">
-  <h5 class= "my-5">所属バンド一覧</h5>
   <div class="row">
     <div class="col-xl-2">
     </div>
-    <div class="band-list col-xl-8">
+    <div class="band-list col-xl-8 mt-5">
       <% if @bands.present? %>
         <% @bands.each do |band| %>
           <div class="row band-list-item border my-4 mx-4">
