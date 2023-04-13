@@ -1,7 +1,7 @@
 <%= render partial: 'shared/banners', locals: { title: "バンドを探す"} %>
 <div class="container">
   <div class="row">
-    <div class="col-xxl-3 search-form-0 text-center form-wrapper mt-5 p-3 ">
+    <div class="col-xxl-3 search-form-0 form-wrapper mt-5 p-3 ">
       <h5>バンド詳細検索</h5>
       <%= search_form_for @q, url: search_bands_path do |f| %>
         <p class="mb-2 mt-4"><%= f.label :name, 'バンド名'%></p>
@@ -47,7 +47,7 @@
         <%= f.submit '検索', class: "mt-4 btn btn-success", id: "search-bands" %>
       <% end %>
     </div>
-  <div class="col-xxl-8 text-center">
+  <div class="col-xxl-8">
     <div class="tab1 mt-5">
       <div class="row">
         <div class="col tab1__item"><%= link_to "おすすめユーザー", users_path, class: "tab1__link" %></div>
