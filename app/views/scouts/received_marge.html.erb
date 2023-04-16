@@ -30,7 +30,8 @@
                 <div class="card">
                   <%= render partial: 'bands/avatar', locals: { band: scout.band, size: "100×100" } %>
                   <div class="card-body profile">
-                    <p class="card-text"><%= scout.user.name %><br>さん(<%= scout.band.name %>)からのスカウト</p>
+                    <p class="card-text"><%= scout.user.name %><br>さんからのスカウト</p>
+                    <p class="card-text">相手のバンド:<%= scout.band.name %></p>
                     <p class="card-text">合併希望バンド:<%= scout.scouted_band.name %></p>
                     <p class="card-text">ひとこと:<%= scout.message %></p>
                     <p class="card-text my-1">日時:<%= l scout.created_at %></p>
