@@ -50,6 +50,14 @@ class User < ApplicationRecord
     find_or_create_by!(email: GUEST_EMAIL) do |user|
       user.name = GUEST_NAME
       user.password = SecureRandom.urlsafe_base64
+      user.prefecture_id = 27
+      user.age = 20
+      user.sex = "男性"
+      user.original = "オリジナル曲"
+      user.frequency = "月２〜３日"
+      user.motivation = "趣味で楽しく"
+      user.activity_time = "午後"
+      user.available_day = "土日"
     end
   end
 

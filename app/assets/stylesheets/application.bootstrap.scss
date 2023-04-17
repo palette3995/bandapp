@@ -3,6 +3,7 @@
 @import 'custom';
 
 body {
+  text-align: center;
 }
 
 li {
@@ -30,7 +31,42 @@ li {
   text-align: center;
 }
 
-//プロフィール編集画面
+.top-image {
+  background-image: url("../images/top.jpeg");
+  height: 1200px;
+  background-size: cover;
+  position: relative;
+}
+
+.top-message {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 0.5em;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.23);
+  border-radius: 0.5em;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.banner {
+  background-image: url("../images/banner.jpg");
+  height: 200px;
+  background-size: cover;
+  position: relative;
+}
+
+.banner-message {
+  background-color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 0.5em;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.23);
+  border-radius: 0.5em;
+}
+
 .other-part {
   display: none;
 }
@@ -39,17 +75,10 @@ li {
   display: none;
 }
 
-//トップページ
-
-.link {
-  float: right;
-}
-
 .profile {
   font-size: 14px;
 }
 
-// タブ
 .tab1 {
   background-color: #fff !important;
 }
@@ -65,13 +94,16 @@ li {
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
 }
+
 .tab1__link.on {
   background-color: #b1e2dc;
 }
+
 .tab1-body__item {
   margin: 30px 15px;
   display: none;
 }
+
 .tab1-body__item.on {
   display: block;
 }
@@ -98,7 +130,7 @@ li {
     }
 }
 
-.band-list, .show-wrapper, .form-wrapper, .search-wrapper, .notification-list {
+.band-list, .user-list, .show-wrapper, .form-wrapper, .search-wrapper, .notification-list {
   background-color: #EEEEEE;
   border-radius: $border-radius;
 }
@@ -114,6 +146,7 @@ li {
   margin-top: 20px;
   &.notice {
     background-color: #f0fff0;
+    padding: 16px;
   }
   &.alert {
     background-color: #ffe4e1;

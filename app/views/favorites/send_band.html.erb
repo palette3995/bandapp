@@ -1,7 +1,7 @@
-<div class="container-fluid text-center">
-  <h4 class= "my-5">お気に入りバンド一覧</h4>
+<%= render partial: 'shared/banners', locals: { title: "お気に入りバンド一覧"} %>
+<div class="container-fluid">
   <div class="row">
-    <div class="side-menu col-xl-3 mb-5">
+    <div class="side-menu col-xl-3 my-5">
       <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -19,7 +19,7 @@
         <%= render partial: 'favorites/receive_accordion' %>
       </div>
     </div>
-    <div class="container col-xl-8">
+    <div class="container col-xl-8 mt-5">
       <div class="row search-wrapper p-4">
         <% if @bands.present? %>
           <% @bands.each do |band| %>

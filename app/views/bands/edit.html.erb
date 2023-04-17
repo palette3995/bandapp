@@ -1,13 +1,13 @@
-<div class="wrapper text-center w-75 mx-auto">
+<div class="wrapper mx-auto">
   <%= form_with model: @band, local: true do |f| %>
-  <div class="form-wrapper container my-4 mx-auto">
+  <div class="form-wrapper container my-5 mx-auto">
     <%= render partial: 'shared/error_messages', locals: { resource: @band } %>
     <div class="row">
       <div class="left-contents col-xl-6">
-        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+        <div class="card mt-5 mx-auto w-75">
           <div class="card-body">
             <% if @band.image.attached? %>
-             <%= image_tag @band.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle my-3"%>
+             <%= image_tag @band.image, size: "150x150", class: "avatar rounded-circle my-3"%>
              <%= f.submit "アイコンを削除", name: "delete_image", data: { turbo_confirm: "削除しますか？", turbo_method: :delete }, class: "btn btn-secondary d-block my-2 mx-auto" %>
             <% else %>
              <%= image_tag 'default_band.png', size: "150x150", class: "avatar rounded-circle my-3"%>
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="right-contents col">
-        <div class="card mt-5 mx-auto w-75" style="width: 18rem;">
+        <div class="card mt-5 mx-auto w-75">
           <div class="card-body">
             <%= f.fields_for :band_genres, @band.band_genres do |band_genre| %>
               <div class="genres my-2">

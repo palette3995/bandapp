@@ -1,7 +1,7 @@
-<div class="container-fluid text-center">
-  <h4 class= "my-5">届いたスカウト一覧</h4>
+<%= render partial: 'shared/banners', locals: { title: "届いたスカウト一覧"} %>
+<div class="container-fluid">
   <div class="row">
-    <div class="side-menu col-xl-3 mb-5">
+    <div class="side-menu col-xl-3 my-5">
       <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -21,7 +21,7 @@
         <%= render partial: 'scouts/send_accordion' %>
       </div>
     </div>
-    <div class="container col-xl-8">
+    <div class="container col-xl-8 mt-5">
       <div class="row search-wrapper p-4">
         <% if @scouts.present? %>
           <% @scouts.each do |scout| %>
@@ -30,7 +30,8 @@
                 <div class="card">
                   <%= render partial: 'users/avatar', locals: { user: scout.user, size: "100×100" } %>
                   <div class="card-body profile">
-                    <p class="card-text"><%= scout.user.name %><br>さん(<%= scout.part.name %>)からのスカウト</p>
+                    <p class="card-text"><%= scout.user.name %><br>さんからのスカウト</p>
+                    <p class="card-text">相手のパート:<%= scout.part.name %></p>
                     <p class="card-text">加入希望バンド:<%= scout.scouted_band.name %></p>
                     <p class="card-text">ひとこと:<%= scout.message %></p>
                     <p class="card-text my-1">日時:<%= l scout.created_at %></p>

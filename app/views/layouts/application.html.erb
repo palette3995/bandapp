@@ -14,8 +14,7 @@
     <%= render 'shared/header' %>
     <% if notice %>
       <p class="flash notice"><%= notice %></p>
-    <% end %>
-    <% if alert %>
+    <% elsif alert %>
       <p class="flash alert"><%= alert %></p>
     <% end %>
     <%= yield %>

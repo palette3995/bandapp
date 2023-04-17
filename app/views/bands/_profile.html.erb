@@ -1,6 +1,6 @@
-<div class="container text-center mt-4 recomend-bands">
+<div class="container mt-4 recomend-bands">
   <h5><%= title %></h5>
-  <div class="row">
+  <div class="row band-list">
   <% if bands.present? %>
   <% bands.each do |band| %>
     <div class="col-md-3 my-3">
@@ -25,4 +25,6 @@
   <% end %>
   </div>
 </div>
-  <%= link_to "全てを表示", link, class: "text-decoration-none text-dark link" if bands.present? %>
+<div class="row">
+  <%= link_to "全てを表示", link, class: "text-dark" if bands.present? %>
+</div>

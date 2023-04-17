@@ -1,12 +1,10 @@
+<%= render 'shared/top_images' %>
 <div class="top-wrapper">
   <div class="container">
     <div class="row">
-      <div class="top-text col mx-auto">
-        <h1 class="top-title fw-bold">BANDAPP</h1>
-        <h3 class="top-discription">ここにテキストを入力</h3>
-      </div>
-      <div class="login-form col-xl-7">
-        <div class="card w-50 mx-auto shadow border border-1">
+      <%= render partial: 'devise/shared/top_page_logo' %>
+      <div class="login-form col-xl-4">
+        <div class="card mx-auto shadow border border-1">
           <div class="card-body mx-2">
             <%= form_with model: @user, url: session_path(@user), local: true do |f| %>
               <div class="form-group">
@@ -23,7 +21,7 @@
               </div>
               <div class="action my-3">
                 <%= f.submit "ログイン", class: "btn btn-secondary btn-block btn-lg w-100" %>
-                <%= link_to "ゲストログイン", guest_user_session_path, data: { turbo_method: :post }, class: "btn btn btn-outline-secondary btn-block btn-lg w-100 my-4" %>
+                <%= link_to "ゲストログイン", guest_user_session_path, data: { turbo_method: :post }, class: "btn btn-outline-secondary btn-block btn-lg w-100 my-4" %>
               </div>
               <%= link_to "パスワードを忘れた方はこちら", new_user_password_path, class: "text-decoration-none text-dark d-block mb-4" %>
               <div class="action border-top">

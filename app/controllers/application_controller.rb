@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[name])
   end
 
   def update_band_colums(band)
@@ -19,8 +20,7 @@ class ApplicationController < ActionController::Base
       minimum_age: band.band_members.joins(:user).minimum(:age),
       average_age: band.band_members.joins(:user).average(:age),
       men: band.band_members.joins(:user).where(user: { sex: "男性" }).count,
-      women: band.band_members.joins(:user).where(user: { sex: "女性" }).count,
-      other_gender: band.band_members.joins(:user).where(user: { sex: "その他" }).count
+      women: band.band_members.joins(:user).where(user: { sex: "女性" }).count
     )
   end
 end

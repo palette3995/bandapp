@@ -6,6 +6,5 @@ class AddColumsToBands < ActiveRecord::Migration[7.0]
     add_column :bands, :number_of_member, :integer
     add_column :bands, :men, :integer
     add_column :bands, :women, :integer
-    add_column :bands, :other_gender, :integer
   end
 end

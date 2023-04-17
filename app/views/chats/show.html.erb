@@ -1,9 +1,11 @@
 <%= render partial: 'shared/error_messages', locals: { resource: @chat } %>
-<div class="container text-center">
+<div class="container">
   <div class="row">
     <div class="col-xl-2 my-5">
-      <h5><%= @band.name %></h5>
-      <%= link_to "バンド一覧に戻る", user_bands_bands_path, class: "text-dark" %>
+      <div class="border rounded m-2">
+          <p class="w-75 my-4 fs-5 mx-auto border-bottom border-3 border-secondary"><%= @band.name %></p>
+        <%= link_to "バンド一覧に戻る", user_bands_bands_path, class: "btn btn-secondary mb-4 w-75" %>
+      </div>
     </div>
     <div class="col-xl-8 my-4">
       <div class="form-wrapper my-5">
@@ -25,15 +27,15 @@
         <% if @chats.present? %>
           <% @chats.each do |chat| %>
             <div class="row chat-list-item border my-4 mx-4">
-              <div class="col-lg-2 col-sm-12 mt-5">
+              <div class="col-lg-2 col-sm-12 pt-2">
                 <% if chat.user.image.attached? %>
-                 <%= image_tag chat.user.image.variant(resize: "150x150", gravity: "center"), class: "avatar rounded-circle"%>
+                 <%= image_tag chat.user.image, size: "80x80", class: "avatar rounded-circle"%>
                 <% else %>
-                 <%= image_tag 'default.png', size: "90x90", class: "avatar rounded-circle"%>
+                 <%= image_tag 'default.png', size: "80x80", class: "avatar rounded-circle"%>
                 <% end %>
                 <p class="chat-user"><%= chat.user.name %></p>
               </div>
-              <div class="col-lg-8 pt-4 my-3">
+              <div class="col-lg-8 pt-3">
                 <%= chat.message %>
                 <p class="text-end my-2"><%= l chat.created_at %></p>
               </div>

@@ -1,7 +1,7 @@
-<div class="container-fluid text-center">
-  <h4 class= "my-5">申請したスカウト一覧</h4>
+<%= render partial: 'shared/banners', locals: { title: "申請したスカウト一覧"} %>
+<div class="container-fluid">
   <div class="row">
-    <div class="side-menu col-xl-3 mb-5">
+    <div class="side-menu col-xl-3 my-5">
       <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
         <%= render partial: 'scouts/receive_accordion' %>
         <div class="accordion-item">
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="container col-xl-8">
+    <div class="container col-xl-8 mt-5">
       <div class="row search-wrapper p-4">
         <% if @scouts.present? %>
           <% @scouts.each do |scout| %>
