@@ -1,0 +1,49 @@
+<% provide(:title, "お気に入りバンド一覧") %>
+<%= render partial: 'shared/banners', locals: { title: "お気に入りバンド一覧"} %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="side-menu col-xl-3 my-5">
+      <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+              送ったお気に入り
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+            <div class="accordion-body">
+              <div class="user-links"><%= link_to "ユーザー", favorites_path, class: "side-memu-links" %></div>
+              <div class="user-links"><%= link_to "バンド", send_band_favorites_path, class: "side-memu-links active" %></div>
+            </div>
+          </div>
+        </div>
+        <%= render partial: 'favorites/receive_accordion' %>
+      </div>
+    </div>
+    <div class="container col-xl-8 mt-5">
+      <div class="row search-wrapper p-4">
+        <% if @bands.present? %>
+          <% @bands.each do |band| %>
+          <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
+            <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
+              <div class="card" >
+                <%= render partial: 'bands/avatar', locals: { band: band, size: "100×100" } %>
+                <div class="card-body profile">
+                  <p class="card-text"><%= band.name %></p>
+                  <span class="card-text"><%= band.prefecture.name if band.prefecture %></span>
+                  <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
+                  <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
+                  <span class="card-text">曲：<%= band.original %></span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <% end %>
+        <% else %>
+          <p class="my-5">お気に入り登録がありません</p>
+        <% end %>
+        <%= paginate @bands, theme: "bootstrap-5" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="row search-wrapper mx-auto p-4">
+    <% if bands.present? %>
+      <p class="my-4"><%= "検索結果：#{bands.count}件" %></p>
+      <% bands.page(params[:page]).each do |band| %>
+        <div class="col-xxl-3 col-lg-4 col-md-6 my-3">
+          <%= link_to band_path(band.id), class: "text-decoration-none text-dark" do %>
+            <div class="card">
+              <%= render partial: 'bands/avatar', locals: { band: band, size: "100×100" } %>
+              <div class="card-body profile">
+                <p class="card-text"><%= band.name %></p>
+                <span class="card-text"><%= band.prefecture.name if band.prefecture %></span>
+                <span class="card-text">平均年齢：<%= band.average_age %>歳</span>
+                <p class="card-text my-1">ジャンル：<%= band.genres[0].name %></p>
+                <span class="card-text">曲：<%= band.original %></span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <%= paginate bands.page(params[:page]), theme: "bootstrap-5" %>
+    <% else %>
+      <p class="my-5">該当するバンドがありません</p>
+    <% end %>
+  </div>
+</div>

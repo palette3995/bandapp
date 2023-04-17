@@ -1,0 +1,49 @@
+<% provide(:title, "ユーザーからのお気に入り一覧") %>
+<%= render partial: 'shared/banners', locals: { title: "あなたをお気に入り登録した人"} %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="side-menu col-xl-3 my-5">
+      <div class="accordion w-75 mx-auto" id="accordionPanelsStayOpenExample">
+        <%= render partial: 'favorites/send_accordion' %>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+            <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
+              届いたお気に入り
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
+            <div class="accordion-body">
+              <div class="user-links"><%= link_to "あなた宛", received_user_favorites_path, class: "side-memu-links active" %></div>
+              <div class="user-links"><%= link_to "あなたのバンド", received_band_favorites_path, class: "side-memu-links" %></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container col-xl-8 mt-5">
+      <div class="row search-wrapper p-4">
+        <% if @users.present? %>
+          <% @users.each do |user| %>
+          <div class="col-xxl-3 col-lg-4 col-sm-6 mb-3">
+            <%= link_to user_path(user.id), class: "text-decoration-none text-dark" do %>
+              <div class="card" >
+                <%= render partial: 'users/avatar', locals: { user: user, size: "100×100" } %>
+                <div class="card-body profile">
+                  <p class="card-text"><%= user.name %></p>
+                  <span class="card-text"><%= user.prefecture.name if user.prefecture %></span>
+                  <span class="card-text"><%= "#{user.age}歳"%></span>
+                  <p class="card-text my-1"><%= user.parts[0].name %></p>
+                  <span class="card-text"><%= user.user_parts[0].level %></span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <% end %>
+        <% else %>
+          <p class="my-5">お気に入り登録がありません</p>
+        <% end %>
+        <%= paginate @users, theme: "bootstrap-5" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+Rails:
+  Enable: true
+
+AllCops:
+  NewCops: enable
+
+#自動生成されたファイルはチェック対象から除外
+  Exclude:
+    - "bin/**/*"
+    - "vendor/**/*"
+    - "db/schema*.rb"
+    - "node_modules/**/*"
+    - "db/migrate/**/*"
+    - "app/channels/**/*"
+    - "config/**/*"
+    - "config.ru"
+    - "public/**/*"
+    - "tmp/**/*"
+    - "log/**/*"
+    - "test/**/*"
+    - "spec/rails_helper.rb"
+    - "spec/spec_helper.rb"
+
+# デフォルトをダブルクォーテーションに設定
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# フローズンリテラルコメントは不要
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+#ドキュメントの無い public class を許可する
+Style/Documentation:
+  Enabled: false
+
+#gemの並びは順不同を許可
+Bundler/OrderedGems:
+  Exclude:
+    - 'Gemfile'
+
+#クラス内のクラス定義にコンパクト記法を許可
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+#空のメソッドを許可
+Style/EmptyMethod:
+  Enabled: false
+
+#メソッドの最大行数を35に設定
+MethodLength:
+  Max: 35
+
+#Abcサイズの上限を100まで許可
+Metrics/AbcSize:
+  Max: 100
+
+#配列で%Wの記法を許可
+Style/RedundantCapitalW:
+  Enabled: false
+
+#クラスの最大行数を200に設定
+Metrics/ClassLength:
+  Max: 200
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 20
+
+Metrics/PerceivedComplexity:
+  Max: 20
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+# Rspec
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 6

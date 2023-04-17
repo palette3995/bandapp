@@ -1,0 +1,37 @@
+<% provide(:title, "ログイン") %>
+<%= render 'shared/top_images' %>
+<div class="top-wrapper">
+  <div class="container">
+    <div class="row">
+      <%= render partial: 'devise/shared/top_page_logo' %>
+      <div class="login-form col-xl-4">
+        <div class="card mx-auto shadow border border-1">
+          <div class="card-body mx-2">
+            <%= form_with model: @user, url: session_path(@user), local: true do |f| %>
+              <div class="form-group">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control-lg w-100 border border-1", placeholder: "メールアドレス"%>
+              </div>
+              <div class="form-group my-3">
+                <%= f.password_field :password, class: "form-control-lg w-100 border border-1", placeholder: "パスワード"%>
+              </div>
+              <div class="form-check">
+                <% if devise_mapping.rememberable? %>
+                  <%= f.check_box :remember_me %>
+                  <%= f.label :remember_me, "ログインを記憶する", class: "form-check-label" %>
+                <% end %>
+              </div>
+              <div class="action my-3">
+                <%= f.submit "ログイン", class: "btn btn-secondary btn-block btn-lg w-100" %>
+                <%= link_to "ゲストログイン", guest_user_session_path, data: { turbo_method: :post }, class: "btn btn-outline-secondary btn-block btn-lg w-100 my-4" %>
+              </div>
+              <%= link_to "パスワードを忘れた方はこちら", new_user_password_path, class: "text-decoration-none text-dark d-block mb-4" %>
+              <div class="action border-top">
+                <%= link_to "アカウントを作成", new_user_registration_path, class: "btn btn btn-outline-secondary btn-block btn-lg w-75 my-4" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

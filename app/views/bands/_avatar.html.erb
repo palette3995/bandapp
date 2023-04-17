@@ -1,0 +1,5 @@
+<% if band.image.attached? %>
+  <%= image_tag band.image, size: size, class: "avatar rounded-circle my-3 mx-auto"%>
+<% else %>
+  <%= image_tag 'default_band.png', size: size, class: "avatar rounded-circle my-3 mx-auto"%>
+<% end %>

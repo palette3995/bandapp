@@ -1,0 +1,97 @@
+<% provide(:title, "#{@scouted_band.name}へスカウト申請") %>
+<%= render partial: 'shared/error_messages', locals: { resource: @scout } %>
+<%= render partial: 'shared/banners', locals: { title: "スカウト申請"} %>
+<div class="container">
+  <div class="row">
+    <div class="top-text col mx-auto">
+      <div class="card mt-5 mx-auto w-75">
+        <div class="card-body">
+          <%= render partial: 'bands/avatar', locals: { band: @scouted_band, size: "150×150" } %>
+          <h5 class= "mt-2">バンド名</h5>
+          <p><%= @scouted_band.name %></p>
+          <h5>地域</h5>
+          <p><%= @scouted_band.prefecture.name  if @scouted_band.prefecture %></p>
+          <h5>バンド紹介</h5>
+          <p><%= @scouted_band.introduction %></p>
+        </div>
+      </div>
+    </div>
+    <div class="login-form col-xl-7">
+      <div class="tab1 mt-5">
+        <div class="row">
+          <div class="col tab1__item"><span class="tab1__link on" data-tab-body="0">加入申請を送る</span></div>
+          <div class="col tab1__item"><span class="tab1__link" data-tab-body="1">合併申請を送る</span></div>
+        </div>
+      </div>
+      <div class="tab1-body border">
+        <div class="tab1-body__item on from-user">
+          <div class="my-3">
+            <h2><%= @scouted_band.name %></h2>
+            <h2>へ加入申請</h2>
+          </div>
+          <% if current_user.scouting_bands.include?(@scouted_band) || current_user.bands.joins(:scouting_bands).where(scouting_bands: {id: @scouted_band.id }).present? %>
+            既にスカウトを送っています。
+          <% elsif current_user.band_scouted_mes.include?(@scouted_band) || current_user.bands.joins(:band_scouted_mes).where(band_scouted_mes: {id: @scouted_band.id }).present? %>
+            既に相手からスカウトを受けています。
+          <% elsif @scouted_band.band_members.count >= 10 %>
+            メンバー数が上限に達している為スカウトできません。
+          <% else %>
+            <%= form_with model: @scout, url: create_band_scouts_path do |f| %>
+              <div class="form-group my-3">
+                <h5><%= f.label :part, "あなたのパートを選んでください" %></h5>
+                <%= f.select :part_id, @parts.map {|part| [part.name, part.id]}, {prompt: "選択してください"}, {class: "form-select part-name form-scout form-scout-0 band-scout-0"}%>
+              </div>
+              <div class="form-group my-3">
+                <%= f.text_field :other_part, placeholder: "パート名を入力してください", class: "form-control other-part form-scout form-scout-0" %>
+              </div>
+              <div class="form-group my-3">
+                <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-0" %>
+              </div>
+              <%= f.hidden_field :user_id, value: current_user.id %>
+              <%= f.hidden_field :scouted_user_id, value: @reader.id %>
+              <%= f.hidden_field :scouted_band_id, value: @scouted_band.id %>
+              <div class="row">
+                <div class="action my-3 col">
+                  <%= link_to "戻る", :back, class: "btn btn-outline-secondary btn-lg w-100" %>
+                </div>
+                <div class="action my-3 col">
+                  <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg btn-scout btn-scout-0 w-100", disabled: true %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="tab1-body__item from-band">
+          <div class="my-3">
+            <h2><%= @scouted_band.name %></h2>
+            <h2>へ合併申請</h2>
+          </div>
+          <% if @scouted_band.band_members.count >= 10 %>
+            メンバー数が上限に達している為スカウトできません。
+          <% else %>
+            <%= form_with model: @scout, url: create_band_scouts_path do |f| %>
+              <div class="form-group my-3">
+                <h5><%= f.label :band, "どのバンドにスカウトしますか？" %></h5>
+                <%= f.select :band_id, @bands.map {|band| [band.name, band.id]}, {prompt: "選択してください", disabled: true}, {class: "form-select form-scout form-scout-1 band-scout-1", disabled: true}%>
+              </div>
+              <div class="form-group my-3">
+                <%= f.text_field :message, placeholder: "ひとことメッセージを入力してください", class: "form-control form-scout form-scout-1" %>
+              </div>
+              <%= f.hidden_field :user_id, value: current_user.id %>
+              <%= f.hidden_field :scouted_user_id, value: @reader.id %>
+              <%= f.hidden_field :scouted_band_id, value: @scouted_band.id %>
+              <div class="row">
+                <div class="action my-3 col">
+                  <%= link_to "戻る", :back, class: "btn btn-outline-secondary btn-lg w-100" %>
+                </div>
+                <div class="action my-3 col">
+                  <%= f.submit "スカウト申請", class: "btn btn-secondary btn-lg  btn-scout btn-scout-1 w-100", disabled: true %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

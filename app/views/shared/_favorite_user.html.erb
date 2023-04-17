@@ -1,0 +1,7 @@
+<turbo-frame id="favorite-user-button">
+  <% if current_user.favorites.where(favorited_user_id: user.id).present? %>
+    <%= link_to "お気に入り済み", favorite_path(user.id), data: { turbo_method: :delete }, id: "favoriting", class: "btn favorite-btn" %>
+  <% else %>
+    <%= link_to "お気に入り", create_user_favorite_path(user.id), data: { turbo_method: :post }, id: "unfavorite", class: "btn favorite-btn" %>
+  <% end %>
+</turbo-frame>

@@ -1,0 +1,92 @@
+<% provide(:title, @user.name) %>
+<div class="wrapper mx-auto">
+  <div class="show-wrapper container my-5 mx-auto">
+    <div class="row">
+      <div class="left-contents col-xl-6">
+        <div class="card mt-5 mx-auto w-75">
+          <div class="card-body">
+            <%= render partial: 'users/avatar', locals: { user: @user, size: "150x150" } %>
+            <h5 class= "mt-2">名前</h5>
+            <p><%= @user.name %></p>
+            <h5>年齢</h5>
+            <p><%= @user.age %></p>
+            <h5>性別</h5>
+            <p><%= @user.sex %></p>
+            <h5>自己紹介</h5>
+            <p><%= @user.introduction %></p>
+          </div>
+        </div>
+        <div class="card mt-5 mx-auto w-75">
+          <div class="card-body">
+            <h5>動画</h5>
+            <% if @user.movie.attached? %>
+              <%= video_tag rails_blob_path(@user.movie), class: "movie border", width: "250", controls: true %>
+            <% else %>
+              <p class= "mb-2">動画はありません</p>
+            <% end %>
+            <h5 class= "mt-3">音源</h5>
+            <% if @user.sound.attached? %>
+              <%= audio_tag rails_blob_path(@user.sound), class: "sound", controls: true %>
+            <% else %>
+              <p>音源はありません</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="right-contents col">
+        <div class="card mt-5 mx-auto w-75">
+          <div class="card-body">
+            <h5>地域</h5>
+            <p><%= @user.prefecture.name if @user.prefecture %></p>
+            <% @user.user_parts.each do |part| %>
+              <div class="user-parts mb-3">
+                <h5><%= "パート#{part.priority}" %></h5>
+                  <p class="d-inline"><%= part.part.name %></p>
+                  <p class="d-inline"><% part.other_part if part.part_id == 6 %></p>
+                <p class="d-inline"><%= part.level %></p>
+              </div>
+            <% end %>
+            <h5>好きなアーティスト</h5>
+            <p><%= @user.favorite %></p>
+            <% @user.user_genres.each do |genre| %>
+              <h5><%= "ジャンル#{genre.priority}" %></h5>
+              <% if genre.genre_id == 15 %>
+                <p><%= genre.other_genre %></p>
+              <% else %>
+                <p><%= genre.genre.name %></p>
+              <% end %>
+            <% end %>
+            <h5>活動方針</h5>
+            <p><%= @user.motivation %></p>
+            <h5 class="mt-2">楽曲の方針</h5>
+            <p><%= @user.original %></p>
+            <h5 class="mt-2">コピーしたい楽曲</h5>
+            <p><%= @user.want_to_copy %>
+            <h5 class="mt-2">活動頻度</h5>
+            <p><%= @user.frequency %></p>
+            <h5 class="mt-2">活動できる日</h5>
+            <p><%= @user.available_day %></p>
+            <h5 class="mt-2">活動できる時間</h5>
+            <p><%= @user.activity_time %></p>
+            <h5 class="mt-2">曲作り</h5>
+            <% if @user.compose == true %>
+              <p>できる</p>
+            <% else %>
+              <p>できない</p>
+            <% end %>
+          </div>
+        </div>
+        <% if @user.id == current_user.id %>
+          <div class="my-3">
+            <%= link_to "マイページを編集", edit_user_path(@user.id), class: "btn btn-secondary" %>
+          </div>
+        <% else %>
+          <div class="my-3">
+            <%= render partial: 'shared/favorite_user', locals: { user: @user } %>
+            <%= link_to "スカウト", new_user_scout_path(@user.id), class: "btn btn-secondary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

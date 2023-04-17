@@ -1,0 +1,20 @@
+{
+  "name": "bandapp",
+  "private": true,
+  "scripts": {
+    "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/palette3995/bandapp.git",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.56.1"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.3.0",
+    "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.2",
+    "popper.js": "^1.16.1"
+  }
+}

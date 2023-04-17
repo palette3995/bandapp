@@ -1,0 +1,34 @@
+<% provide(:title, "所属バンド一覧") %>
+<%= render partial: 'shared/banners', locals: { title: "所属バンド一覧"} %>
+<div class="container">
+  <div class="row">
+    <div class="col-xl-2">
+    </div>
+    <div class="band-list col-xl-8 mt-5">
+      <% if @bands.present? %>
+        <% @bands.each do |band| %>
+          <div class="row band-list-item border my-4 mx-4">
+            <div class="col-lg-2 col-sm-12 my-2">
+              <% if band.image.attached? %>
+               <%= image_tag band.image, size: "90x90", class: "avatar rounded-circle"%>
+              <% else %>
+               <%= image_tag 'default_band.png', size: "90x90", class: "avatar rounded-circle"%>
+              <% end %>
+            </div>
+            <div class="col-lg-5 col-sm-12 pt-4 my-3">
+              <%= link_to band.name, band_path(band.id), class: "text-decoration-none fs-5" %>
+            </div>
+            <div class="col-lg-2 col-6 pt-4 my-2">
+              <%= link_to "編集", edit_band_path(band.id), class: "btn btn-secondary" %>
+            </div>
+            <div class="col-lg-3 col-6 pt-4 my-2">
+              <%= link_to "チャットへ", chat_path(band.id), class: "btn btn-outline-secondary" %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="my-5">スカウトを送ってバンドを結成しましょう！</p>
+      <% end %>
+    </div>
+  </div>
+</div>

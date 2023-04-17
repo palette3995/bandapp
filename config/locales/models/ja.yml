@@ -1,0 +1,62 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      band: バンド
+      scout: スカウト
+      band_member: バンドメンバー
+      recruit_member: 募集メンバー
+      chat: チャット
+    attributes:
+      user:
+        name: 名前
+        age: 年齢
+        sex: 性別
+        email: メールアドレス
+        favorite: 好きなアーティスト
+        introduction: 自己紹介
+        image: プロフィール画像
+        movie: 動画
+        sound: 音源
+        original: 楽曲の方針
+        want_to_copy: コピーしたい楽曲
+        motivation: 活動方針
+        frequency: 活動頻度
+        compose: 曲作り
+        prefecture_id: 地域
+        activity_time: 活動できる時間
+        available_day: 活動できる日
+      band:
+        name: バンド名
+        introduction: バンド紹介
+        image: プロフィール画像
+        original: 楽曲の方針
+        want_to_copy: コピーしたい楽曲
+        motivation: 活動方針
+        frequency: 活動頻度
+        prefecture_id: 地域
+        activity_time: 活動できる時間
+        available_day: 活動できる日
+        average_age: 平均年齢
+        maximum_age: 最年長
+        minimum_age: 最年少
+        number_of_member: メンバー数
+        men: 男性
+        women: 女性
+        other_gender: その他の性
+      scout:
+        other_part: その他のパート名
+        scouted_other_part: その他のパート名
+        message: メッセージ
+      user/user_parts:
+        other_part: その他のパート名
+      user/user_genres:
+        other_genre: その他のジャンル名
+      band/band_genres:
+        other_genre: その他のジャンル名
+      band_member:
+        other_part: その他のパート名
+      recruit_member:
+        other_part: その他のパート名
+      chat:
+        message: メッセージ

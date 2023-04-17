@@ -1,0 +1,25 @@
+<% provide(:title, "パスワードを忘れた方") %>
+<%= render 'shared/top_images' %>
+<%= render "devise/shared/error_messages", resource: resource %>
+<div class="top-wrapper">
+  <div class="container">
+    <div class="row">
+      <%= render partial: 'devise/shared/top_page_logo' %>
+      <div class="login-form col-xl-4">
+        <div class="card mx-auto shadow border border-1">
+          <div class="card-body mx-2">
+            <%= form_with model: @user, url: user_password_path, local: true do |f| %>
+              <h5>パスワードを忘れた方</h5>
+              <div class="form-group my-4">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control-lg w-100 border border-1", placeholder: "メールアドレス"%>
+              </div>
+              <div class="action my-3">
+                <%= f.submit "パスワード再設定メールを送信", class: "btn btn-secondary btn-block btn-lg w-100" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<% provide(:title, "パスワード再設定") %>
+<%= render 'shared/top_images' %>
+<%= render "devise/shared/error_messages", resource: resource %>
+<div class="top-wrapper">
+  <div class="container">
+    <div class="row">
+      <%= render partial: 'devise/shared/top_page_logo' %>
+      <div class="login-form col-xl-4">
+        <div class="card mx-auto shadow border border-1">
+          <div class="card-body mx-2">
+            <%= form_with model: @user, url: user_password_path, method: :patch, local: true do |f| %>
+              <%= render "devise/shared/error_messages", resource: resource %>
+              <%= f.hidden_field :reset_password_token %>
+              <h5>パスワード再設定</h5>
+              <div class="form-group my-4">
+                <%= f.password_field :password, autofocus: true, class: "form-control-lg w-100 border border-1", placeholder: "新しいパスワード"%>
+              </div>
+              <h5>新しいパスワード(確認)</h5>
+              <div class="form-group my-4">
+                <%= f.password_field :password_confirmation, autofocus: true, class: "form-control-lg w-100 border border-1", placeholder: "もう一度入力してください"%>
+              </div>
+              <div class="action my-3">
+                <%= f.submit "設定完了", class: "btn btn-secondary btn-block btn-lg w-100" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<% provide(:title, "アカウント登録") %>
+<%= render 'shared/top_images' %>
+<%= render "devise/shared/error_messages", resource: resource %>
+<div class="top-wrapper">
+  <div class="container">
+    <div class="row">
+      <%= render partial: 'devise/shared/top_page_logo' %>
+      <div class="login-form col-xl-4">
+        <div class="card mx-auto shadow border border-1">
+          <div class="card-body mx-2">
+            <h2>アカウント登録</h2>
+            <%= form_with model: @user, url: registration_path(@user), local: true do |f| %>
+              <div class="form-group">
+                <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control-lg w-100 border border-1", placeholder: "名前"%>
+              </div>
+              <div class="form-group">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control-lg w-100 border border-1", placeholder: "メールアドレス"%>
+              </div>
+              <div class="form-group my-3">
+                <% if @minimum_password_length %>
+                <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
+                <% end %><br />
+                <%= f.password_field :password, autocomplete: "new-password", class: "form-control-lg w-100 border border-1", placeholder: "パスワード"%>
+              </div>
+              <div class="form-group my-3">
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control-lg w-100 border border-1", placeholder: "パスワードをもう一度入力"%>
+              </div>
+              <div class="action my-3">
+                <%= f.submit "登録", class: "btn btn-secondary btn-block btn-lg w-100" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
