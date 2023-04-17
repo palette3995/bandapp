@@ -25,7 +25,7 @@ http://portfolio-ryota-matsumoto.herokuapp.com/
 大半はユーザーの検索や掲示板への募集要項の投稿、個人へのメッセージ機能に留まります。
 
 その為一人一人メンバーを集めていく労力や、既存のバンドに加入することの抵抗感が大きいことでバンド結成に至らないケースが多いです。
-そこで、既存の掲示板サイト的アプリではなく、全員が個人で登録するマッチングアプリ的サービスがあればと思いました。
+そこで、既存の掲示板サイト的アプリではなく、実際にアプリ内でバンドの結成や連絡が気軽に行えるサービスがあればと思いました。
 
 # 使用技術
 * Ruby 3.0.5
@@ -43,7 +43,8 @@ http://portfolio-ryota-matsumoto.herokuapp.com/
 - ログイン機能(devise)
   - ゲストログイン機能
   - アイコン画像 動画 音声アップロード機能
-  - 各種プロフィールの登録-パート、ジャンル選択フォームの表示切替(JQuery)
+  - 各種プロフィールの登録
+  - パート、ジャンル選択フォームの表示切替(JQuery)
 - パスワードリセット機能(MailGun)
 - 検索機能(ransack)
   - 各種条件絞り込み検索
@@ -59,7 +60,7 @@ http://portfolio-ryota-matsumoto.herokuapp.com/
   - バンド間の申請
   - ユーザー、バンド間の申請
   - スカウト画面の切り替え(JQuery)
-  - スカウト申請ボタンの活性、非活性(JQuery)
+  - スカウト申請ボタン・フォームの活性、非活性(JQuery)
 - スカウト承認・拒否機能
 - バンド設定機能
   - アイコン画像 動画 音声アップロード機能
@@ -74,7 +75,8 @@ http://portfolio-ryota-matsumoto.herokuapp.com/
 - 通知機能
   - 未読の通知を絞り込み
   - 通知ごとにリンクを設定
-  - 選択した通知の既読-全ての通知の既読
+  - 選択した通知の既読
+  - 全ての通知の既読
 - バンド内チャット機能
 - 画像リサイズ(imagemagick, minimagick)
 - ページネーション(kaminari)
@@ -103,10 +105,10 @@ http://portfolio-ryota-matsumoto.herokuapp.com/
 | scouts | 申請されたスカウトの情報 |
 | favorites | お気に入り登録の情報 |
 | notifications | ユーザーに届いた通知の情報 |
-| chats | バンド内チャットの内容 |
+| chats | バンド内チャットの情報 |
 
 # インフラ構成図
-![インフラ構成図](https://user-images.githubusercontent.com/95852095/232289742-2fd1ff26-7b97-44f2-8a8a-c9360dd911c2.png)
+![インフラ構成図](https://user-images.githubusercontent.com/95852095/232473142-7d43f5fa-8c65-49c1-9836-48f9d3646557.png)
 
 # アプリの特徴
 一番の特徴は、アプリ内でバンドを結成できるという点です。
